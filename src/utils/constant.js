@@ -6,3 +6,9 @@ export const logos = {
 export const LoginPage_img = "https://assets.nflxext.com/ffe/siteui/vlv3/4690cab8-243a-4552-baef-1fb415632f74/web/IN-en-20241118-TRIFECTA-perspective_0b813abc-8365-4a43-a9d8-14c06e84c9f3_medium.jpg"
 
 export const HomePage_img = "https://assets.nflxext.com/ffe/siteui/vlv3/4f5e84fc-704f-49fb-8b7a-3cec295575d0/web_tall_panel/IN-en-20241021-TRIFECTA-perspective_9885128b-7e43-497f-bbd3-8ada7705b37f_large.jpg";
+
+export const userIcon_img = "https://wallpapers.com/images/high/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.webp";
+
+export const dropDown_img = "https://www.svgrepo.com/show/346523/arrow-drop-down.svg";
+
+export const DropUp_img = "https://www.svgrepo.com/show/346525/arrow-drop-up.svg"
