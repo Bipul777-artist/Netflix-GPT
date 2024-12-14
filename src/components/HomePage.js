@@ -45,7 +45,7 @@ const HomePage = () => {
                         placeholder="Email"
                         className="border-2 border-slate-400 w-full py-3 px-4 bg-black opacity-65 rounded md:w-3/5"
                     />
-                    <button onClick={SignUpLogic} className="bg-red-600 text-2xl font-semibold ml-16 mt-2 px-5 py-3 border-1 rounded text-center md:w-2/5 md:m-0 md:px-3">
+                    <button onClick={SignUpLogic} className="bg-red-600 text-2xl font-semibold ml-16 mt-2 px-5 py-2 border-1 rounded text-center md:w-2/5 md:m-0 md:px-3">
                         Get Started
                     </button>
                     

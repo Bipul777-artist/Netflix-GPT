@@ -10,7 +10,6 @@ import { addUser } from "../utils/userSlice";
 
 const SignUp = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [email, SetEmail] = useState();
     const [error, setError] = useState();
     const password = useRef()
@@ -34,7 +33,7 @@ const SignUp = () => {
                     // Profile updated!
                     const { uid, email, displayName} = auth.currentUser;
                     dispatch(addUser({ uid: uid, email: email, displayName: displayName }))
-                    navigate('/browse');
+                    
                     // ...
                   }).catch((error) => {
                     // An error occurred

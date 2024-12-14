@@ -13,6 +13,28 @@
     - Configure Redux Store & User Slice
     - Implement Sign Out
     - Update Profile 
+    - Bug Fix - Updating Profile Post SignUp
+    - Bug Fix - Using OnAuthStateChange API correctly. Making sure only authenticated users access the website. 
+    - Bug Fix - Clearing OnAuthStateChange API 
+    - Bug Fix - Unsubscribe fron OnAuthStateChange
+    - TMDB Website API Call 
+    - Adding Movies Data in MovieSlice (Store)
+    - Custom Hook Creation & Verification
+    - Movie Slice
+    - Update Store with Movie Data
+    - Planning For Main & Secondary Container
+    - Fetch Data For Trailer Video
+    - Update Store with Trailer Video
+    - Embed YT Video and enable autoplay on mute
+    - Secondary Container
+    - Planning For Browse Page
+        - Main Container
+            - Videos API Call
+            - Load the Movie Title, Details, Buttons
+            - Load the Video
+        - Secondary Container
+
+
 
 # My Plan & Changes
     - Sign Up Form In HomePage
