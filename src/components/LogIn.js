@@ -61,7 +61,7 @@ const LogIn = () => {
                 <p className="text-red-600 font-bold m-2 text-xl">{Error}</p>
                 <div className="flex items-center gap-2">
                     <p className="text-md text-white mt-3">New to Netflix?</p> 
-                    <p onClick={SignUpPage} className="text-md text-white mt-3 cursor-pointer">Sign Up Now</p>
+                    <p onClick={SignUpPage} className="text-md text-white mt-3 hover:underline cursor-pointer">Sign Up Now</p>
                 </div>
             </form>
         </div>

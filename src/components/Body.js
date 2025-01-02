@@ -5,6 +5,7 @@ import LogIn from "./LogIn.js";
 import SignUp from "./SignUp.js";
 import EmailVerification from "./EmailVerification.js";
 import Browse from "./Browse.js";
+import GPTSearch from "./GPTSearch.js";
 
 
 
@@ -55,6 +56,15 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <Browse />
+                </div>
+            )
+        },
+        {
+            path: "/GptSearchPage", 
+            element: (
+                <div className="">
+                    <Header />
+                    <GPTSearch />
                 </div>
             )
         }

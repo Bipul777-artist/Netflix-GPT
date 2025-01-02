@@ -8,10 +8,9 @@ const VideoBackGround = ({ movieId }) => {
     
     useMovieTrailer(movieId);
   return (
-    <div className="w-full h-full relative md:w-full">
+    <div className="aspect-w-16 aspect-h-9 w-full border-b-2 border-black">
       <iframe
-        className="md:w-full w-full h-full md:h-screen"
-    
+        className="w-full h-full"
         // src="https://www.youtube.com/embed/4poFokW1V5U?si=IDwFKh-y5djDZBL-?autoplay=1&mute=1"
         src={"https://www.youtube.com/embed/" + FetchTrailer + "?autoplay=1&mute=1"}
         title="YouTube video player"

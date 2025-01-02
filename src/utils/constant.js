@@ -20,3 +20,7 @@ export const API_OPTIONS = {
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YmY3NmE0M2FlZjY3N2ZjNTkzZDVhNWE1YjA1NzQ2YiIsIm5iZiI6MTczMzA0ODE3OS44MjA5OTk5LCJzdWIiOiI2NzRjMzc3MzZhMGI5ZTlmMGZjNDQ1YmEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.PgpTEjx0c24K3Mw04ST2QiuqxFIpQ1IJie9h3XwVe1Q'
     },
 };
+
+export const IMG_CDN = "https://image.tmdb.org/t/p/w200/";
+
+export const Supported_Languages = [{identifier : "en", name: "English"}, {identifier : "hindi", name: "Hindi"}, {identifier : "spanish", name: "Spanish"}]

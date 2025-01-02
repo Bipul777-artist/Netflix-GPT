@@ -1,5 +1,5 @@
 # Things Done
-    -Create React App
+    - Create React App
     - Configure Tailwind
     - Routing
     - Header
@@ -33,7 +33,24 @@
             - Load the Movie Title, Details, Buttons
             - Load the Video
         - Secondary Container
-
+            - Build Movie List
+            - Build Movie Cart
+            - Custom Hooks to Fetch Movies/Web Series Details
+            - Show the Web-shows Images, use Pointers to move left and right
+            -
+    - GPT Search Page
+        - Different Slice to control visbibility GPTSearch Page.      
+        - GPT Search Component
+            - GPT Search Bar
+                - Multi-Language Feature in our App
+                - Available Language Options Button.
+                    - Create a different Constant File For Different Languages with text
+                    - Add differnet Language Options in Constant File
+                    - Add Options to show list of available supported Language In Header
+                        - Make it dynamic.
+                            - Add available languages with identifier in Constant File and make it dynamic.
+                    - Change Language of Page as per user's actions/
+            - GPT Movie Suggestions
 
 
 # My Plan & Changes

@@ -14,7 +14,7 @@ const MainContainer = () => {
 
     // console.log(MainMovie);
    return (
-        <div className="h-[300px] md:h-1/3">
+        <div className="relative border-b-2 border-black h-[300px] md:h-1/3">
             
             <VideoTitle title={title} overview={overview} />
             <VideoBackGround movieId={id} />

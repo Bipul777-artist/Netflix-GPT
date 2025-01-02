@@ -10,6 +10,7 @@ const HomePage = () => {
 
     const navigate = useNavigate()
     const LogInPage = () => {
+        console.log("Clocked")
         navigate('/login')
     }
 
@@ -27,9 +28,9 @@ const HomePage = () => {
 
     return (
         <div className="relative h-[500px] w-full md:h-full">
-            <button onClick={LogInPage} className="bg-red-600 absolute z-10 top-5 right-5 text-white font-semibold cursor-pointer px-4 py-1.5 rounded md:right-20 md:top-8">
+            {/* <button onClick={LogInPage} className="bg-blue-600 absolute z-10 top-5 right-5 text-white font-semibold cursor-pointer px-4 py-1.5 rounded md:right-20 md:top-8">
                 Sign In
-            </button>
+            </button> */}
             <img src= {HomePage_img} className="w-full min-h-full"/>
             <div className="absolute top-0 left-0 h-full w-full shadow-inner bg-gradient-to-b from-black to-black opacity-60"></div>
 
