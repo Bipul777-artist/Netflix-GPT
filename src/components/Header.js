@@ -86,32 +86,34 @@ const Header = () => {
       <div className="absolute w-full">
         <div className="absolute justify-between items-center flex w-full z-30">
             <img src= {logos.large} 
-                className="w-24 h-12 ml-24 md:w-44 md:h-20"
+                className="w-12 h-8 ml-4 mt-1 md:ml-24 md:w-36 md:h-16"
             />
             
-              {user && <div className="flex">
+              {user && <div className="flex items-between ">
                           
-                          <button onClick={GPTSearchPage} className="bg-gradient-to-r from-pink-700 to-pink-900 ml-72 border-1 rounded-md text-white p-2">{showGPT ? "HomePage" : "ChatGPT"}</button>
-                          {showGPT && <select onChange={handleLanguageChange} className="bg-gradient-to-r from-red-800 ml-6 to-red-900 text-white text-md border-none rounded-md px-2 py-1.5">
+                          <button onClick={GPTSearchPage} className="bg-gradient-to-r mr-2 from-pink-700 to-pink-900 border-none rounded-md text-white py-1 px-1.5 text-sm font-semibold mt-1.5 md:p-2 md:text-xl md:mr-6">
+                            {showGPT ? "HomePage" : "ChatGPT"}
+                          </button>
+                          {showGPT && <select onChange={handleLanguageChange} className="bg-gradient-to-r from-red-800 to-red-900 text-white text-sm border-none rounded-md py-1 px-1.5 mt-1.5 md:p-2 md:text-xl">
                             {Supported_Languages.map((lang) => 
-                            <option key={lang.identifier} value={lang.identifier}>
+                            <option className="" key={lang.identifier} value={lang.identifier}>
                               {lang.name}
                             </option>)}
                           </select>}
                         </div>  
               }
               <div>
-                {user ? <div onMouseLeave={hideContents} onMouseEnter={showContents}  className="absolute grid grid-cols-3 gap-2 z-10 top-5 right-24 ">
+                {user ? <div className="absolute gap-1 z-10 top-2 -right-2 md:right-24 " onMouseLeave={hideContents} onMouseEnter={showContents}>
                   
-                    <>
-                    <img className="w-12 h-12" src= {userIcon_img} />
-                    <img src= {dropDown ? DropUp_img : dropDown_img} className="transition duration-500 cursor-pointer bg-white rounded w-8 h-8" />
-                    </>  
+                    <div onClick={() => setDropDown(!dropDown)} className="flex mr-4">
+                    <img className="w-6 h-6 border-none rounded md:w-12 md:h-12" src= {userIcon_img} />
+                    <img src= {dropDown ? DropUp_img : dropDown_img} className="w-4 h-4 transition duration-500 cursor-pointer ml-1 my-1 bg-white rounded md:w-8 md:h-8" />
+                    </div>
                     {dropDown ? 
-                        <div className="block col-span-2 transition duration-500 cursor-pointer bg-black border-1 border-black rounded opacity-70 text-white p-3">
-                            <p className="p-1 cursor-pointer hover:bg-slate-500 hover:border-1 hover:rounded">Account</p>
-                            <p className="p-1 cursor-pointer hover:bg-slate-500 hover:border-1 hover:rounded">Help Center</p>
-                            <p onClick={SignOut} className="p-1 cursor-pointer hover:bg-slate-500 hover:border-1 hover:rounded">Sign Out</p>
+                        <div className="absolute top-6 right-4 block w-[150px] px-4 py-2 cursor-pointer bg-black border-1 border-black rounded bg-opacity-70 text-white md:px-6 md:h-36 md:w-[200px] md:top-12">
+                            <p className="p-1 cursor-pointer text-center hover:bg-slate-500 hover:border-1 hover:rounded">Account</p>
+                            <p className="p-1 text-center cursor-pointer hover:bg-slate-500 hover:border-1 hover:rounded">Help Center</p>
+                            <p onClick={SignOut} className="p-1 text-center cursor-pointer hover:bg-slate-500 hover:border-1 hover:rounded">Sign Out</p>
                         </div> : null
                     }
                 

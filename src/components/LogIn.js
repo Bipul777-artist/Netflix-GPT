@@ -39,9 +39,9 @@ const LogIn = () => {
     return (
         <div className="relative bg-black h-screen w-screen md:bg-none">
             <img className="hidden w-full h-full bg-cover bg-center overflow-hidden md:block" src= {LoginPage_img} />
-            <div className="absolute top-0 left-0 w-full h-full bg-black opacity-45"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-45"></div>
 
-            <form onSubmit={(e)=> e.preventDefault()} className="w-4/5 absolute top-1/4 left-1/2 border-2 border-black rounded p-4 -translate-x-1/2 -translate-y-1/2 bg-black opacity-75 md:w-1/3 md:h-2/3 md:p-10 md:top-1/2 md:left-1/2">
+            <form onSubmit={(e)=> e.preventDefault()} className="w-4/5 absolute top-1/4 left-1/2 border-2 border-black rounded p-4 -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-75 md:w-1/3 md:h-2/3 md:p-10 md:top-1/2 md:left-1/2">
                 <h1 className="text-3xl z-10 font-bold bg-transparent mb-2 text-white">Sign In</h1>
                 <input
                     ref={email} 

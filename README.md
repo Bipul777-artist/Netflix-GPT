@@ -51,13 +51,23 @@
                             - Add available languages with identifier in Constant File and make it dynamic.
                     - Change Language of Page as per user's actions/
             - GPT Movie Suggestions
+                - GPT API Setup
+                - API Calling for Search Bar
+                - Load the result and Verify
+                
 
 
 # My Plan & Changes
     - Sign Up Form In HomePage
-        -Take Email, Push it in Local Storage, fetch Email in New page and Configure Create Account Login In New Page -> Done
+        -Take Email, Push it in Local Storage, fetch Email in New page and Configure Create Account Login In New  Page -> Done
     - Login Page
         - Only write Authentication Logic   -> Done
+
+
+    - When Cards are Clicked or Hovered Over, it should open and show the trailer along with basic info
+    - GPT PAGE
+        - When type is changed, earlier data should be cleared. -> Done
+        - Shimmer Type UI, when submit is clicked
 
 # Features
     -Login / SIgn Up Page

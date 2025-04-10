@@ -5,12 +5,12 @@ import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState, useRef } from "react";
+import VideoBackGround from "./VideoBackground";
 
 const MovieCard = ({ MovieDetails }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const carouselRef = useRef();
   
-
   useEffect(() => {
     if (carouselRef.current) {
       carouselRef.current.scrollTo({
@@ -20,6 +20,10 @@ const MovieCard = ({ MovieDetails }) => {
     }
   }, [scrollPosition]);
   
+  const showVideo = ({key}) => {
+    // <VideoBackGround movieId={key}/>
+    
+  }
   
   const setPrevIndex = () => {
     setScrollPosition((prevPosition) => prevPosition - 600);
@@ -37,19 +41,24 @@ const MovieCard = ({ MovieDetails }) => {
         className=" flex overflow-hidden gap-2"
         style={{ scrollSnapType: "x mandatory" }}
       >
-        {MovieDetails?.map((movie, index) => {
+        {MovieDetails?.map((movie) => {
+          if (!movie?.poster_path ) return null
+          {console.log(movie)}
+          
           return (
-            <div key={index} className="flex w-52">
-              {movie.poster_path && 
+            <div key={movie?.id} className="flex gap-0 overflow-x-hidden min-w-52">
+             
               <img
-                className="hover:scale-110 hover:overflow-visible hover:min-w-1/2 hover:min-h-1/2 min-w-52 h-40 transition duration-500 cursor-pointer border-1 rounded-md"
-                src={IMG_CDN + movie.poster_path}
-              /> }
+                onMouseEnter={() => showVideo(movie.id)}
+                className="min-w-40 h-40 transition duration-500 cursor-pointer border-1 rounded-md"
+                src={IMG_CDN + movie?.poster_path}
+              /> 
               
             </div>
           );
         })}
       </div>
+      {/* Handling the Scrollable/Left-Right Feature */}
       <div className="w-32 h-36 ">
         <FontAwesomeIcon
           onClick={setNextIndex}
@@ -64,7 +73,7 @@ const MovieCard = ({ MovieDetails }) => {
         />}
       </div>
     </div>
-  );
+  )
 };
 
 export default MovieCard;

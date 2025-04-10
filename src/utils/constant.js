@@ -24,3 +24,9 @@ export const API_OPTIONS = {
 export const IMG_CDN = "https://image.tmdb.org/t/p/w200/";
 
 export const Supported_Languages = [{identifier : "en", name: "English"}, {identifier : "hindi", name: "Hindi"}, {identifier : "spanish", name: "Spanish"}]
+
+export const GPT_API_KEY = "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";
+
+export const Another_API = "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";
+
+export const Gemini_API = "AIzaSyDsD1GWh9MI8JATCQwyNxhvu44x5OlHOI8";

@@ -1,13 +1,15 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { movieTrailers } from "../utils/movieSlice";
-import {API_OPTIONS} from "../utils/constant"
+import {API_OPTIONS} from "../utils/constant";
 
 const useMovieTrailer = (movieId) => {
+    
     const dispatch = useDispatch();
+    const TrailerVideo = useSelector(store => store.movies.movieTrailers)
     const FetchVideo = async () => {
         const video = await fetch(
-        "https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/movie/"+movieId+"/videos?language=en-US",
+        "https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/movie/"+ movieId +"/videos?language=en-US",
         API_OPTIONS
     );
 
@@ -20,7 +22,7 @@ const useMovieTrailer = (movieId) => {
   };
 
   useEffect(() => {
-    FetchVideo();
+    !TrailerVideo && FetchVideo();
   }, []);
 };
 
