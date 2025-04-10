@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utils/firebase.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown
+} from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice.js";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +11,7 @@ import { userIcon_img, DropUp_img, dropDown_img, logos, Supported_Languages} fro
 import { signOut } from "firebase/auth";
 import {  toggleGPTView } from "../utils/gptSlice.js";
 import { changeLanguage  } from "../utils/configSlice.js";
+import { movieTrailers } from "../utils/movieSlice.js";
 
 
 const Header = () => {
@@ -19,9 +23,29 @@ const Header = () => {
     const showGPT = useSelector(store => store.gptSlice.GPTSlice);
     const user = useSelector((store) => store.user)
     const [dropDown, setDropDown] = useState(false);
+    const [showBrowse, SetShowBrowse] = useState(false);
+     
 
     const handleDropDown = () => {
         setDropDown(!dropDown);
+    }
+
+    const handleMovies = () => {
+      navigate('/browse/movies');
+      dispatch(movieTrailers(null))
+      SetShowBrowse(!showBrowse)
+    }
+
+    const handleHomePage = () => {
+      navigate('/browse');
+      dispatch(movieTrailers(null))
+      SetShowBrowse(!showBrowse)
+    }
+
+    const handleSeries = () => {
+      navigate('/browse/tv-series');
+      dispatch(movieTrailers(null))
+      SetShowBrowse(!showBrowse)
     }
 
     const LogIn = () => {
@@ -33,7 +57,7 @@ const Header = () => {
         setSignInBtn("Sign In")
         navigate("/")
       }
-      console.log("Clicked")
+      // console.log("Clicked")
     }
 
     const SignOut = () => {
@@ -83,11 +107,35 @@ const Header = () => {
     }, [])
 
     return (
+      <div className="">
       <div className="absolute w-full">
-        <div className="absolute justify-between items-center flex w-full z-30">
+        <div className="absolute justify-between bg-gradient-to-b from-black bg-opacity-65 items-center flex w-full z-30">
             <img src= {logos.large} 
                 className="w-12 h-8 ml-4 mt-1 md:ml-24 md:w-36 md:h-16"
             />
+            <div className=" block md:hidden">
+              <div
+                onClick={() => SetShowBrowse(!showBrowse)} 
+              >
+                <button 
+                
+                className="text-sm cursor-pointer text-white">Browse</button>
+                <FontAwesomeIcon className ="text-white pl-1" icon={faCaretDown} />
+                </div>
+              {showBrowse && <div className={`absolute z-20 left-0 top-10 w-[220px] h-[220px] border-t-2 border-white transition-opacity duration-300 ease-in-out ${
+          showBrowse ? 'opacity-100' : 'opacity-0 hidden'} bg-black bg-opacity-80`}>
+                <p className="text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif" onClick={() => handleHomePage()}>Home</p>
+                <p className="text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif" onClick={() => handleMovies()}>Movies</p>
+                <p className="text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif" onClick={() => handleSeries()}>TV Series</p>
+                <p className="text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif" onClick={() => navigate('/browse/my-list') }>My List</p>
+              </div>}
+            </div>
+            <div className="hidden -ml-80 md:flex">
+              <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => handleHomePage()}>Home</p>
+              <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => handleMovies()}>Movies</p>
+              <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => handleSeries()}>TV Series</p>
+              <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => navigate('/browse/my-list')}>My List</p>
+            </div>
             
               {user && <div className="flex items-between ">
                           
@@ -125,6 +173,7 @@ const Header = () => {
         </div>
         </div>
         
+      </div>
       </div>
     )
 };

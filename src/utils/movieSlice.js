@@ -8,6 +8,11 @@ const movieSlice = createSlice({
         topRatedSeries : null,
         popularMovies :null,
         movieTrailers: null,
+        hoverContent: null,
+        hoverYoutubeKey: null, 
+        contentKey: null, 
+        YoutubeKey: null,
+        content: [],
     }, 
 
     reducers : {
@@ -23,9 +28,21 @@ const movieSlice = createSlice({
         addPopularMovies : (state, action) => {
             state.popularMovies = action.payload;
         },
+        addHoveredContent : (state, action) => {
+            state.hoverContent = action.payload;
+        },
+        addMovieYoutubeKey : (state, action) => {
+            state.YoutubeKey = action.payload;
+        },
+        addContentKey : (state, action) => {
+            state.contentKey = action.payload;
+        },
+        addContent: (state, action) => {
+            state.content = action.payload;
+        }
     }
 })
 
-export const {addNowPlayingMovies, movieTrailers, addTopRatedSeries, addPopularMovies, clearNowPlayingMovies} = movieSlice.actions;
+export const {addNowPlayingMovies, movieTrailers, addTopRatedSeries, addPopularMovies, addContent, addMovieYoutubeKey, addContentKey , addHoveredContent, clearNowPlayingMovies} = movieSlice.actions;
 
 export default movieSlice.reducer;

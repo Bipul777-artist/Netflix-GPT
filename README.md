@@ -62,13 +62,30 @@
         -Take Email, Push it in Local Storage, fetch Email in New page and Configure Create Account Login In New  Page -> Done
     - Login Page
         - Only write Authentication Logic   -> Done
-
-
-    - When Cards are Clicked or Hovered Over, it should open and show the trailer along with basic info
+    <!-- FOCUS AREA -->
+    -Movie Card
+        - When hovered or clicked, trailer should play. -> Done
+        - Make the UI as close to the Netflix UI        -> Done
+        - When Cards Hovered Over (Only For Large Screen), it should open and show the trailer along with basic info. -> Done
+        - For mobile devices, when Cards are clicked, it should pop-out a larger screen showing trailer, details, Play Button Everything -- For Larger Devices, the same will happen when clicked on Drop Down button after hovering or clicked directly.
     - GPT PAGE
-        - When type is changed, earlier data should be cleared. -> Done
+        - When content type is changed, earlier data should be cleared. -> Done
         - Shimmer Type UI, when submit is clicked
 
+#Things to do
+    - Edit YT Sound Icon For every Video -> Done
+    - Go through the website flow once, see the changes and note them.
+    - Fix the rusty code. 
+    - Hide the keys, and push Code to GitHUb
+    - Deploy it Online
+    - Edit Resume. 
+
+#Things to Understand
+    -> Understand Navigation & Routing for PlayContent
+    -> Understand Sound on/off logic
+    -> PlayContent refresh not working. -> Done
+    -> Content Info Work, Architecture.
+    
 # Features
     -Login / SIgn Up Page
         -Sign In / SIgn Up Form

@@ -17,7 +17,7 @@ export const API_OPTIONS = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YmY3NmE0M2FlZjY3N2ZjNTkzZDVhNWE1YjA1NzQ2YiIsIm5iZiI6MTczMzA0ODE3OS44MjA5OTk5LCJzdWIiOiI2NzRjMzc3MzZhMGI5ZTlmMGZjNDQ1YmEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.PgpTEjx0c24K3Mw04ST2QiuqxFIpQ1IJie9h3XwVe1Q'
+      Authorization: 'Bearer ' + process.env.REACT_APP_TMDB_KEY
     },
 };
 
@@ -25,8 +25,157 @@ export const IMG_CDN = "https://image.tmdb.org/t/p/w200/";
 
 export const Supported_Languages = [{identifier : "en", name: "English"}, {identifier : "hindi", name: "Hindi"}, {identifier : "spanish", name: "Spanish"}]
 
-export const GPT_API_KEY = "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";
+export const GPT_API_KEY = process.env.REACT_APP_GPT_API_KEY;
 
-export const Another_API = "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";
+export const Another_API = process.env.REACT_APP_GPT_SECOND_API
 
-export const Gemini_API = "AIzaSyDsD1GWh9MI8JATCQwyNxhvu44x5OlHOI8";
+export const Gemini_API = process.env.REACT_APP_Gemini_API
+
+export const genre_name = 
+  [
+    {
+      "id": 28,
+      "name": "Action"
+    },
+    {
+      "id": 12,
+      "name": "Adventure"
+    },
+    {
+      "id": 16,
+      "name": "Animation"
+    },
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    },
+    {
+      "id": 99,
+      "name": "Documentary"
+    },
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 10751,
+      "name": "Family"
+    },
+    {
+      "id": 14,
+      "name": "Fantasy"
+    },
+    {
+      "id": 36,
+      "name": "History"
+    },
+    {
+      "id": 27,
+      "name": "Horror"
+    },
+    {
+      "id": 10402,
+      "name": "Music"
+    },
+    {
+      "id": 9648,
+      "name": "Mystery"
+    },
+    {
+      "id": 10749,
+      "name": "Romance"
+    },
+    {
+      "id": 878,
+      "name": "Science Fiction"
+    },
+    {
+      "id": 10770,
+      "name": "TV Movie"
+    },
+    {
+      "id": 53,
+      "name": "Thriller"
+    },
+    {
+      "id": 10752,
+      "name": "War"
+    },
+    {
+      "id": 37,
+      "name": "Western"
+    },
+    {
+      "id": 10759,
+      "name": "Action & Adventure"
+    },
+    {
+      "id": 16,
+      "name": "Animation"
+    },
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    },
+    {
+      "id": 99,
+      "name": "Documentary"
+    },
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 10751,
+      "name": "Family"
+    },
+    {
+      "id": 10762,
+      "name": "Kids"
+    },
+    {
+      "id": 9648,
+      "name": "Mystery"
+    },
+    {
+      "id": 10763,
+      "name": "News"
+    },
+    {
+      "id": 10764,
+      "name": "Reality"
+    },
+    {
+      "id": 10765,
+      "name": "Sci-Fi & Fantasy"
+    },
+    {
+      "id": 10766,
+      "name": "Soap"
+    },
+    {
+      "id": 10767,
+      "name": "Talk"
+    },
+    {
+      "id": 10768,
+      "name": "War & Politics"
+    },
+    {
+      "id": 37,
+      "name": "Western"
+    }
+]
+
+export const genreLookUp = genre_name.reduce((lookup, genre) => {
+  lookup[genre.id] = genre.name
+  return lookup;
+}, {})

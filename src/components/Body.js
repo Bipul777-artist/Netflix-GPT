@@ -6,12 +6,14 @@ import SignUp from "./SignUp.js";
 import EmailVerification from "./EmailVerification.js";
 import Browse from "./Browse.js";
 import GPTSearch from "./GPTSearch.js";
+import PlayContent from "./PlayContent.js";
+import FavoriteList from "./FavoriteList.js";
+import Movies from "./Movies.js";
+import TVSeries from "./TVSeries.js";
 
 
 
 const Body = () => {
-
-
 
     const appRouter = createBrowserRouter([
         {
@@ -65,6 +67,42 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <GPTSearch />
+                </div>
+            )
+        },
+        {
+            path: "/watch/:movieId", 
+            element: (
+                <div className="">
+                    <Header />
+                    <PlayContent />
+                </div>
+            )
+        },
+        {
+            path: "/browse/my-list", 
+            element: (
+                <div className="">
+                    <Header />
+                    <FavoriteList />
+                </div>
+            )
+        },
+        {
+            path: "/browse/movies", 
+            element: (
+                <div className="">
+                    <Header />
+                    <Movies />
+                </div>
+            )
+        },
+        {
+            path: "/browse/tv-series", 
+            element: (
+                <div className="">
+                    <Header />
+                    <TVSeries />
                 </div>
             )
         }
