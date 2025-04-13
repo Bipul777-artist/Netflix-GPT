@@ -10,12 +10,12 @@ const HomePage = () => {
 
     const navigate = useNavigate()
     const LogInPage = () => {
-        console.log("Clocked")
+        // console.log("Clocked")
         navigate('/login')
     }
 
     const SignUpLogic = () => {
-        console.log(email.current.value);
+        // console.log(email.current.value);
         const message = ValidEmail(email.current.value);
         setErrorMessage(message);
 

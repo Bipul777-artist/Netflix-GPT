@@ -4,7 +4,8 @@ import { movieTrailers } from "../utils/movieSlice";
 import {API_OPTIONS} from "../utils/constant";
 
 const useMovieTrailer = (movieId) => {
-    
+
+
     const dispatch = useDispatch();
     const TrailerVideo = useSelector(store => store.movies.movieTrailers)
 
@@ -23,22 +24,23 @@ const useMovieTrailer = (movieId) => {
   if (movie.status === "fulfilled" && movie.value.ok) {
 
     const videoJson = await movie.value.json();
-    console.log(videoJson);
+    // console.log(videoJson);
     
 
     const Trailers = videoJson.results.filter((x) => x.type === "Trailer");
     const trailerVideo = Trailers.length ? Trailers[0] : videoJson.results[0];
-    console.log(trailerVideo.key);
+    // console.log(trailerVideo.key);
     dispatch(movieTrailers(trailerVideo.key));
   }
 
   if (webShow.status === "fulfilled" && webShow.value.ok) {
 
     const videoJson = await webShow.value.json();
-    console.log(videoJson);
+    // console.log(videoJson);
     const Trailers = videoJson.results.filter((x) => x.type === "Trailer");
     const trailerVideo = Trailers.length ? Trailers[0] : videoJson.results[0];
-    console.log(trailerVideo.key);
+    // console.log(trailerVideo.key);
+
     dispatch(movieTrailers(trailerVideo.key));
   }
 

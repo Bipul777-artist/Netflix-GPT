@@ -1,5 +1,16 @@
 {
   "projects": {
-    "default": "netflixgpt-bdcda"
-  }
+    "default": "netflixgpt-bdcda",
+    "staging": "netflixgpt-bdcda"
+  },
+  "targets": {
+    "netflixgpt-bdcda": {
+      "hosting": {
+        "bipul-netflix-spa": [
+          "bipul-netflix-spa"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

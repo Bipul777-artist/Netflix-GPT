@@ -8,7 +8,7 @@ const TVSeries = () => {
     if (!series) return ;
 
     const MainMovie = series[10];
-    console.log(MainMovie);
+    // console.log(MainMovie);
     const {overview, id , original_name} = MainMovie
 
     return (

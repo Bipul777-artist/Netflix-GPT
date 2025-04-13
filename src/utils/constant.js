@@ -17,17 +17,17 @@ export const API_OPTIONS = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer ' + process.env.REACT_APP_TMDB_KEY
-    },
+      Authorization: 'Bearer ' + process.env.REACT_APP_TMDB_KEY}
 };
+
 
 export const IMG_CDN = "https://image.tmdb.org/t/p/w200/";
 
 export const Supported_Languages = [{identifier : "en", name: "English"}, {identifier : "hindi", name: "Hindi"}, {identifier : "spanish", name: "Spanish"}]
 
-export const GPT_API_KEY = process.env.REACT_APP_GPT_API_KEY;
+// export const GPT_API_KEY = process.env.REACT_APP_GPT_API_KEY;
 
-export const Another_API = process.env.REACT_APP_GPT_SECOND_API
+// export const Another_API = process.env.REACT_APP_GPT_SECOND_API
 
 export const Gemini_API = process.env.REACT_APP_Gemini_API
 

@@ -1,4 +1,3 @@
-import OpenAI from 'openai';
 import { Another_API, Gemini_API, GPT_API_KEY } from './constant';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
@@ -7,10 +6,6 @@ export const genAI = new GoogleGenerativeAI(
   Gemini_API
 );
 
-export const client = new OpenAI({
-  apiKey: Another_API, 
-  dangerouslyAllowBrowser: true   // This is the default and can be omitted
-});
 
 const data = {
   "page": 1,

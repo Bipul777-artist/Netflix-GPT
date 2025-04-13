@@ -93,7 +93,7 @@ const MovieCard = ({ EachMovie, key}) => {
   const handlePlayContent = (movieId) => {
     if (window.innerWidth < 768) {
     navigate(`/watch/${movieId.id}`);
-    {console.log(movieId)};
+    // {console.log(movieId)};
     localStorage.setItem('currenContentId', movieId.id);
     localStorage.setItem('currentContentDetails', JSON.stringify(movieId));
     dispatch(addContent(movieId));

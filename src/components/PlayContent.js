@@ -31,7 +31,7 @@ const PlayContent = () => {
       
         setContentData(JSON.parse(localStorage.getItem('currentContentDetails')));
         // console.log("useEffect called");
-        console.log(JSON.parse(localStorage.getItem('currentContentDetails')))
+        // console.log(JSON.parse(localStorage.getItem('currentContentDetails')))
         
    },[])
 

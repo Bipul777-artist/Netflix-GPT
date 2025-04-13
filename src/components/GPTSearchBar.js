@@ -1,7 +1,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import lang from "../utils/LanguageConstants";
-import { client, genAI} from "../utils/openapi";
+import { genAI} from "../utils/openapi";
 import { useRef, useState } from "react";
 import { API_OPTIONS } from "../utils/constant";
 import { addContentDetails, changeContentType, clearContentDetails } from "../utils/gptSlice";
@@ -52,7 +52,7 @@ const GPTSearchBar = () => {
     const handleGPTSearch = async (e) => {
        
         e.preventDefault();
-        console.log(selectedOption.current.value);
+        // console.log(selectedOption.current.value);
        
         // console.log(inputText.current.value);
 
@@ -76,15 +76,15 @@ const GPTSearchBar = () => {
         const promiseArray = moviesNames.map((movie, key) => searchTMDBMovie(movie))
 
         const moviesTMDB = await Promise.all(promiseArray);
-        console.log(moviesTMDB);
+        // console.log(moviesTMDB);
         dispatch(addContentDetails({contentNames : moviesNames, contentDetails : moviesTMDB}))    
     } 
         
         else if (showType === "Web Series") {
-            console.log("Web series hain");
+            // console.log("Web series hain");
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
             const gptResults =  await model.generateContent(WebShowsQuery);
-            console.log(gptResults.response.text());
+            // console.log(gptResults.response.text());
             const showsNames = gptResults.response.text().split(", ");
             // console.log(gptResults.choices?.[0]?.message?.content);
             // const showsNames =  gptResults.choices?.[0]?.message?.content.split(',');
