@@ -61,13 +61,17 @@ exports.handler = async (event, context) => {
   }
 
   // --- Make Request to TMDB ---
-  const targetUrl = `${TMDB_BASE_URL}${tmdbPath}?api_key=${TMDB_API_KEY}`;
+  const targetUrl = `${TMDB_BASE_URL}${tmdbPath}`;
   console.log(`Proxying request for path '${tmdbPath}' to URL: ${targetUrl}`);
 
   try {
     const tmdbResponse = await fetch(targetUrl, {
         method: "GET", // Assuming GET requests for TMDB read API
-        headers: { 'Accept': 'application/json' }
+        headers: {
+          'Accept': 'application/json',
+          // Add the Authorization header for v4 token
+          'Authorization': `Bearer ${TMDB_API_KEY}`
+      }
     });
 
     // Get response body as text first
