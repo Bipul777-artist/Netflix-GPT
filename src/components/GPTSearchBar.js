@@ -4,8 +4,8 @@ import lang from "../utils/LanguageConstants";
 import { genAI} from "../utils/openapi";
 import { useRef, useState } from "react";
 import { API_OPTIONS } from "../utils/constant";
-import { addContentDetails, changeContentType, clearContentDetails } from "../utils/gptSlice";
-import { clearNowPlayingMovies } from "../utils/movieSlice";
+import { addContentDetails, clearContentDetails } from "../utils/gptSlice";
+// import { clearNowPlayingMovies } from "../utils/movieSlice";
 
 
 const GPTSearchBar = () => {
@@ -22,7 +22,7 @@ const GPTSearchBar = () => {
     // console.log(langKey);
 
     const HandleContentType = () => {
-        // dispatch(changeContentType(selectedOption.current.value));
+        
         setShowType("Movies" ? "Web Series" : "Movies");
         setInputText("");
         dispatch(clearContentDetails());

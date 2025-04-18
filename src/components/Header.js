@@ -18,17 +18,13 @@ const Header = () => {
 
     const [signInBtn, setSignInBtn] = useState("Sign In");
     const dispatch = useDispatch();
-    const identifier = useRef(null);
+    // const identifier = useRef(null);
     const navigate = useNavigate();
     const showGPT = useSelector(store => store.gptSlice.GPTSlice);
     const user = useSelector((store) => store.user)
     const [dropDown, setDropDown] = useState(false);
     const [showBrowse, SetShowBrowse] = useState(false);
      
-
-    const handleDropDown = () => {
-        setDropDown(!dropDown);
-    }
 
     const handleMovies = () => {
       navigate('/browse/movies');
@@ -113,6 +109,7 @@ const Header = () => {
             <img src= {logos.large} 
                 className="w-12 h-8 ml-4 mt-1 md:ml-24 md:w-36 md:h-16"
             />
+            { user && <>
             <div className=" block md:hidden">
               <div
                 onClick={() => SetShowBrowse(!showBrowse)} 
@@ -135,7 +132,8 @@ const Header = () => {
               <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => handleMovies()}>Movies</p>
               <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => handleSeries()}>TV Series</p>
               <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => navigate('/browse/my-list')}>My List</p>
-            </div>
+            </div> 
+            </> }
             
               {user && <div className="flex items-between ">
                           

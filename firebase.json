@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "netflixgpt-bdcda", // Original site
+      "target": "netflixgpt-bdcda",
       "public": "build",
       "ignore": [
         "firebase.json",
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "target": "bipul-netflix-spa", 
+      "target": "bipul-netflix-spa",
       "public": "build",
       "ignore": [
         "firebase.json",
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "target": "netflix-gpt-spa", 
+      "target": "netflix-gpt-spa",
       "public": "build",
       "ignore": [
         "firebase.json",
@@ -46,4 +46,5 @@
       ]
     }
   ]
+  
 }

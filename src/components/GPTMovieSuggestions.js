@@ -1,7 +1,5 @@
 import { useSelector } from "react-redux";
 import MovieList from "./MovieList";
-import MovieCard from "./MovieCard";
-import { IMG_CDN } from "../utils/constant";
 
 const GPTMovieSuggestions = () => {
 

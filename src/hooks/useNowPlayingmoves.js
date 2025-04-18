@@ -34,12 +34,6 @@ const useNowPlayingMovies = () => {
         // console.log(popularMoviesJson.results);
         dispatch(addPopularMovies(popularMoviesJson.results))
 
-        // Top Rated
-
-        const topRated = await fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/tv/top_rated');
-        const topRatedJson = await topRated.json();
-
-        // console.log(topRatedJson.results);
 
         // Trending Videos
         const Trending = await fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/trending/all/');
