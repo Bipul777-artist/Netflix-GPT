@@ -12,11 +12,21 @@ exports.handler = async (event, context) => {
   // --- CORS Headers ---
   // These are essential for allowing your Firebase-hosted
   // site to call this Netlify function.
+
   const headers = {
     'Access-Control-Allow-Origin': '*', // Allow requests from any origin
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'GET, OPTIONS', // Allow GET and OPTIONS requests
   };
+
+  console.log("Attempting to use TMDB API Key from env:", TMDB_API_KEY);
+
+  if (TMDB_API_KEY) {
+    console.log("API Key starts with:", TMDB_API_KEY.substring(0, 5)); // Log first 5 chars
+    console.log("API Key length:", TMDB_API_KEY.length); // Log length
+} else {
+    console.log("TMDB_API_KEY is undefined or empty!");
+}
 
   // Handle OPTIONS request (pre-flight request for CORS)
   if (event.httpMethod === 'OPTIONS') {
