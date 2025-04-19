@@ -21,8 +21,9 @@ const GPTSearchBar = () => {
     const langKey = useSelector(store => store.config.lang);
     // console.log(langKey);
 
-    const geminiProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'; // Your NEW function URL
+    // const geminiProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'; // Your NEW function URL
 
+    const hfProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/hfProxy'
     const HandleContentType = () => {
         
         setShowType("Movies" ? "Web Series" : "Movies");
@@ -70,7 +71,7 @@ const GPTSearchBar = () => {
         // Calling Gemini API
         if (showType === "Movies") {
         try {
-            const MovieResults = await fetch(geminiProxyUrl, {
+            const MovieResults = await fetch(hfProxyUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -127,7 +128,7 @@ const GPTSearchBar = () => {
             
 
             try{
-                const WebShowsResults = await fetch(geminiProxyUrl, {
+                const WebShowsResults = await fetch(hfProxyUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -177,7 +178,7 @@ const GPTSearchBar = () => {
                     Don't have a name?
                 </h1>
                 <h1 className="px-2">Let us know what gener you want to see and we will suggest some names.</h1>
-                <select ref={selectedOption} onChange={HandleContentType} className="ml-6 bg-red-700 text-white border-1 rounded-md border-white px-1 py-1.5 md:px-1.5 md:py-3.5 my-4 md:ml-16">
+                <select ref={selectedOption} onChange={HandleContentType} className="ml-6 bg-red-700 text-white border-1 rounded-md border-white px-1 py-1.5 md:px-1.5 md:py-2.5 my-4 md:ml-16">
                     <option>Movies </option>
                     <option>Web Series</option>
                 </select>
