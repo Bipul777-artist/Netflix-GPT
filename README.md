@@ -54,7 +54,12 @@
                 - GPT API Setup
                 - API Calling for Search Bar
                 - Load the result and Verify
-                
+    - SetUp Redux Persist
+        - For Storing Favorites Contents in One Place
+    - Setting Up Netlify for Custom Function
+        - Encapsulation of API key from Frontend
+        - 
+    - Host it in Online
 
 
 # My Plan & Changes

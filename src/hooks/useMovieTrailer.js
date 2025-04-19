@@ -8,6 +8,7 @@ const useMovieTrailer = (movieId) => {
 
     const dispatch = useDispatch();
     const TrailerVideo = useSelector(store => store.movies.movieTrailers)
+    const CLOUD_FUNCTION_URL = "https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/tmdbProxy";
 
     const FetchVideo = async () => {
     //     const video = await fetch(
@@ -15,9 +16,14 @@ const useMovieTrailer = (movieId) => {
     //     API_OPTIONS
     // );
 
+      const moviePath = `/movie/${movieId}/videos`
+      const movieUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(moviePath)}`;
+      const tvPath = `/tv/${movieId}/videos`
+      const tvUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(tvPath)}`;
     const [movie, webShow] = await Promise.allSettled([
-      fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/movie/' + movieId + '/videos' , API_OPTIONS),
-      fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/tv/'+ movieId + '/videos', API_OPTIONS)
+
+      fetch(movieUrl),
+      fetch(tvUrl)
 
   ])
 

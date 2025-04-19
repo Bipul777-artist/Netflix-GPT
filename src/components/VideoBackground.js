@@ -11,7 +11,7 @@ const VideoBackGround = ({ movieId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isVideoReady, setIsVideoReady] = useState(true);
     const FetchTrailer = useSelector((store) => store?.movies?.movieTrailers)
-    // console.log(FetchTrailer);
+    console.log(FetchTrailer);
     const FetchSeries = useSelector((store) => store.movies.topRatedSeries)
     useMovieTrailer(movieId);
     const [volume, setVolume] = useState(true);

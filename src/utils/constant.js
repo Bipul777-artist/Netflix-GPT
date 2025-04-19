@@ -20,7 +20,7 @@ export const API_OPTIONS = {
       Authorization: 'Bearer ' + process.env.REACT_APP_TMDB_KEY}
 };
 
-
+export const CLOUD_FUNCTION_URL = "https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/tmdbProxy";
 export const IMG_CDN = "https://image.tmdb.org/t/p/w200/";
 
 export const Supported_Languages = [{identifier : "en", name: "English"}, {identifier : "hindi", name: "Hindi"}, {identifier : "spanish", name: "Spanish"}]

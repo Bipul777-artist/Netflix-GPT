@@ -44,7 +44,7 @@ const MovieCard = ({ EachMovie, key}) => {
   };
 
   const getVideoUrl = () => {
-    // return `https://www.youtube.com/embed/${contentKey}?autoplay=1&mute=1&controls=0&rel=0&showinfo=0&modestbranding=1`;
+
     return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0&playlist=${contentKey}`
   };
   

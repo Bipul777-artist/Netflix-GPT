@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import lang from "../utils/LanguageConstants";
 import { genAI} from "../utils/openapi";
 import { useRef, useState } from "react";
-import { API_OPTIONS } from "../utils/constant";
+import { API_OPTIONS, CLOUD_FUNCTION_URL } from "../utils/constant";
 import { addContentDetails, clearContentDetails } from "../utils/gptSlice";
 // import { clearNowPlayingMovies } from "../utils/movieSlice";
 
@@ -21,6 +21,8 @@ const GPTSearchBar = () => {
     const langKey = useSelector(store => store.config.lang);
     // console.log(langKey);
 
+    const geminiProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'; // Your NEW function URL
+
     const HandleContentType = () => {
         
         setShowType("Movies" ? "Web Series" : "Movies");
@@ -30,8 +32,13 @@ const GPTSearchBar = () => {
 
     const searchTMDBMovie = async (movie) => {
         // console.log("Searching in TMDB");
-        const movies = await fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/search/movie?query=' + movie + '&include_adult=false&language=en-US&page=1', API_OPTIONS)
+       
+        // const movies = await fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/search/movie?query=' + movie + '&include_adult=false&language=en-US&page=1', API_OPTIONS)
         // console.log(movies);
+        const moviePath = `/search/movie?query=${movie}&include_adult=false&language=en-US&page=1`
+        const movieUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(moviePath)}`
+        const movies = fetch(movieUrl);
+        
         const moviesJson = await movies.json();
         // console.log(moviesJson);
         // console.log(moviesJson.results);
@@ -41,7 +48,10 @@ const GPTSearchBar = () => {
     }
 
     const searchWebSeries = async (show) => {
-        const webshows = await fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/search/tv?query='+ show +'&include_adult=false&language=en-US&page=1', API_OPTIONS)
+        // const webshows = await fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/search/tv?query='+ show +'&include_adult=false&language=en-US&page=1', API_OPTIONS)
+        const webSeriesPath = `/search/movie?query=${show}&include_adult=false&language=en-US&page=1`
+        const webSeriesUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(webSeriesPath)}`
+        const webshows = await fetch(webSeriesUrl);
         const webShowsJson = await webshows.json();
         // console.log(webShowsJson);
 
@@ -52,49 +62,109 @@ const GPTSearchBar = () => {
     const handleGPTSearch = async (e) => {
        
         e.preventDefault();
-        // console.log(selectedOption.current.value);
-       
-        // console.log(inputText.current.value);
 
-        const GPTQuery = "Act as a Movie Recommendation System and suggest me name of five movies for the query" + input.current.value + ". Give me names in comma seperated like in this example. Example Format : Dev-D, Devdas, Kabir Singh, Whiplash, Fight Club" ;
+        const MovieQuery = "Act as a Movie Recommendation System and suggest me name of five movies for the query" + input.current.value + ". Give me names in comma seperated like in this example. Example Format : Dev-D, Devdas, Kabir Singh, Whiplash, Fight Club" ;
 
         const WebShowsQuery = "Act as a Web Series Recommendation System and suggest me name of five web series for the query" + input.current.value + ". Give me names in comma seperated like in this example. Example Format :  Dev-D, Devdas, Kabir Singh, Whiplash, Fight Club";
 
+        // Calling Gemini API
+        if (showType === "Movies") {
+        try {
+            const MovieResults = await fetch(geminiProxyUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: MovieQuery }), // Send prompt in body
+            })
+
+            if (!MovieResults.ok) {
+                // Handle error from the proxy function
+                const errorData = await MovieResults.json();
+                throw new Error(errorData.error || `HTTP error! status: ${MovieResults.status}`);
+            }
+
+            const response =  MovieResults.response;
+            const text =  response.text();
+    
+            const moviesNames = text.split(", ");
+            // console.log(moviesNames);
+    
+            // For the names we received, we will search the movies in TMDB
+            const promiseArray = moviesNames.map((movie, key) => searchTMDBMovie(movie))
+    
+            const moviesTMDB = await Promise.all(promiseArray);
+            // console.log(moviesTMDB);
+            dispatch(addContentDetails({contentNames : moviesNames, contentDetails : moviesTMDB}))
+        }
+        catch (error) {
+            console.error("Error fetching from Gemini proxy:", error);
+        }
+    }
+
         // If users want to search for Movies
-        if (showType === "Movies")
-        {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        const gptResults = await model.generateContent(GPTQuery);
-        // console.log(gptResults);
-        const response =  gptResults.response;
-        const text =  response.text();
+    //     if (showType === "Movies")
+    //     {
+    //     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    //     const gptResults = await model.generateContent(MovieQuery);
+    //     // console.log(gptResults);
+    //     const response =  gptResults.response;
+    //     const text =  response.text();
 
-        const moviesNames = text.split(", ");
-        // console.log(moviesNames);
+    //     const moviesNames = text.split(", ");
+    //     // console.log(moviesNames);
 
-        // For the names we received, we will search the movies in TMDB
-        const promiseArray = moviesNames.map((movie, key) => searchTMDBMovie(movie))
+    //     // For the names we received, we will search the movies in TMDB
+    //     const promiseArray = moviesNames.map((movie, key) => searchTMDBMovie(movie))
 
-        const moviesTMDB = await Promise.all(promiseArray);
-        // console.log(moviesTMDB);
-        dispatch(addContentDetails({contentNames : moviesNames, contentDetails : moviesTMDB}))    
-    } 
+    //     const moviesTMDB = await Promise.all(promiseArray);
+    //     // console.log(moviesTMDB);
+    //     dispatch(addContentDetails({contentNames : moviesNames, contentDetails : moviesTMDB}))    
+    // } 
         
         else if (showType === "Web Series") {
             // console.log("Web series hain");
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-            const gptResults =  await model.generateContent(WebShowsQuery);
+            
+
+            try{
+                const WebShowsResults = await fetch(geminiProxyUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: WebShowsQuery }), // Send prompt in body
+                })
+
+                // const gptResults =  await model.generateContent(WebShowsQuery);
+                // console.log(gptResults.response.text());
+                const showsNames = WebShowsResults.response.text().split(", ");
+                // console.log(WebShowsResults.choices?.[0]?.message?.content);
+                // const showsNames =  WebShowsResults.choices?.[0]?.message?.content.split(',');
+                // console.log(showsNames);
+
+                // // // Searching the web series in TMDB
+                const promiseArray = showsNames.map((show) => searchWebSeries(show))
+                const showsTMDB = await Promise.all(promiseArray);
+
+                dispatch((addContentDetails({contentNames : showsNames, contentDetails : showsTMDB})))
+            }
+
+            catch (error) {
+                console.error("Error fetching from Gemini proxy:", error);
+            }
+            // const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            // const gptResults =  await model.generateContent(WebShowsQuery);
             // console.log(gptResults.response.text());
-            const showsNames = gptResults.response.text().split(", ");
+            // const showsNames = gptResults.response.text().split(", ");
             // console.log(gptResults.choices?.[0]?.message?.content);
             // const showsNames =  gptResults.choices?.[0]?.message?.content.split(',');
             // console.log(showsNames);
 
-            // // // Searching the web series in TMDB
-            const promiseArray = showsNames.map((show) => searchWebSeries(show))
-            const showsTMDB = await Promise.all(promiseArray);
+            // Searching the web series in TMDB
+            // const promiseArray = showsNames.map((show) => searchWebSeries(show))
+            // const showsTMDB = await Promise.all(promiseArray);
 
-            dispatch((addContentDetails({contentNames : showsNames, contentDetails : showsTMDB})))
+            // dispatch((addContentDetails({contentNames : showsNames, contentDetails : showsTMDB})))
         }
 
     }
@@ -103,7 +173,7 @@ const GPTSearchBar = () => {
     return (
         <div className="pt-[20%] flex flex-col items-center justify-center overflow-hidden md:pt-[10%]">
             <div className="text-white text-md font-semibold md:text-2xl">
-                <h1 className="text-center  ">
+                <h1 className="text-center">
                     Don't have a name?
                 </h1>
                 <h1 className="px-2">Let us know what gener you want to see and we will suggest some names.</h1>
