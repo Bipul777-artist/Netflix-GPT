@@ -1,4 +1,4 @@
-```javascript
+
 // netlify/functions/hfProxy.js
 const fetch = require('node-fetch'); // Ensure node-fetch is installed
 
@@ -86,4 +86,3 @@ exports.handler = async (event, context) => {
     };
   }
 };
-```
