@@ -21,7 +21,7 @@ const useNowPlayingmovies_v2 = () => {
             if (moviesResponse.ok) { // Basic check if fetch was successful
                  dispatch(addNowPlayingMovies(moviesJson.results));
             } else {
-                 console.error("Error fetching Now Playing:", moviesJson);
+                //  console.error("Error fetching Now Playing:", moviesJson);
             }
 
              // --- Top Rated Series ---
@@ -33,7 +33,7 @@ const useNowPlayingmovies_v2 = () => {
               if (webShowsResponse.ok) {
                  dispatch(addTopRatedSeries(webShowsJson.results));
               } else {
-                 console.error("Error fetching Top Rated Series:", webShowsJson);
+                //  console.error("Error fetching Top Rated Series:", webShowsJson);
               }
 
             //   Top Rated Movies
@@ -45,7 +45,7 @@ const useNowPlayingmovies_v2 = () => {
             if (popularMoviesResponse.ok) {
                 dispatch(addPopularMovies(popularMoviesJson.results)); // Still dispatching to addPopularMovies
             } else {
-                console.error("Error fetching Popular/TopRated Movies:", popularMoviesJson);
+                // console.error("Error fetching Popular/TopRated Movies:", popularMoviesJson);
             }
 
              // --- Trending Videos ---
@@ -60,13 +60,13 @@ const useNowPlayingmovies_v2 = () => {
                  dispatch(addTrendingVideos(trendingJson.results)); // Assuming you have this action
                 
             } else {
-                 console.error("Error fetching Trending:", trendingJson);
+                //  console.error("Error fetching Trending:", trendingJson);
             }
 
         }
 
         catch (error){
-            console.error("An error occurred during fetch operations:", error);
+            // console.error("An error occurred during fetch operations:", error);
         }
     }
 

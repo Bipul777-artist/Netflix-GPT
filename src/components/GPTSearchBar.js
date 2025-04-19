@@ -24,6 +24,7 @@ const GPTSearchBar = () => {
     // const geminiProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'; // Your NEW function URL
 
     const hfProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/hfProxy'
+    // const hfProxyUrl = '/.netlify/functions/hfProxy'
     const HandleContentType = () => {
         
         setShowType("Movies" ? "Web Series" : "Movies");
@@ -84,18 +85,40 @@ const GPTSearchBar = () => {
                 const errorData = await MovieResults.json();
                 throw new Error(errorData.error || `HTTP error! status: ${MovieResults.status}`);
             }
-
-            const response =  MovieResults.response;
-            const text =  response.text();
+            // console.log(MovieResults);
+            // const response = await  MovieResults.json();
+            // const text =  response.result;
     
-            const moviesNames = text.split(", ");
-            // console.log(moviesNames);
+            // const moviesNames = text.split(", ");
+            // // console.log(moviesNames);
     
-            // For the names we received, we will search the movies in TMDB
-            const promiseArray = moviesNames.map((movie, key) => searchTMDBMovie(movie))
+            // // For the names we received, we will search the movies in TMDB
+            // const promiseArray = moviesNames.map((movie, key) => searchTMDBMovie(movie))
     
-            const moviesTMDB = await Promise.all(promiseArray);
+            // const moviesTMDB = await Promise.all(promiseArray);
             // console.log(moviesTMDB);
+            const data = await MovieResults.json();
+
+    // 3. Check if the expected 'result' field exists
+        if (!data || typeof data.result !== 'string') {
+            console.error("Unexpected response format from proxy:", data);
+            throw new Error("Received unexpected data format from proxy function.");
+        }
+
+        // 4. Access the 'result' property which holds the movie string
+        const text = data.result;
+        console.log("Extracted movie string:", text); // Log the actual string
+
+        // 5. Split the string (add trim() for robustness)
+        // Split by comma, then trim whitespace from each resulting name
+        const moviesNames = text.trim().split(',').map(name => name.trim()).filter(name => name.length > 0);
+
+        console.log("Parsed movie names:", moviesNames);
+
+        // For the names we received, we will search the movies in TMDB
+        const promiseArray = moviesNames.map((movie) => searchTMDBMovie(movie)); // Use the correctly parsed names
+
+        const moviesTMDB = await Promise.all(promiseArray);
             dispatch(addContentDetails({contentNames : moviesNames, contentDetails : moviesTMDB}))
         }
         catch (error) {

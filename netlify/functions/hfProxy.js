@@ -4,8 +4,9 @@ const fetch = require('node-fetch'); // Ensure node-fetch is installed
 
 // Get Hugging Face Token from Netlify environment variables
 const HF_TOKEN = process.env.HF_TOKEN;
+// const HF_TOKEN = process.env.REACT_APP_HF_TOKEN;
 // *** REPLACE THIS WITH YOUR CHOSEN MODEL ID ***
-const MODEL_ID = "mistralai/Mistral-Small-3.1-24B-Instruct-2503"; // Example: Mistral Instruct
+const MODEL_ID = "google/flan-t5-large"; // Example: Mistral Instruct
 // *** --------------------------------------- ***
 const API_URL = `https://api-inference.huggingface.co/models/${MODEL_ID}`;
 
@@ -41,6 +42,7 @@ exports.handler = async (event, context) => {
     }
 
     console.log(`Sending prompt to Hugging Face model ${MODEL_ID}:`, prompt);
+    console.log(`Here is the id ${HF_TOKEN}`);
 
     // Call the Hugging Face Inference API
     const response = await fetch(API_URL, {
