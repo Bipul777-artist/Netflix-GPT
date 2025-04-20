@@ -10,6 +10,8 @@ import { addContentDetails, clearContentDetails } from "../utils/gptSlice";
 
 const GPTSearchBar = () => {
 
+    
+
     const dispatch = useDispatch();
     // const clearEntries = useSelector((store) => store.gptSlice.contentNames);
     // const showType = useSelector(store => store.gptSlice.contentType);
@@ -39,7 +41,12 @@ const GPTSearchBar = () => {
         // console.log(movies);
         const moviePath = `/search/movie?query=${movie}&include_adult=false&language=en-US&page=1`
         const movieUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(moviePath)}`
-        const movies = fetch(movieUrl);
+        const movies = await fetch(movieUrl);
+
+        if (!movies.ok) {
+            // console.error(`TMDB Error for query: Status ${movies.status}`);
+            return null; // Stop here and return null if fetch failed
+        }
         
         const moviesJson = await movies.json();
         // console.log(moviesJson);
@@ -54,6 +61,11 @@ const GPTSearchBar = () => {
         const webSeriesPath = `/search/movie?query=${show}&include_adult=false&language=en-US&page=1`
         const webSeriesUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(webSeriesPath)}`
         const webshows = await fetch(webSeriesUrl);
+        
+        if (!webshows.ok) {
+            console.error(`TMDB Error for query: Status ${webshows.status}`);
+            return null; // Stop here and return null if fetch failed
+        }
         const webShowsJson = await webshows.json();
         // console.log(webShowsJson);
 
@@ -101,19 +113,19 @@ const GPTSearchBar = () => {
 
     // 3. Check if the expected 'result' field exists
         if (!data || typeof data.result !== 'string') {
-            console.error("Unexpected response format from proxy:", data);
+            // console.error("Unexpected response format from proxy:", data);
             throw new Error("Received unexpected data format from proxy function.");
         }
 
         // 4. Access the 'result' property which holds the movie string
         const text = data.result;
-        console.log("Extracted movie string:", text); // Log the actual string
+        // console.log("Extracted movie string:", text); // Log the actual string
 
         // 5. Split the string (add trim() for robustness)
         // Split by comma, then trim whitespace from each resulting name
         const moviesNames = text.trim().split(',').map(name => name.trim()).filter(name => name.length > 0);
 
-        console.log("Parsed movie names:", moviesNames);
+        // console.log("Parsed movie names:", moviesNames);
 
         // For the names we received, we will search the movies in TMDB
         const promiseArray = moviesNames.map((movie) => searchTMDBMovie(movie)); // Use the correctly parsed names
@@ -122,7 +134,7 @@ const GPTSearchBar = () => {
             dispatch(addContentDetails({contentNames : moviesNames, contentDetails : moviesTMDB}))
         }
         catch (error) {
-            console.error("Error fetching from Gemini proxy:", error);
+            // console.error("Error fetching from Gemini proxy:", error);
         }
     }
 
