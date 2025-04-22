@@ -52,7 +52,7 @@ const GPTSearchBar = () => {
         // console.log(moviesJson);
         // console.log(moviesJson.results);
         return moviesJson.results; 
-        // console.log(moviesJson.results);
+        console.log(moviesJson.results);
         // console.log(selectedOption.current.value);
     }
 
@@ -97,19 +97,9 @@ const GPTSearchBar = () => {
                 const errorData = await MovieResults.json();
                 throw new Error(errorData.error || `HTTP error! status: ${MovieResults.status}`);
             }
-            // console.log(MovieResults);
-            // const response = await  MovieResults.json();
-            // const text =  response.result;
-    
-            // const moviesNames = text.split(", ");
-            // // console.log(moviesNames);
-    
-            // // For the names we received, we will search the movies in TMDB
-            // const promiseArray = moviesNames.map((movie, key) => searchTMDBMovie(movie))
-    
-            // const moviesTMDB = await Promise.all(promiseArray);
-            // console.log(moviesTMDB);
+            
             const data = await MovieResults.json();
+            console.log(data);
 
     // 3. Check if the expected 'result' field exists
         if (!data || typeof data.result !== 'string') {
@@ -124,6 +114,7 @@ const GPTSearchBar = () => {
         // 5. Split the string (add trim() for robustness)
         // Split by comma, then trim whitespace from each resulting name
         const moviesNames = text.trim().split(',').map(name => name.trim()).filter(name => name.length > 0);
+        console.log(moviesNames);
 
         // console.log("Parsed movie names:", moviesNames);
 
@@ -188,19 +179,7 @@ const GPTSearchBar = () => {
             catch (error) {
                 console.error("Error fetching from Gemini proxy:", error);
             }
-            // const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-            // const gptResults =  await model.generateContent(WebShowsQuery);
-            // console.log(gptResults.response.text());
-            // const showsNames = gptResults.response.text().split(", ");
-            // console.log(gptResults.choices?.[0]?.message?.content);
-            // const showsNames =  gptResults.choices?.[0]?.message?.content.split(',');
-            // console.log(showsNames);
-
-            // Searching the web series in TMDB
-            // const promiseArray = showsNames.map((show) => searchWebSeries(show))
-            // const showsTMDB = await Promise.all(promiseArray);
-
-            // dispatch((addContentDetails({contentNames : showsNames, contentDetails : showsTMDB})))
+         
         }
 
     }

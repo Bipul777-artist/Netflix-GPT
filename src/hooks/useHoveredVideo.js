@@ -62,62 +62,110 @@ const useHoveredVideo = () => {
 
             let foundKey = null;
 
-            // Check the response and go ahead
-            if (movie.status === "fulfilled" && movie.value.ok) {
-                const movieData = await movie.value.json();
-                // console.log(movieData);
-                if (movieData.results && movieData.results.length > 0) {
-                    // 
-                    const clipObj = movieData?.results.find((x) => x.type === "Clip");
-                    foundKey = clipObj?.key || movieData.results[0]?.key;
-                    // console.log(clipObj);
-                    // if (clipObj)  {
-                    //     const YTKEY = clipObj.key;
-                    //     // console.log(YTKEY);
-                    //     setVideoId(YTKEY);
-                    //     // console.log(videoId);
-                    //     dispatch(addMovieYoutubeKey(YTKEY));
-                    // }
+            // // Check the response and go ahead
+            // if (movie.status === "fulfilled" && movie.value.ok) {
+            //     const movieData = await movie.value.json();
+            //     // console.log(movieData);
+            //     if (movieData.results && movieData.results.length > 0) {
+            //         // 
+            //         const clipObj = movieData?.results.find((x) => x.type === "Clip");
+            //         foundKey = clipObj?.key || movieData.results[0]?.key;
+            //         // console.log(clipObj);
+            //         // if (clipObj)  {
+            //         //     const YTKEY = clipObj.key;
+            //         //     // console.log(YTKEY);
+            //         //     setVideoId(YTKEY);
+            //         //     // console.log(videoId);
+            //         //     dispatch(addMovieYoutubeKey(YTKEY));
+            //         // }
 
-                    // else {
-                    //     setVideoId(movieData?.results[0].key)
-                    //     dispatch(addMovieYoutubeKey(movieData?.results[0].key));
-                    // };
+            //         // else {
+            //         //     setVideoId(movieData?.results[0].key)
+            //         //     dispatch(addMovieYoutubeKey(movieData?.results[0].key));
+            //         // };
 
-                }
-                else if (movie.status === 'fulfilled' && !movie.value.ok) {
-                    // Log non-abort errors if fetch succeeded but API returned error
-                if (movie.value.status !== 404) console.error(`TMDB Proxy Error (Movie): Status ${movie.value.status}`);
-                } else if (movie.status === 'rejected' && movie.reason.name !== 'AbortError') {
-                    console.error("Fetching Movie Videos Failed:", movie.reason);
-                }
+            //     }
+            //     else if (movie.status === 'fulfilled' && !movie.value.ok) {
+            //         // Log non-abort errors if fetch succeeded but API returned error
+            //     if (movie.value.status !== 404) console.error(`TMDB Proxy Error (Movie): Status ${movie.value.status}`);
+            //     } else if (movie.status === 'rejected' && movie.reason.name !== 'AbortError') {
+            //         console.error("Fetching Movie Videos Failed:", movie.reason);
+            //     }
                 
-            }
+            // }
 
-            // 
-            if (!foundKey && webShow.status === "fulfilled" && webShow.value.ok) {
-                const webShowData = await webShow.value.json();
-                // console.log(webShowData);
-                if (webShowData.results && webShowData.results.length > 0) {
-                    const clipObj = webShowData?.results.find((x) => x.type === "Clip");
-                    foundKey = clipObj?.key || webShowData.results[0]?.key;
-                    // if (clipObj) {
-                    //     const YTKEY = clipObj.key;
-                    //     setVideoId(YTKEY);
-                    //     dispatch(addMovieYoutubeKey(YTKEY));
+            // // 
+            // if (!foundKey && webShow.status === "fulfilled" && webShow.value.ok) {
+            //     const webShowData = await webShow.value.json();
+            //     // console.log(webShowData);
+            //     if (webShowData.results && webShowData.results.length > 0) {
+            //         const clipObj = webShowData?.results.find((x) => x.type === "Clip");
+            //         foundKey = clipObj?.key || webShowData.results[0]?.key;
+            //         // if (clipObj) {
+            //         //     const YTKEY = clipObj.key;
+            //         //     setVideoId(YTKEY);
+            //         //     dispatch(addMovieYoutubeKey(YTKEY));
                         
-                    // }
-                    // else {
-                    //     setVideoId(webShowData?.results[0].key)
-                    //     dispatch(addMovieYoutubeKey(webShowData?.results[0].key));
-                    // };
-                } else if (!foundKey && webShow.status === 'fulfilled' && !webShow.value.ok) {
-                    if (webShow.value.status !== 404) console.error(`TMDB Proxy Error (Web Series): Status ${webShow.value.status}`);
-               } else if (!foundKey && webShow.status === 'rejected' && webShow.reason.name !== 'AbortError') {
-                   console.error("Fetching Web Series Videos Failed:", webShow.reason);
-               }
+            //         // }
+            //         // else {
+            //         //     setVideoId(webShowData?.results[0].key)
+            //         //     dispatch(addMovieYoutubeKey(webShowData?.results[0].key));
+            //         // };
+            //     } else if (!foundKey && webShow.status === 'fulfilled' && !webShow.value.ok) {
+            //         if (webShow.value.status !== 404) console.error(`TMDB Proxy Error (Web Series): Status ${webShow.value.status}`);
+            //    } else if (!foundKey && webShow.status === 'rejected' && webShow.reason.name !== 'AbortError') {
+            //        console.error("Fetching Web Series Videos Failed:", webShow.reason);
+            //    }
                 
-            }
+            // }
+
+            // --- Corrected Structure for Movie Result ---
+if (movie.status === "fulfilled") { // Check if promise resolved
+    const response = movie.value; // Get the Response object
+
+    if (response.ok) { // Check if the HTTP request was successful (e.g., 200 OK)
+        const movieData = await response.json();
+        if (movieData.results && movieData.results.length > 0) {
+            const clipObj = movieData.results.find((x) => x.type === "Clip");
+            foundKey = clipObj?.key || movieData.results[0]?.key;
+        }
+        // else: Optional - handle case where results array is empty even on success
+    } else {
+        // Handle cases where promise fulfilled BUT HTTP status was error (e.g., 401, 404, 500)
+        if (response.status !== 404) { // Don't log 404 as an error if movie/tv just doesn't exist
+            console.error(`TMDB Proxy Error (Movie): Status ${response.status}`);
+        }
+    }
+} else { // movie.status === "rejected"
+    // Handle cases where the fetch promise itself failed (network error, CORS, AbortError)
+    if (movie.reason.name !== 'AbortError') { // Don't log cancellation errors
+        console.error("Fetching Movie Videos Failed:", movie.reason);
+    }
+}
+
+// --- Repeat similar corrected structure for Web Show Result ---
+if (!foundKey && webShow.status === "fulfilled") { // Check !foundKey first
+    const response = webShow.value; // Get the Response object
+
+    if (response.ok) { // Check if the HTTP request was successful
+        const webShowData = await response.json();
+        if (webShowData.results && webShowData.results.length > 0) {
+            const clipObj = webShowData.results.find((x) => x.type === "Clip");
+            foundKey = clipObj?.key || webShowData.results[0]?.key;
+        }
+        // else: Optional - handle case where results array is empty even on success
+    } else {
+        // Handle cases where promise fulfilled BUT HTTP status was error
+        if (response.status !== 404) {
+            console.error(`TMDB Proxy Error (Web Series): Status ${response.status}`);
+        }
+    }
+} else if (!foundKey && webShow.status === 'rejected') { // Note: 'else if' because we only care if !foundKey
+    // Handle cases where the fetch promise itself failed
+    if (webShow.reason.name !== 'AbortError') {
+        console.error("Fetching Web Series Videos Failed:", webShow.reason);
+    }
+}
 
             // --- Final State Update (only if this request wasn't aborted) ---
             // We check signal.aborted again just in case it was aborted *during* processing
@@ -125,7 +173,7 @@ const useHoveredVideo = () => {
                 // console.log(`Setting videoId for ${movieId} to: ${foundKey}`); // Debug log
                 setVideoId(foundKey); // Set to the key found or null if none found
                 if (foundKey) {
-                    dispatch(addMovieYoutubeKey(foundKey)); // Dispatch if needed
+                    dispatch(addMovieYoutubeKey(videoId)); // Dispatch if needed
                 }
              } else {
                 // console.log(`Fetch aborted during processing for ${movieId}, state not updated.`); // Debug log
@@ -148,7 +196,7 @@ const useHoveredVideo = () => {
                 fetchControllerRef.current = null;
             }
        }
-    }, [CLOUD_FUNCTION_URL])
+    }, [CLOUD_FUNCTION_URL, dispatch])
 
     return {videoId, fetchYoutubeKey, error};
 
