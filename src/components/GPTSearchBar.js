@@ -24,9 +24,9 @@ const GPTSearchBar = () => {
     // console.log(langKey);
 
     // const geminiProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'; // Your NEW function URL
-
     const hfProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/hfProxy'
-    // const hfProxyUrl = '/.netlify/functions/hfProxy'
+
+    // const hfProxyUrl = './netlify/functions/hfProxy'
     const HandleContentType = () => {
         
         setShowType("Movies" ? "Web Series" : "Movies");
@@ -75,11 +75,12 @@ const GPTSearchBar = () => {
 
     const handleGPTSearch = async (e) => {
        
+        const userInput = input.current.value;
         e.preventDefault();
 
-        const MovieQuery = "Act as a Movie Recommendation System and suggest me name of five movies for the query" + input.current.value + ". Give me names in comma seperated like in this example. Example Format : Dev-D, Devdas, Kabir Singh, Whiplash, Fight Club" ;
+        const MovieQuery = `List exactly 5 movie titles related to: ${userInput}. Output only a comma-separated list.` ;
 
-        const WebShowsQuery = "Act as a Web Series Recommendation System and suggest me name of five web series for the query" + input.current.value + ". Give me names in comma seperated like in this example. Example Format :  Dev-D, Devdas, Kabir Singh, Whiplash, Fight Club";
+        const WebShowsQuery = `List exactly 5 web series titles related to: "${userInput}". Output only a comma-separated list.`;
 
         // Calling Gemini API
         if (showType === "Movies") {
@@ -161,19 +162,21 @@ const GPTSearchBar = () => {
                     },
                     body: JSON.stringify({ prompt: WebShowsQuery }), // Send prompt in body
                 })
-
+                console.log(WebShowsResults);
                 // const gptResults =  await model.generateContent(WebShowsQuery);
                 // console.log(gptResults.response.text());
-                const showsNames = WebShowsResults.response.text().split(", ");
+                const WebShowsResultsJson = await WebShowsResults.json();
+                console.log(WebShowsResultsJson);
+                // const showsNames = WebShowsResultsJson.response.text().split(", ");
                 // console.log(WebShowsResults.choices?.[0]?.message?.content);
                 // const showsNames =  WebShowsResults.choices?.[0]?.message?.content.split(',');
                 // console.log(showsNames);
 
                 // // // Searching the web series in TMDB
-                const promiseArray = showsNames.map((show) => searchWebSeries(show))
-                const showsTMDB = await Promise.all(promiseArray);
+                // const promiseArray = showsNames.map((show) => searchWebSeries(show))
+                // const showsTMDB = await Promise.all(promiseArray);
 
-                dispatch((addContentDetails({contentNames : showsNames, contentDetails : showsTMDB})))
+                // dispatch((addContentDetails({contentNames : showsNames, contentDetails : showsTMDB})))
             }
 
             catch (error) {
