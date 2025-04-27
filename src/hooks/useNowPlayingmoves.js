@@ -39,6 +39,7 @@ const useNowPlayingMovies = () => {
         const Trending = await fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/trending/all/');
 
         const TrendingJson = await Trending.json();
+        console.log(TrendingJson);
 
         // console.log(TrendingJson?.results);
 

@@ -179,7 +179,7 @@ const MovieCard = ({ EachMovie, key}) => {
                 {/* Sound Options */}
                 <button
                     onClick={toggleMute}
-                    className="absolute z-30 bottom-8 right-10 transform bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-4 transition-all md:bottom-1/3 md:-translate-y-2/3 md:right-1/4 md:translate-x-2/3"
+                    className="absolute z-30 bottom-8 right-10 transform bg-transparent md:text-gray-200 hover:text-white rounded-full p-4 transition-all md:bottom-1/3 md:-translate-y-2/3 md:right-1/4 md:translate-x-2/3"
                     >
                     
                         {isMuted ? <div>

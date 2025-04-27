@@ -11,7 +11,6 @@ const useNowPlayingmovies_v2 = () => {
 
     const getNowPlayingMovies = async () => {
         try{
-
             // Popular Movies
             const nowPlayingPath = '/movie/now_playing';
             const nowPlayingUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(nowPlayingPath)}`;
@@ -57,7 +56,7 @@ const useNowPlayingmovies_v2 = () => {
             const trendingJson = await trendingResponse.json();
             if (trendingResponse.ok) {
                
-                 dispatch(addTrendingVideos(trendingJson.results)); // Assuming you have this action
+                 dispatch(addTrendingVideos(trendingJson.results)); 
                 
             } else {
                 //  console.error("Error fetching Trending:", trendingJson);

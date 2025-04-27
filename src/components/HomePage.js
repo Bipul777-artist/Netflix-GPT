@@ -27,7 +27,7 @@ const HomePage = () => {
     }
 
     return (
-        <div className="relative h-[500px] w-full md:h-full">
+        <div className="relative border-b-2 rounded-b-full border-red-600 h-[500px] w-full md:h-full">
             {/* <button onClick={LogInPage} className="bg-blue-600 absolute z-10 top-5 right-5 text-white font-semibold cursor-pointer px-4 py-1.5 rounded md:right-20 md:top-8">
                 Sign In
             </button> */}

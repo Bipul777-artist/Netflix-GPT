@@ -5,7 +5,11 @@ import { useState, useRef, useEffect} from "react";
 import { addContent } from "../utils/movieSlice";
 import {API_OPTIONS, genreLookUp} from "../utils/constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faCircleXmark, faUsers, faStar, faFireFlameCurved}  from "@fortawesome/free-solid-svg-icons";
+import {faCircleXmark, faUsers, faStar, faFireFlameCurved,
+    faPlus, faCheck, faPlay,
+  faThumbsUp, faHeart, faThumbsDown,
+}  from "@fortawesome/free-solid-svg-icons";
+import useFavorites from "../hooks/useFavorites";
 
 const PlayContent = () => {
 
@@ -18,14 +22,39 @@ const PlayContent = () => {
     const {videoId, fetchYoutubeKey} = useHoveredVideo();
     const [isMuted, setIsMuted] = useState(true);
     const playerRef = useRef(null);
+    const [showLikeButton, setShowLikeButton] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [clickedButton, setClickedButton] = useState(null);
     const [isExiting, setIsExiting] = useState(false);
+    
+    const { isContentInFavorites, addContentToFavorites, removeContentFromFavorites } = useFavorites();
+    const isFavorite= isContentInFavorites(movieId);
+    const [animationState, setAnimationState] = useState(isContentInFavorites(movieId));
+    console.log(isFavorite);
 
+    useEffect(() => {
+        setAnimationState(isFavorite);
+      }, [isFavorite]);
+      
+      const handleToggleFavorite = () => {
+        // Toggle the animation state immediately for visual feedback
+        setAnimationState(!animationState);
+        
+        // Update Redux (using the current animationState as reference)
+        if (!animationState) {
+          addContentToFavorites(contentData);
+        } else {
+          removeContentFromFavorites(movieId);
+        }
+      };
     useEffect(() => {
         if(movieId){
             fetchYoutubeKey(movieId)
             // dispatch(addContent(contentDetails));
         }
     }, [movieId])
+
+  
 
     useEffect(() => {
       
@@ -44,6 +73,21 @@ const PlayContent = () => {
         }, 300)
         
    }
+
+   const handleReaction = (reaction) => {
+    if (selectedOption === reaction) {
+      setSelectedOption(null)
+    } else {
+      setSelectedOption(reaction)
+    }
+  
+
+    setClickedButton(reaction);
+
+    setTimeout(() => {
+      setClickedButton(null);
+    }, 300)
+  }
 
    const getGenres = (genreIds) => {
 
@@ -102,7 +146,7 @@ const PlayContent = () => {
             {/* Sound Options */}
             <button
                 onClick={toggleMute}
-                className="absolute z-30 top-36 right-10 transform bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-4 transition-all md:top-3/4 md:-translate-y-2/3 md:right-1/4 md:translate-x-2/3"
+                className={`absolute z-30 top-36 right-10 transform bg-transparent border-2 ${isMuted ? 'text-slate-300  border-slate-400' : 'text-white border-white'} hover:border-white rounded-full hover:text-white p-4 transition-all md:top-3/4 md:-translate-y-2/3 md:right-1/4 md:translate-x-2/3`}
                 >
                 
                     
@@ -124,7 +168,8 @@ const PlayContent = () => {
                     }
                 
             </button>
-            
+          
+            {/* Handling Closing Button */}
             <button 
                 onClick={() => handleClose()}
                 className={`absolute z-30 top-8 right-6 bg-black rounded-full p-2 flex items-center justify-center border border-white 
@@ -148,7 +193,97 @@ const PlayContent = () => {
                 </svg>
             </button>
             <div className="w-full absolute overflow-hidden text-white font-sans text-md top-52 left-1 z-40 md:text-xl md:left-40 md:-translate-y-1/5 md:top-full">
-            <h1 className=" [text-shadow:_0_1px_2px_rgba(255,255,255,0.4)] pl-2 text-2xl md:text-4xl">{contentData.original_name || contentData.title}</h1>
+            <div className="flex">
+                <h1 className=" [text-shadow:_0_1px_2px_rgba(255,255,255,0.4)] pl-2 text-2xl md:text-4xl">{contentData.original_name || contentData.title}</h1>
+                <div className="ml-2 flex">
+                
+                <button onClick={handleToggleFavorite} className="ml-2 transition-all duration-300 ease-in-out">
+                  {animationState ? 
+                  <FontAwesomeIcon className={`
+                    p-2
+                    bg-transparent
+                    border-2 border-white rounded-full
+                   
+                    transition-all
+                    duration-300
+                    ${isFavorite ? 'scale-125' : 'scale-100'}
+                    md:h-6 md:w-6 my-0.5`} icon={faCheck} /> : 
+                  <FontAwesomeIcon className={`
+                    p-2
+                    bg-transparent
+                    border-2 border-white
+                    rounded-full
+                    transition-all
+                    duration-300
+                    ${isFavorite ? 'scale-125' : 'scale-100'}
+                    w-4 h-4 md:h-6 md:w-6 my-0.5`} icon={faPlus} />}
+                </button>
+                
+                <div className="relative"
+                    onClick={() => setShowLikeButton(!showLikeButton)}
+                  onMouseEnter={() => setShowLikeButton(true)}
+                  onMouseLeave={() => setShowLikeButton(false)}
+                >
+                  
+                  
+                  {showLikeButton ? 
+                  <div className="flex justify-center items-center transition-all duration-300 ease-in-out gap-2">
+                    <button 
+                      onClick={() => handleReaction('love')} 
+                      className={`
+                        p-2
+                    
+                        rounded-full
+                        transition-all
+                        duration-300
+                        ${clickedButton === 'love' ? 'scale-125' : 'scale-100'}
+                      `}
+                      >
+                      <FontAwesomeIcon className="w-5 h-5 md:h-6 md:w-6 my-0.5"  icon={faHeart} />
+                    </button>
+                    <button
+                      className={`
+                        p-2 
+                        hover:bg-slate-600
+                        rounded-full 
+                        transition-all 
+                        duration-300
+                        ${clickedButton === 'like' ? 'scale-125' : 'scale-100'}
+                        
+                      `}
+                    
+                      onClick={() => handleReaction('like')}>
+                      <FontAwesomeIcon className="w-5 h-5  md:h-6 md:w-6 my-0.5" icon={faThumbsUp} />
+                    
+                    </button>
+                    <button 
+                      className={`
+                        p-2 
+                        
+                        rounded-full
+                        transition-all
+                        duration-300
+                        ${clickedButton === 'dislike' ? 'scale-125' : 'scale-100'}
+                      `}
+                      onClick={() => handleReaction('dislike')}>
+                      
+                      
+                      <FontAwesomeIcon className="w-5 h-5 md:h-6 md:w-6 my-0.5" icon={faThumbsDown} />
+                    </button>
+                  </div> : (
+                    <button>
+                      {selectedOption === 'like' ? <FontAwesomeIcon className="text-blue-500 w-4 h-4 md:h-6 md:w-6 ml-2 border-2 border-white rounded-full p-2  my-2" icon={faThumbsUp} /> :
+                      selectedOption === 'dislike' ? <FontAwesomeIcon className="text-red-600 w-4 h-4 md:h-6 md:w-6 ml-2 border-2 border-white rounded-full p-2  my-2" icon={faThumbsDown}/> :
+                      selectedOption === 'love' ? <FontAwesomeIcon className="text-pink-600 border-2 border-white rounded-full p-2 w-4 h-4 md:h-6 md:w-6 ml-2 my-2" icon={faHeart}/> :
+                      <FontAwesomeIcon className="w-5 h-5 md:h-6 md:w-6 ml-2 my-2" icon={faThumbsUp} />
+                      }
+                    </button>
+                  )
+                 }
+                </div>
+            </div>
+            </div>
+
                 <div className="flex mx-2 overflow-hidden gap-4 md:w-3/4 justify-between">
                 <div className="pl-2">
                     <div className="flex mt-2 md:mt-4">

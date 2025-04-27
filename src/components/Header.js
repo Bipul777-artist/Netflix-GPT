@@ -24,6 +24,8 @@ const Header = () => {
     const user = useSelector((store) => store.user)
     const [dropDown, setDropDown] = useState(false);
     const [showBrowse, SetShowBrowse] = useState(false);
+    
+
      
 
     const handleMovies = () => {

@@ -10,6 +10,8 @@ import PlayContent from "./PlayContent.js";
 import FavoriteList from "./FavoriteList.js";
 import Movies from "./Movies.js";
 import TVSeries from "./TVSeries.js";
+import SecondPart from "./SecondPart.js";
+import Footer from "./Footer.js"
 
 
 
@@ -22,6 +24,8 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <HomePage />
+                    <SecondPart />
+                    <Footer />
                 </div>
             )
         },
@@ -58,6 +62,7 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <Browse />
+                    <Footer />
                 </div>
             )
         },
@@ -74,7 +79,7 @@ const Body = () => {
             path: "/watch/:movieId", 
             element: (
                 <div className="">
-                    <Header />
+                    
                     <PlayContent />
                 </div>
             )
@@ -85,6 +90,7 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <FavoriteList />
+                    <Footer />
                 </div>
             )
         },
@@ -94,6 +100,7 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <Movies />
+                    <Footer />
                 </div>
             )
         },
@@ -103,6 +110,7 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <TVSeries />
+                    <Footer />
                 </div>
             )
         }

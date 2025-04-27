@@ -24,7 +24,7 @@ const GPTSearchBar = () => {
     // console.log(langKey);
 
     // const geminiProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'; // Your NEW function URL
-    const hfProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/hfProxy'
+    const hfProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/netlify/functions/hfProxy'
 
     // const hfProxyUrl = './netlify/functions/hfProxy'
     const HandleContentType = () => {

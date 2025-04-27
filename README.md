@@ -77,19 +77,29 @@
         - When content type is changed, earlier data should be cleared. -> Done
         - Shimmer Type UI, when submit is clicked
 
-#Things to do
-    - Edit YT Sound Icon For every Video -> Done
-    - Go through the website flow once, see the changes and note them.
-    - Fix the rusty code. 
-    - Hide the keys, and push Code to GitHUb
-    - Deploy it Online
-    - Edit Resume. 
 
-#Things to Understand
+
+# Things to Understand
     -> Understand Navigation & Routing for PlayContent
     -> Understand Sound on/off logic
     -> PlayContent refresh not working. -> Done
     -> Content Info Work, Architecture.
+
+# Current Issues
+    - HomePage Second Part
+        - Trending Videos
+            - 10 posters, on click --> Get Started Button
+            - More Reason to Join 
+                - 4 Cards
+            - FAQ - Accordian 
+    - Header Items, change color when clicked
+    - Footer
+    - HomePage for mobile devices
+    - Hover / Video Click functionality.
+    - GPT Functionality and CSS
+    - Lazy Loading.
+    - Optimising Store Use for Fetching keys of Hovered Content
+
     
 # Features
     -Login / SIgn Up Page
