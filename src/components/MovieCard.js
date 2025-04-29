@@ -14,6 +14,7 @@ import { addHoveredContent, addContent } from "../utils/movieSlice";
 import useHoveredVideo from "../hooks/useHoveredVideo";
 import { useNavigate } from "react-router-dom";
 import useFavorites from "../hooks/useFavorites";
+import AlbumArtPreview from "./HoveredSkeleton";
 // If the preview feature and Watch Feature works, remove videoId from useHovered Hook and here!
 
 const MovieCard = ({ EachMovie, key}) => {
@@ -44,7 +45,8 @@ const MovieCard = ({ EachMovie, key}) => {
   };
 
   const getVideoUrl = () => {
-
+    console.log("Store :" + contentKey);
+    console.log("State Variable :" +  videoId)
     return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0&playlist=${contentKey}`
   };
   
@@ -152,19 +154,22 @@ const MovieCard = ({ EachMovie, key}) => {
           
         >
           
-          <img
+          {(EachMovie.backdrop_path || EachMovie.poster_path) && <img
              
             src={IMG_CDN + EachMovie.backdrop_path || IMG_CDN + EachMovie.poster_path} 
-            // alt={EachMovie.title || movie.name}
+            alt={EachMovie.title }
             className={`min-w-full min-h-full object-cover transition-opacity duration-300
               ${previewStarted ? 'opacity-0' : 'opacity-100'}`}
-          />
+              loading="lazy"
+          />}
 
           {previewStarted &&
             <div className="absolute inset-0 w-full h-full bg-black">
               <div className="relative w-full h-full overflow-hidden">
+              {contentKey ? 
+                <div>
                 <div className="w-full h-0 pb-[56.25%] relative">
-                  
+                    
                     <iframe 
                     ref={playerRef}
                     src={getVideoUrl()} 
@@ -176,6 +181,7 @@ const MovieCard = ({ EachMovie, key}) => {
                     loading="lazy"
                   ></iframe>
                 </div>
+                
                 {/* Sound Options */}
                 <button
                     onClick={toggleMute}
@@ -200,6 +206,11 @@ const MovieCard = ({ EachMovie, key}) => {
                         }
                     
                 </button>
+                </div>
+                : (
+                  <AlbumArtPreview />
+                )
+                }
               </div>
             </div>
           }

@@ -20,7 +20,6 @@ export const API_OPTIONS = {
       Authorization: 'Bearer ' + process.env.REACT_APP_TMDB_KEY}
 };
 
-const isDevelopment = process.env.NODE_ENV === 'development';
 
 export const CLOUD_FUNCTION_URL = "https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/tmdbProxy";
 export const IMG_CDN = "https://image.tmdb.org/t/p/w200/";

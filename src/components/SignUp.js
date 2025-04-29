@@ -4,8 +4,9 @@ import { auth } from "../utils/firebase";
 import { useRef } from "react";
 import { ValidPassword } from "../utils/Validatation";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
+
 
 
 const SignUp = () => {
@@ -13,7 +14,10 @@ const SignUp = () => {
     const [email, SetEmail] = useState();
     const [error, setError] = useState();
     const password = useRef()
-    const name = useRef()
+    const name = useRef();
+    const userEmail = useSelector((store) => store.user.emailAddress)
+    // const currentUser = useSelector((state) => state.user.currentUser);
+    const navigate = useNavigate();
 
     const CreateAccount = () => {
 
@@ -40,6 +44,7 @@ const SignUp = () => {
                     // ...
                   });
                 // ...
+                
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -59,16 +64,16 @@ const SignUp = () => {
 
     return (
        
-        <div className="absolute w-4/5 top-1/3 left-1/5 m-5 p-3 -translate-y-1/2 md:top-1/2 md:left-1/3 md:m-5">
+        <div className="absolute w-4/5 md:w-3/5 top-1/3 md:overflow-x-hidden left-1/5 m-5 p-3 -translate-y-1/2 md:top-1/2 md:left-1/3 md:m-5">
 
-            <h1 className="w-full text-gray-800 font-bold my-2 text-3xl md:w-1/3">
+            <h1 className="w-full pt-4 text-gray-800 font-bold my-2 text-3xl md:w-1/3">
             Create an Account to start your membership</h1>
             <p className=" my-3 text-md text-gray-600 ">Just a few more steps and you're done!
             We hate paperwork, too.</p>
-            <div className="my-3">
+            <div className="my-3 md:w-screen">
                 <h1>Email</h1>
-                <h1 className="font-bold mt-2 text-gray-800 border-2 my-3 border-gray-600 rounded p-3 w-full md:w-1/3">{email}</h1>
-            </div>
+                <h1 className="font-bold mt-2 text-gray-800 border-2 my-3 border-gray-600 rounded p-3 w-full md:w-1/3">{userEmail}</h1>
+            
             <form onSubmit={(e) => e.preventDefault()} className="md:flex md:flex-col">
                 <h1>Name</h1>
                 <input 
@@ -81,7 +86,7 @@ const SignUp = () => {
                 <input 
                     ref={password}
                     type="Password"
-                    placeholder="Shh! " 
+                    placeholder="Shh! It's a secret" 
                     className="border-2 my-3 border-gray-600 rounded p-3 w-full md:w-1/3"
                 />
                 <p>{error}</p>
@@ -89,7 +94,9 @@ const SignUp = () => {
                     Next
                 </button>
             </form>
+            </div>
         </div>
+        
     )
 }
 

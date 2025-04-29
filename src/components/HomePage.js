@@ -2,11 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { HomePage_img, logos } from "../utils/constant";
 import { useRef, useState } from "react";
 import { ValidEmail } from "../utils/Validatation";
+import {useDispatch} from "react-redux"
+import { AddEmailAddress } from "../utils/userSlice";
 
 const HomePage = () => {
 
     const email = useRef();
     const [errorMessage, setErrorMessage] = useState();
+    const dispatch = useDispatch();
 
     const navigate = useNavigate()
     const LogInPage = () => {
@@ -22,6 +25,8 @@ const HomePage = () => {
         if (message === null ) {
             navigate('/signup');
             localStorage.setItem('email', email.current.value);
+            dispatch(AddEmailAddress(email.current.value))
+        
         }
 
     }

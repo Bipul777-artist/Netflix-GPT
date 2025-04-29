@@ -1,4 +1,4 @@
-import {useSelector} from "react-redux";
+
 import { useEffect, useRef, useState } from "react";
 import {CLOUD_FUNCTION_URL, FAQ, IMG_CDN} from "../utils/constant"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -56,7 +56,7 @@ const SecondPart = () => {
     return (
         <div className="bg-black pt-10 relative w-full h-full">
             <h2 className="text-white ml-10 text-xl my-4 md:ml-32 md:my-4 md:text-2xl">Trending Now</h2>
-            <div ref={carouselRef} className="w-3/4 mx-auto flex flex-nowrap overflow-x-auto md:overflow-x-hidden transition-all duration-300 ">
+            <div ref={carouselRef} className="w-3/4 mx-auto flex flex-nowrap overflow-x-auto overflow-y-hidden md:overflow-x-hidden transition-all duration-300 ">
                 
                 {videoList?.map((data, index) => {
                     return (

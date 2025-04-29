@@ -55,11 +55,14 @@
                 - API Calling for Search Bar
                 - Load the result and Verify
     - SetUp Redux Persist
-        - For Storing Favorites Contents in One Place
+        - For Storing Favorites Contents
+        - For storing email, for signup Page. 
     - Setting Up Netlify for Custom Function
         - Encapsulation of API key from Frontend
-        - 
     - Host it in Online
+    - HomePage Complete 
+    - Footer
+    - Skeleton for MainVideo Player and Hovered Video Player.
 
 
 # My Plan & Changes

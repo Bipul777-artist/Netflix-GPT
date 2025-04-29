@@ -21,12 +21,9 @@ const Header = () => {
     // const identifier = useRef(null);
     const navigate = useNavigate();
     const showGPT = useSelector(store => store.gptSlice.GPTSlice);
-    const user = useSelector((store) => store.user)
+    const user = useSelector((store) => store?.user?.currentUser);
     const [dropDown, setDropDown] = useState(false);
     const [showBrowse, SetShowBrowse] = useState(false);
-    
-
-     
 
     const handleMovies = () => {
       navigate('/browse/movies');
@@ -166,7 +163,7 @@ const Header = () => {
                     }
                 
               </div> : 
-                  <button onClick={LogIn} className="bg-red-600 absolute z-10 top-5 right-5 text-white font-semibold cursor-pointer px-4 py-1.5 rounded md:right-20 md:top-8 hover:bg-black">
+                  <button onClick={LogIn} className="bg-red-600 absolute z-10 top-2 right-5 text-white font-semibold cursor-pointer rounded px-2 py-1 md:px-4 md:py-1.5  md:right-20 md:top-4 hover:bg-black">
                     {signInBtn}
                   </button>
                 }

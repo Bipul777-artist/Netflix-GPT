@@ -20,68 +20,25 @@ const FavoriteList = () => {
       }
 
     return(
-        <div className="relative w-full h-screen bg-black md:px-6 group"
+        <div className="relative w-full pt-20 h-screen bg-black md:px-6">
+            <h1 className="text-white mx-10 text-md md:text-2xl">My List</h1>
             
-        >
-        
-                <h1 className="text-md absolute top-20 left-10 md:text-3xl px-2 text-white">My List</h1>
-                <div className="pl-2 absolute top-1/2 -translate-y-1/2 flex -space-x-[60px] md:space-x-6 flex-wrap hover:py-8 md:pl-20">
-                
-                    {favoritesList.map((item) => {
-                        // console.log(item);
-                        return (
-                        <MovieCard 
-                            key={item?.id}
-                            EachMovie={item}
-                            
-                        />)
+            <div className="flex w-full flex-wrap bg-black justify-between md:justify-evenly ">
+                {favoritesList.map((item) => {
+                            // console.log(item);
+                            return (
+                            <div className="mx-auto">    
+                            <MovieCard 
+                                
+                                key={item?.id}
+                                EachMovie={item}
+                                
+                            />
+                            </div>)
 
-                    })}
-                    <button 
-                onClick={() => handleClose()}
-                className={`absolute z-30 -top-8 right-24 bg-black rounded-full p-2 flex border border-white 
-                 hover:bg-gray-800 active:scale-95 
-                 transition-all duration-150 
-                 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50
-                 ${isExiting ? 'opacity-0 scale-90' : 'opacity-100 scale-100'} `}>
-                <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="24" 
-                    height="24" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="white" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                >
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-                    </button>
-                </div>
+                })}
+            </div>
             
-            {/* <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-between">
-                <button 
-                    onClick={() => handleScroll('left')}
-                    className="p-2 z-50 bg-black/50 rounded-full hover:bg-black/75 transition-colors pointer-events-auto opacity-0 group-hover:opacity-100 ml-2"
-                >
-                    <FontAwesomeIcon
-                        icon={faChevronLeft}
-                        className="w-6 h-6 text-white"
-                    />
-                </button>
-                
-                <button 
-                    onClick={() => handleScroll('right')}
-                    className=" p-2 z-50 bg-black/50 rounded-full hover:bg-black/75 transition-colors pointer-events-auto opacity-0 group-hover:opacity-100 mr-2"
-                >
-                    <FontAwesomeIcon
-                        icon={faChevronRight}
-                        className="w-6 h-6 text-white"
-                    />
-                </button>
-            </div> */}
         </div>
     )
 }

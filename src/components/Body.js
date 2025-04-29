@@ -90,7 +90,7 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <FavoriteList />
-                    <Footer />
+                    
                 </div>
             )
         },
