@@ -22,7 +22,7 @@ export const API_OPTIONS = {
 
 
 export const CLOUD_FUNCTION_URL = "https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/tmdbProxy";
-export const IMG_CDN = "https://image.tmdb.org/t/p/w200/";
+export const IMG_CDN = "https://image.tmdb.org/t/p/w780/";
 
 export const Supported_Languages = [{identifier : "en", name: "English"}, {identifier : "hindi", name: "Hindi"}, {identifier : "spanish", name: "Spanish"}]
 

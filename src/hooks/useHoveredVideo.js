@@ -28,7 +28,7 @@ const useHoveredVideo = () => {
         // --- Cancellation Logic ---
         // 1. Abort any *previous* ongoing request before starting a new one
         if (fetchControllerRef.current) {
-            // console.log('Aborting previous fetch request'); // Debug log
+            // console.log('Aborting previous fetch request');
             fetchControllerRef.current.abort();
         }
 
@@ -62,66 +62,10 @@ const useHoveredVideo = () => {
 
             let foundKey = null;
 
-            // // Check the response and go ahead
-            // if (movie.status === "fulfilled" && movie.value.ok) {
-            //     const movieData = await movie.value.json();
-            //     // console.log(movieData);
-            //     if (movieData.results && movieData.results.length > 0) {
-            //         // 
-            //         const clipObj = movieData?.results.find((x) => x.type === "Clip");
-            //         foundKey = clipObj?.key || movieData.results[0]?.key;
-            //         // console.log(clipObj);
-            //         // if (clipObj)  {
-            //         //     const YTKEY = clipObj.key;
-            //         //     // console.log(YTKEY);
-            //         //     setVideoId(YTKEY);
-            //         //     // console.log(videoId);
-            //         //     dispatch(addMovieYoutubeKey(YTKEY));
-            //         // }
-
-            //         // else {
-            //         //     setVideoId(movieData?.results[0].key)
-            //         //     dispatch(addMovieYoutubeKey(movieData?.results[0].key));
-            //         // };
-
-            //     }
-            //     else if (movie.status === 'fulfilled' && !movie.value.ok) {
-            //         // Log non-abort errors if fetch succeeded but API returned error
-            //     if (movie.value.status !== 404) console.error(`TMDB Proxy Error (Movie): Status ${movie.value.status}`);
-            //     } else if (movie.status === 'rejected' && movie.reason.name !== 'AbortError') {
-            //         console.error("Fetching Movie Videos Failed:", movie.reason);
-            //     }
-                
-            // }
-
-            // // 
-            // if (!foundKey && webShow.status === "fulfilled" && webShow.value.ok) {
-            //     const webShowData = await webShow.value.json();
-            //     // console.log(webShowData);
-            //     if (webShowData.results && webShowData.results.length > 0) {
-            //         const clipObj = webShowData?.results.find((x) => x.type === "Clip");
-            //         foundKey = clipObj?.key || webShowData.results[0]?.key;
-            //         // if (clipObj) {
-            //         //     const YTKEY = clipObj.key;
-            //         //     setVideoId(YTKEY);
-            //         //     dispatch(addMovieYoutubeKey(YTKEY));
-                        
-            //         // }
-            //         // else {
-            //         //     setVideoId(webShowData?.results[0].key)
-            //         //     dispatch(addMovieYoutubeKey(webShowData?.results[0].key));
-            //         // };
-            //     } else if (!foundKey && webShow.status === 'fulfilled' && !webShow.value.ok) {
-            //         if (webShow.value.status !== 404) console.error(`TMDB Proxy Error (Web Series): Status ${webShow.value.status}`);
-            //    } else if (!foundKey && webShow.status === 'rejected' && webShow.reason.name !== 'AbortError') {
-            //        console.error("Fetching Web Series Videos Failed:", webShow.reason);
-            //    }
-                
-            // }
 
             // --- Corrected Structure for Movie Result ---
-if (movie.status === "fulfilled") { // Check if promise resolved
-    const response = movie.value; // Get the Response object
+    if (movie.status === "fulfilled") { // Check if promise resolved
+    const response = movie.results; // Get the Response object
 
     if (response.ok) { // Check if the HTTP request was successful (e.g., 200 OK)
         const movieData = await response.json();

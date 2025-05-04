@@ -24,7 +24,6 @@ const MovieCard = ({ EachMovie, key}) => {
   const MovieKey = useSelector((store) => store.movies.hoverContent)
   const contentKey = useSelector((store) => store.movies.YoutubeKey)
   const {videoId, fetchYoutubeKey} = useHoveredVideo();
-  // {console.log(EachMovie)};
   const [isHovering, setIsHovering] = useState(false);
   const [previewStarted, setPreviewStarted] = useState(false);
   const [showLikeButton, setShowLikeButton] = useState(false);
@@ -45,8 +44,8 @@ const MovieCard = ({ EachMovie, key}) => {
   };
 
   const getVideoUrl = () => {
-    console.log("Store :" + contentKey);
-    console.log("State Variable :" +  videoId)
+    // console.log("Store :" + contentKey);
+    // console.log("State Variable :" +  videoId)
     return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0&playlist=${contentKey}`
   };
   
@@ -98,7 +97,9 @@ const MovieCard = ({ EachMovie, key}) => {
     // {console.log(movieId)};
     localStorage.setItem('currenContentId', movieId.id);
     localStorage.setItem('currentContentDetails', JSON.stringify(movieId));
+    dispatch(addHoveredContent(movieId.id))
     dispatch(addContent(movieId));
+    window.scrollTo(0, 0);
     } 
     // fetchYoutubeKey(movieId.id);
   }
@@ -106,8 +107,10 @@ const MovieCard = ({ EachMovie, key}) => {
   const handlePlayContentForLargeScreen = (e, movieId) => {
     e.stopPropagation();
     navigate(`/watch/${movieId.id}`);
+    console.log(movieId);
     localStorage.setItem('currentContentDetails', JSON.stringify(movieId));
     dispatch(addContent(movieId));
+    window.scrollTo(0, 0);
   }
 
   const handleReaction = (reaction) => {
@@ -264,7 +267,7 @@ const MovieCard = ({ EachMovie, key}) => {
                     <button
                       className={`
                         p-2 
-                        hover:bg-slate-600
+                       
                         rounded-full 
                         transition-all 
                         duration-300

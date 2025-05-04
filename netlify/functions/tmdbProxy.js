@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 
 // Securely get the API key from Netlify environment variables
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
+
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 
 // Netlify Function handler
