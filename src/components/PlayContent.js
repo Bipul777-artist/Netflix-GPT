@@ -129,7 +129,6 @@ const PlayContent = () => {
         // Convert array of genre IDs to comma-separated string
         const genreParam = contentDetails.genre_ids;
         
-        // Determine if we should fetch movies or TV shows based on content type
     
         // Create the TMDB path that you want to access
         const moviePath = `/discover/movie?include_adult=false&include_video=false&page=1&sort_by=popularity.desc&with_genres=${genreParam}`
@@ -150,12 +149,11 @@ const PlayContent = () => {
           
             const response = await result.json();
             console.log("Movie" + response);
-            // const data = await response.json();
-            // console.log(data);
+          
 
             const filteredResults = response?.results.filter(item => 
               item.id !== parseInt(movieId)
-            ).slice(0, 8); 
+            ).slice(0, 12); 
             
             setRelatedContent(filteredResults);
             console.log(relatedContent);
@@ -201,16 +199,16 @@ const PlayContent = () => {
       }
       
       return (
-        <div className="px-4 w-full mx-auto mt-8 mb-12">
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-4">More Like This</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
-            console.log(relatedContent);
+        <div className="px-4 w-full md:min-w-4/5 mx-auto mb-12">
+          <h2 className="text-xl md:text-2xl font-bold text-white my-4">More Like This</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+            {console.log(relatedContent)}
             {relatedContent.map(item => (
               
               <div 
                 
                 key={item.id} 
-                className="bg-black rounded-md overflow-hidden shadow-lg cursor-pointer transition transform hover:scale-105"
+                className="bg-black rounded-md h-full overflow-hidden shadow-lg cursor-pointer transition transform hover:scale-105"
                 onClick={() => {
                   // Navigate to the selected content's page
                   localStorage.setItem('currenContentId', item.id);
@@ -235,11 +233,11 @@ const PlayContent = () => {
                   )}
                 </div>
                 <div className="px-2 py-2">
-                  <h3 className="text-white text-sm font-medium truncate">
+                  <h3 className="text-white text-sm text-center font-medium truncate">
                     {item.title || item.name}
                   </h3>
                   <div className="flex items-center mt-1">
-                    <span className="text-white text-xs md:text-md">
+                    <span className="text-white text-center text-xs md:text-md">
                       {Math.round(item.vote_average * 10)}% Match
                     </span>
                   </div>
@@ -254,15 +252,10 @@ const PlayContent = () => {
     // }
 
     return (
-      <div className="block w-screen h-full bg-black overflow-y-auto md:overflow-x-hidden">
-        <div className="absolute w-screen inset-0 flex">
-              <div className="w-1/2 h-full md:bg-gradient-to-r from-red-800/50 to-transparent"></div>
-              <div className="w-1/2 h-full md:bg-gradient-to-l from-pink-900/50 to-transparent"></div>
-        </div>
-        <div className="relative overflow-x-hidden bg-black md:flex md:items-center md:justify-center">
-             
+      <div className=" flex flex-col items-center gap-40 md:gap-12 overflow-x-hidden relative md:h-full bg-black">
+       
           <div className="w-full h-full relative">
-              <div className="relative max-w-screen-lg max-h-[576px] mx-auto z-10 h-0 pb-[56.25%]"> 
+              <div className="relative max-w-screen-lg max-h-[576px] mx-auto z-10 -md:h-20 pb-[56.25%]"> 
                 {videokey ? 
                 <div> 
                   <iframe 
@@ -274,7 +267,7 @@ const PlayContent = () => {
                       frameBorder="0" 
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                       allowFullScreen
-                      className="absolute z-10 border-1 rounded-md top-6 left-0 h-full w-full object-cover md:top-24 md:h-3/4"
+                      className="absolute z-10 border-1 rounded-md top-0 left-0 h-full w-full object-cover md:top-6 md:h-3/4"
                       loading="lazy"
                   ></iframe>
               
@@ -286,7 +279,7 @@ const PlayContent = () => {
                   {/* Sound Options */}
                   <button
                       onClick={toggleMute}
-                      className={`absolute z-30 top-36 right-10 transform bg-transparent border-2 ${isMuted ? 'text-slate-300  border-slate-400' : 'text-white border-white'} hover:border-white rounded-full hover:text-white p-4 transition-all md:top-3/4 md:-translate-y-2/3 md:right-1/4 md:translate-x-2/3`}
+                      className={`absolute z-30 top-36 right-10  md:w-14 md:h-14 transform bg-transparent border-2 ${isMuted ? 'text-slate-300  border-slate-400' : 'text-white border-white'} hover:border-white rounded-full hover:text-white p-4 transition-all md:top-3/4 md:-translate-y-2/3 md:right-1/4 md:translate-x-2/3`}
                       >
                       
                           
@@ -315,7 +308,7 @@ const PlayContent = () => {
               {/* Handling Closing Button */}
               <button 
                   onClick={() => handleClose()}
-                  className={`absolute z-30 top-8 right-6 bg-black rounded-full p-2 flex items-center justify-center border border-white 
+                  className={`absolute z-30 top-8 right-6 h-10 w-10 md:w-14 md:h-14 bg-black rounded-full p-2 flex items-center justify-center border border-white 
                   hover:bg-gray-800 active:scale-95 
                   transition-all duration-150 
                   focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50
@@ -335,7 +328,7 @@ const PlayContent = () => {
                       <line x1="6" y1="6" x2="18" y2="18"></line>
                   </svg>
               </button>
-              <div className="w-full absolute overflow-hidden text-white font-sans text-md top-30 left-1 z-40 md:text-xl md:left-40 md:-translate-y-1/5 md:top-3/4">
+              <div className="w-full absolute overflow-hidden text-white font-sans text-md z-40 md:text-xl md:left-40 md:-translate-y-1/5 md:top-3/4">
               <div className="flex">
                   <h1 className=" [text-shadow:_0_1px_2px_rgba(255,255,255,0.4)] pl-2 text-2xl md:text-4xl">{contentDetails.original_name || contentDetails.title}</h1>
                   <div className="ml-2 flex">
@@ -457,10 +450,11 @@ const PlayContent = () => {
                  
               </div>
             
-
           </div>
+        
+        <div>
+          {renderRelatedContent()}
         </div>
-        {renderRelatedContent()}
       </div>            
     )
 };

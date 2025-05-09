@@ -9,6 +9,20 @@ module.exports = {
         'default': '0 2px 4px rgba(0,0,0,0.1)',
         'lg': '0 8px 16px rgba(0,0,0,0.3)',
       },
+      animation: {
+        'fadeIn': 'fadeIn 0.3s ease-in-out',
+        'fadeUp': 'fadeIn 0.6s ease-in-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '0.95', transform: 'translateY(0)' },
+        },
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '0.95', transform: 'translateY(0)' },
+        },
+      },
     },
   },
   plugins: [

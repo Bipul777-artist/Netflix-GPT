@@ -30,6 +30,7 @@ const MovieCard = ({ EachMovie, key}) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [clickedButton, setClickedButton] = useState(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [moreInfo, setMoreInfo] = useState(false);
   const playerRef = useRef();
 
   const { isContentInFavorites, addContentToFavorites, removeContentFromFavorites } = useFavorites();
@@ -44,9 +45,9 @@ const MovieCard = ({ EachMovie, key}) => {
   };
 
   const getVideoUrl = () => {
-    // console.log("Store :" + contentKey);
-    // console.log("State Variable :" +  videoId)
-    return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0&playlist=${contentKey}`
+    console.log("Store :" + contentKey);
+    console.log("State Variable :" +  videoId)
+    return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0`;
   };
   
   const callHover = (movieId) => {
@@ -238,8 +239,7 @@ const MovieCard = ({ EachMovie, key}) => {
                   <FontAwesomeIcon className={`
                     p-2
                     rounded-full
-                    transistion-all
-                    duration-300
+                    
                     ${isFavorite ? 'scale-125' : 'scale-100'}
                     h-6 w-6 my-0.5`} icon={faPlus} />}
                 </button>
@@ -251,7 +251,7 @@ const MovieCard = ({ EachMovie, key}) => {
                   
                   
                   {showLikeButton ? 
-                  <div className="flex justify-center items-center transition-all duration-600 ease-in-out gap-2">
+                  <div className="flex justify-center items-center animate-fadeUp  gap-2">
                     <button 
                       onClick={() => handleReaction('love')} 
                       className={`
@@ -267,7 +267,6 @@ const MovieCard = ({ EachMovie, key}) => {
                     <button
                       className={`
                         p-2 
-                       
                         rounded-full 
                         transition-all 
                         duration-300
@@ -282,11 +281,11 @@ const MovieCard = ({ EachMovie, key}) => {
                     <button 
                       className={`
                         p-2 
-                        
+                       
                         rounded-full
                         transistion-all
                         duration-300
-                        ${clickedButton === 'dislike' ? 'scale-125' : 'scale-100'}
+                        ${clickedButton === 'dislike' ? 'scale-75' : 'scale-100'}
                       `}
                       onClick={() => handleReaction('dislike')}>
                       
@@ -306,9 +305,12 @@ const MovieCard = ({ EachMovie, key}) => {
                 </div>
 
                 <button 
+                  onMouseEnter={() => setMoreInfo(true)}
+                  onMouseLeave={() => setTimeout(() => {setMoreInfo(false)}, 100)}
                   onClick={(e) => handlePlayContentForLargeScreen(e, EachMovie)}
-                  className="ml-56">
+                  className="ml-56 transition-all duration-600 ease-in-out">
                   <FontAwesomeIcon className="h-8 w-8 my-0.5" icon={faCircleChevronDown} />  
+                  {moreInfo && <p className="absolute right-4 -top-4 py-1.5 px-2 border-1 rounded-md bg-gray-200 text-black animate-fadeIn opacity-95">More Info</p>}
                 </button>
               </div>
               <h3 className="text-sm text-white">{getGenreNames(EachMovie.genre_ids)}</h3>

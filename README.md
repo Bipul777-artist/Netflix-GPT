@@ -65,23 +65,6 @@
     - Skeleton for MainVideo Player and Hovered Video Player.
 
 
-# My Plan & Changes
-    - Sign Up Form In HomePage
-        -Take Email, Push it in Local Storage, fetch Email in New page and Configure Create Account Login In New  Page -> Done
-    - Login Page
-        - Only write Authentication Logic   -> Done
-    <!-- FOCUS AREA -->
-    -Movie Card
-        - When hovered or clicked, trailer should play. -> Done
-        - Make the UI as close to the Netflix UI        -> Done
-        - When Cards Hovered Over (Only For Large Screen), it should open and show the trailer along with basic info. -> Done
-        - For mobile devices, when Cards are clicked, it should pop-out a larger screen showing trailer, details, Play Button Everything -- For Larger Devices, the same will happen when clicked on Drop Down button after hovering or clicked directly.
-    - GPT PAGE
-        - When content type is changed, earlier data should be cleared. -> Done
-        - Shimmer Type UI, when submit is clicked
-
-
-
 # Things to Understand
     -> Understand Navigation & Routing for PlayContent
     -> Understand Sound on/off logic
@@ -89,34 +72,19 @@
     -> Content Info Work, Architecture.
 
 # Current Issues
-    - HomePage Second Part
-        - Trending Videos
-            - 10 posters, on click --> Get Started Button
-            - More Reason to Join 
-                - 4 Cards
-            - FAQ - Accordian 
-    - Header Items, change color when clicked
-    - Footer
-    - HomePage for mobile devices
-    - Hover / Video Click functionality.
-    - GPT Functionality and CSS
+    - Video PlayBack Container Issue 
+        - Currently incase keys are not available, fallback video container is showing. However, 
+        after keys appear videos should play instead of fallback video container. -> Done
+    - PlayContent Component
+        - CSS 
+        - Related Content Cards CSS
+    - GPT Functionality
+    - Styling (CSS) of GPT Page
+    - Movie Card Component
+        - Play Button Functionality
+        - Handling Buttons Hover
+    - My List Page CSS
     - Lazy Loading.
     - Optimising Store Use for Fetching keys of Hovered Content
 
     
-# Features
-    -Login / SIgn Up Page
-        -Sign In / SIgn Up Form
-        -Post login, redirect to browse Page
-        
-    -Browse (Post authentication)
-        - Header
-        - Main Movie
-            - Trailer in BG
-            - Title & Description
-            - Movie Suggestions
-                - Movie Lists x N
-
-    - Netflix GPT
-        - Search Bar
-        - Movie Suggestions

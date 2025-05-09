@@ -23,6 +23,7 @@ const useHoveredVideo = () => {
                 fetchControllerRef.current = null;
             }
             return;
+        
         }
 
         // --- Cancellation Logic ---
@@ -64,66 +65,66 @@ const useHoveredVideo = () => {
 
 
             // --- Corrected Structure for Movie Result ---
-    if (movie.status === "fulfilled") { // Check if promise resolved
-    const response = movie.results; // Get the Response object
+            if (movie.status === "fulfilled" && movie.value.ok) { // Check if promise resolved
+                // console.log()
 
-    if (response.ok) { // Check if the HTTP request was successful (e.g., 200 OK)
-        const movieData = await response.json();
-        if (movieData.results && movieData.results.length > 0) {
-            const clipObj = movieData.results.find((x) => x.type === "Clip");
-            foundKey = clipObj?.key || movieData.results[0]?.key;
-        }
-        // else: Optional - handle case where results array is empty even on success
-    } else {
-        // Handle cases where promise fulfilled BUT HTTP status was error (e.g., 401, 404, 500)
-        if (response.status !== 404) { // Don't log 404 as an error if movie/tv just doesn't exist
-            console.error(`TMDB Proxy Error (Movie): Status ${response.status}`);
-        }
-    }
-} else { // movie.status === "rejected"
-    // Handle cases where the fetch promise itself failed (network error, CORS, AbortError)
-    if (movie.reason.name !== 'AbortError') { // Don't log cancellation errors
-        console.error("Fetching Movie Videos Failed:", movie.reason);
-    }
-}
-
-// --- Repeat similar corrected structure for Web Show Result ---
-if (!foundKey && webShow.status === "fulfilled") { // Check !foundKey first
-    const response = webShow.value; // Get the Response object
-
-    if (response.ok) { // Check if the HTTP request was successful
-        const webShowData = await response.json();
-        if (webShowData.results && webShowData.results.length > 0) {
-            const clipObj = webShowData.results.find((x) => x.type === "Clip");
-            foundKey = clipObj?.key || webShowData.results[0]?.key;
-        }
-        // else: Optional - handle case where results array is empty even on success
-    } else {
-        // Handle cases where promise fulfilled BUT HTTP status was error
-        if (response.status !== 404) {
-            console.error(`TMDB Proxy Error (Web Series): Status ${response.status}`);
-        }
-    }
-} else if (!foundKey && webShow.status === 'rejected') { // Note: 'else if' because we only care if !foundKey
-    // Handle cases where the fetch promise itself failed
-    if (webShow.reason.name !== 'AbortError') {
-        console.error("Fetching Web Series Videos Failed:", webShow.reason);
-    }
-}
-
-            // --- Final State Update (only if this request wasn't aborted) ---
-            // We check signal.aborted again just in case it was aborted *during* processing
-            if (!signal.aborted) {
-                // console.log(`Setting videoId for ${movieId} to: ${foundKey}`); // Debug log
-                setVideoId(foundKey); // Set to the key found or null if none found
-                if (foundKey) {
-                    dispatch(addMovieYoutubeKey(videoId)); // Dispatch if needed
+                const movieJson = await movie.value.json();
+                console.log(movieJson);
+                if (movieJson.results && movieJson.results.length > 0) {
+                    const clipObj = movieJson.results.find((x) => x.type === "Clip");
+                    foundKey = clipObj?.key || movieJson.results[0]?.key;
                 }
-             } else {
-                // console.log(`Fetch aborted during processing for ${movieId}, state not updated.`); // Debug log
-             }
-            
-        }  
+             
+                else {
+                // Handle cases where promise fulfilled BUT HTTP status was error (e.g., 401, 404, 500)
+                if (movieJson.results !== 404) { // Don't log 404 as an error if movie/tv just doesn't exist
+                    console.error(`TMDB Proxy Error (Movie): Status ${movieJson.results}`);
+                }
+        }
+                }       
+            else { // movie.status === "rejected"
+    // Handle cases where the fetch promise itself failed (network error, CORS, AbortError)
+        if (movie.reason.name !== 'AbortError') { // Don't log cancellation errors
+            console.error("Fetching Movie Videos Failed:", movie.reason);
+        }
+            }
+
+
+            if (!foundKey && webShow.status === "fulfilled" && webShow.value.ok) { // Check !foundKey first
+                const webShowJson = await webShow.value.json();
+                // const response = webShow.value; // Get the Response object
+                if (webShowJson.results && webShowJson.results.length > 0) {
+                    const clipObj = webShowJson.results.find((x) => x.type === "Clip");
+                    foundKey = clipObj?.key || webShowJson.results[0]?.key;
+                }
+
+               
+                else {
+                    // Handle cases where promise fulfilled BUT HTTP status was error
+                    if (webShowJson.results.status !== 404) {
+                        console.error(`TMDB Proxy Error (Web Series): Status ${webShowJson.results.status}`);
+                    }
+                }
+            } else if (!foundKey && webShow.status === 'rejected') { // Note: 'else if' because we only care if !foundKey
+                // Handle cases where the fetch promise itself failed
+                if (webShow.reason.name !== 'AbortError') {
+                    console.error("Fetching Web Series Videos Failed:", webShow.reason);
+                }
+            }
+
+                // --- Final State Update (only if this request wasn't aborted) ---
+                // We check signal.aborted again just in case it was aborted *during* processing
+            if (!signal.aborted) {
+                    // console.log(`Setting videoId for ${movieId} to: ${foundKey}`); // Debug log
+                setVideoId(foundKey); // Set to the key found or null if none found
+                    
+                dispatch(addMovieYoutubeKey(foundKey)); // Dispatch if needed
+                    
+                } else {
+                    // console.log(`Fetch aborted during processing for ${movieId}, state not updated.`); // Debug log
+                }
+                
+            }  
         catch (error) {
             if (error.name !== 'AbortError') {
                 console.error(`Error in fetchYoutubeKey for ${movieId}:`, error);

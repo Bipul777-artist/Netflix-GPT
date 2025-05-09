@@ -20,7 +20,7 @@ const useMovieTrailer = (movieId) => {
       const movieUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(moviePath)}`;
       const tvPath = `/tv/${movieId}/videos`
       const tvUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(tvPath)}`;
-    const [movie, webShow] = await Promise.allSettled([
+      const [movie, webShow] = await Promise.allSettled([
 
       fetch(movieUrl),
       fetch(tvUrl)
@@ -30,9 +30,6 @@ const useMovieTrailer = (movieId) => {
   if (movie.status === "fulfilled" && movie.value.ok) {
 
     const videoJson = await movie.value.json();
-    // console.log(videoJson);
-    
-
     const Trailers = videoJson.results.filter((x) => x.type === "Trailer");
     const trailerVideo = Trailers.length ? Trailers[0] : videoJson.results[0];
     // console.log(trailerVideo.key);
