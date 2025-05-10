@@ -1,0 +1,14 @@
+[build]
+  functions = "netlify/functions"
+
+# This ensures your function code is packaged properly
+[functions]
+  node_bundler = "esbuild"
+  
+# Add these headers to all responses to fix CORS issues
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"

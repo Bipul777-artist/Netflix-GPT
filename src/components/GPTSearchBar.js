@@ -26,12 +26,6 @@ const GPTSearchBar = () => {
     const geminiProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'; // Your NEW function URL
     // const hfProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/netlify/functions/hfProxy'
 
-    const API_BASE_URL = process.env.NODE_ENV === 'development' 
-  ? 'http://localhost:3001/.netlify/functions'
-  : '/.netlify/functions';
-
-    const Base_URL = process.env.REACT_APP_API_BASE_URL
-
     // const hfProxyUrl = './netlify/functions/hfProxy'
     const HandleContentType = () => {
         
@@ -78,7 +72,6 @@ const GPTSearchBar = () => {
         return webShowsJson.results;
     }
 
-
     const handleGPTSearch = async (e) => {
        
         const userInput = input.current.value;
@@ -91,13 +84,13 @@ const GPTSearchBar = () => {
         // Calling Gemini API
         if (showType === "Movies") {
         try {
-            const MovieResults = await fetch(`${API_BASE_URL}/geminiProxy`, {
+            const MovieResults = await fetch(geminiProxyUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                  'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ prompt: MovieQuery }), // Send prompt in body
-            })
+                body: JSON.stringify({ prompt: MovieQuery }),
+              });
 
             if (!MovieResults.ok) {
                 // Handle error from the proxy function
