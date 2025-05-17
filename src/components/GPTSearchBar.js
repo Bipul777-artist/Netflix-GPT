@@ -4,13 +4,11 @@ import lang from "../utils/LanguageConstants";
 import { genAI} from "../utils/openapi";
 import { useRef, useState } from "react";
 import { API_OPTIONS, CLOUD_FUNCTION_URL } from "../utils/constant";
-import { addContentDetails, clearContentDetails } from "../utils/gptSlice";
+import { addContentDetails, clearContentDetails, setIsLoading } from "../utils/gptSlice";
 // import { clearNowPlayingMovies } from "../utils/movieSlice";
 
 
 const GPTSearchBar = () => {
-
-    
 
     const dispatch = useDispatch();
     // const clearEntries = useSelector((store) => store.gptSlice.contentNames);
@@ -25,6 +23,10 @@ const GPTSearchBar = () => {
 
     const geminiProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'; // Your NEW function URL
     // const hfProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/netlify/functions/hfProxy'
+
+    const test_url = process.env.NODE_ENV === 'production' 
+  ? '/.netlify/functions/geminiProxy'  // Production path (relative to your site root)
+  : 'http://localhost:8888/.netlify/functions/geminiProxy';  // Development path
 
     // const hfProxyUrl = './netlify/functions/hfProxy'
     const HandleContentType = () => {
@@ -43,6 +45,8 @@ const GPTSearchBar = () => {
         const movieUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(moviePath)}`
         const movies = await fetch(movieUrl);
 
+        dispatch(setIsLoading(true));
+
         if (!movies.ok) {
             // console.error(`TMDB Error for query: Status ${movies.status}`);
             return null; // Stop here and return null if fetch failed
@@ -52,11 +56,12 @@ const GPTSearchBar = () => {
         // console.log(moviesJson);
         // console.log(moviesJson.results);
         return moviesJson.results; 
-        console.log(moviesJson.results);
+        // console.log(moviesJson.results);
         // console.log(selectedOption.current.value);
     }
 
     const searchWebSeries = async (show) => {
+        dispatch(setIsLoading(true));
         // const webshows = await fetch('https://thingproxy.freeboard.io/fetch/https://api.themoviedb.org/3/search/tv?query='+ show +'&include_adult=false&language=en-US&page=1', API_OPTIONS)
         const webSeriesPath = `/search/movie?query=${show}&include_adult=false&language=en-US&page=1`
         const webSeriesUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(webSeriesPath)}`
@@ -84,12 +89,15 @@ const GPTSearchBar = () => {
         // Calling Gemini API
         if (showType === "Movies") {
         try {
-            const MovieResults = await fetch(geminiProxyUrl, {
+            const MovieResults = await fetch(test_url, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ prompt: MovieQuery }),
+                // body: JSON.stringify({ 
+                //     test: 'Hello from frontend' 
+                //   }),
               });
 
             if (!MovieResults.ok) {
@@ -102,19 +110,40 @@ const GPTSearchBar = () => {
             console.log(data);
 
     // 3. Check if the expected 'result' field exists
-        if (!data || typeof data.result !== 'string') {
-            // console.error("Unexpected response format from proxy:", data);
-            throw new Error("Received unexpected data format from proxy function.");
-        }
+        // if (!data || typeof data.result !== 'string') {
+        //     // console.error("Unexpected response format from proxy:", data);
+        //     throw new Error("Received unexpected data format from proxy function.");
+        // }
 
-        // 4. Access the 'result' property which holds the movie string
-        const text = data.result;
-        // console.log("Extracted movie string:", text); // Log the actual string
+        let text = '';
+        const candidate = data.candidates[0];
+        
+        // Debug the candidate structure
+        console.log("Candidate structure:", JSON.stringify(candidate));
+        
+        if (candidate.content && typeof candidate.content === 'string') {
+            text = candidate.content;
+        } else if (candidate.content && candidate.content.parts && candidate.content.parts[0]) {
+            text = candidate.content.parts[0];
+        } else if (candidate.content && candidate.content.text) {
+            text = candidate.content.text;
+        } else {
+            console.error("Unable to find text content in response", candidate);
+            throw new Error("Could not extract text from API response");
+        }
+        
+        // console.log("Extracted text:", text);
 
         // 5. Split the string (add trim() for robustness)
         // Split by comma, then trim whitespace from each resulting name
-        const moviesNames = text.trim().split(',').map(name => name.trim()).filter(name => name.length > 0);
-        console.log(moviesNames);
+        // const moviesNames = text.trim().split(',').map(name => name.trim()).filter(name => name.length > 0);
+        // console.log("Movie Name:", moviesNames);
+
+        const OutputText = text.text;
+        // console.log("OutputText:", OutputText);
+
+        const moviesNames = OutputText.split(',').map(data => data.trim()).filter(data => data.length > 0)
+        // console.log("Movies:", moviesNames)
 
         // console.log("Parsed movie names:", moviesNames);
 
@@ -127,15 +156,17 @@ const GPTSearchBar = () => {
         catch (error) {
             // console.error("Error fetching from Gemini proxy:", error);
         }
+        finally {
+            dispatch(setIsLoading(false));
+        }
     }
 
         
         else if (showType === "Web Series") {
             // console.log("Web series hain");
             
-
             try{
-                const WebShowsResults = await fetch(geminiProxyUrl, {
+                const WebShowsResults = await fetch(test_url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -144,13 +175,45 @@ const GPTSearchBar = () => {
                 })
                 console.log(WebShowsResults);
                
-                const WebShowsResultsJson = await WebShowsResults.json();
-                console.log(WebShowsResultsJson);
+                const data = await WebShowsResults.json();
+                let text = '';
+                const candidate = data.candidates[0];
+                
+                // Debug the candidate structure
+                console.log("Candidate structure:", JSON.stringify(candidate));
+                
+                if (candidate.content && typeof candidate.content === 'string') {
+                    text = candidate.content;
+                } else if (candidate.content && candidate.content.parts && candidate.content.parts[0]) {
+                    text = candidate.content.parts[0];
+                } else if (candidate.content && candidate.content.text) {
+                    text = candidate.content.text;
+                } else {
+                    console.error("Unable to find text content in response", candidate);
+                    throw new Error("Could not extract text from API response");
+                }
+
+                const OutputText = text.text;
+                // console.log("OutputText:", OutputText);
+
+                const moviesNames = OutputText.split(',').map(data => data.trim()).filter(data => data.length > 0)
+                // console.log("Movies:", moviesNames)
+
+                // console.log("Parsed movie names:", moviesNames);
+
+                // For the names we received, we will search the movies in TMDB
+                const promiseArray = moviesNames.map((movie) => searchTMDBMovie(movie)); // Use the correctly parsed names
+
+                const moviesTMDB = await Promise.all(promiseArray);
+                dispatch(addContentDetails({contentNames : moviesNames, contentDetails : moviesTMDB}))
                 
             }
 
             catch (error) {
                 console.error("Error fetching from Gemini proxy:", error);
+            }
+            finally {
+                dispatch(setIsLoading(false));
             }
          
         }
@@ -170,7 +233,7 @@ const GPTSearchBar = () => {
                     <option>Web Series</option>
                 </select>
             </div>
-            <form onSubmit={handleGPTSearch} className="p-6 w-full flex flex-col justify-between items-center gap-2 md:grid md:grid-cols-12 md:bg-black md:gap-3 md:w-1/2">
+            <form onSubmit={handleGPTSearch} className="p-6 w-full flex flex-col justify-between items-center gap-2 md:grid md:grid-cols-12 md:bg-transparent md:gap-3 md:w-1/2">
                 <input ref={input} onChange={(e) => setInputText(e.target.value)} className="md:col-span-9 px-3 py-2 border-2 border-white rounded-md w-full" type="text" 
                     placeholder={lang[langKey].gptPlaceHolder} value={inputText}
                 />

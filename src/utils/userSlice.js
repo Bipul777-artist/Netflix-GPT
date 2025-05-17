@@ -23,12 +23,13 @@ const userSlice = createSlice({
         AddEmailAddress: (state, action) => {
             if (!state) return initialState;
              state.emailAddress = action.payload;
-        }
+        },
+        
     }
 
 
 })
 
-export const {addUser, removeUser, AddEmailAddress} = userSlice.actions;
+export const {addUser, removeUser, AddEmailAddress } = userSlice.actions;
 
 export default userSlice.reducer;

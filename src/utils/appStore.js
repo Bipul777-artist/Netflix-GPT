@@ -7,13 +7,15 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import favoritesReducer from "./favoriteSlice";
 import { combineReducers } from "@reduxjs/toolkit";
+import items from "./items"
 
 const rootReducer = combineReducers({
   user: userReducer,
   movies: movieSlice,
   gptSlice: gptReducer,
   config: configReducer,
-  favorites: favoritesReducer  
+  favorites: favoritesReducer,
+  item: items,
 });
 
 

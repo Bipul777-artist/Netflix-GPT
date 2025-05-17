@@ -12,11 +12,14 @@ import { signOut } from "firebase/auth";
 import {  toggleGPTView } from "../utils/gptSlice.js";
 import { changeLanguage  } from "../utils/configSlice.js";
 import { movieTrailers } from "../utils/movieSlice.js";
+import {SetNavItems} from "../utils/items.js"
 
 
 const Header = () => {
 
     const [signInBtn, setSignInBtn] = useState("Sign In");
+    const navItems = useSelector(store => store.item.userAddress)
+    const [activeRoute, setActiveRoute] = useState('home');
     const dispatch = useDispatch();
     // const identifier = useRef(null);
     const navigate = useNavigate();
@@ -26,21 +29,33 @@ const Header = () => {
     const [showBrowse, SetShowBrowse] = useState(false);
 
     const handleMovies = () => {
+      setActiveRoute('movies')
       navigate('/browse/movies');
       dispatch(movieTrailers(null))
       SetShowBrowse(!showBrowse)
+      dispatch(SetNavItems(true));
     }
 
     const handleHomePage = () => {
+      setActiveRoute('home')
       navigate('/browse');
       dispatch(movieTrailers(null))
       SetShowBrowse(!showBrowse)
+      dispatch(SetNavItems(false));
     }
 
     const handleSeries = () => {
+      setActiveRoute('tv-series')
       navigate('/browse/tv-series');
       dispatch(movieTrailers(null))
       SetShowBrowse(!showBrowse)
+      dispatch(SetNavItems(true));
+    }
+
+    const handleMyList = () => {
+      setActiveRoute('my-list')
+      navigate('/browse/my-list')
+      dispatch(SetNavItems(true))
     }
 
     const LogIn = () => {
@@ -104,11 +119,11 @@ const Header = () => {
     return (
       <div className="">
       <div className="absolute w-full">
-        <div className="absolute justify-between bg-gradient-to-b from-black bg-opacity-65 items-center flex w-full z-30">
+        <div className="absolute w-full z-30 bg-gradient-to-b from-black bg-opacity-65 flex justify-between items-center">
             <img src= {logos.large} 
                 className="w-12 h-8 ml-4 mt-1 md:ml-24 md:w-36 md:h-16"
             />
-            { user && <>
+            { (user && !showGPT) && <>
             <div className=" block md:hidden">
               <div
                 onClick={() => SetShowBrowse(!showBrowse)} 
@@ -117,26 +132,28 @@ const Header = () => {
                 
                 className="text-sm cursor-pointer text-white">Browse</button>
                 <FontAwesomeIcon className ="text-white pl-1" icon={faCaretDown} />
-                </div>
-              {showBrowse && <div className={`absolute z-20 left-0 top-10 w-[220px] h-[220px] border-t-2 border-white transition-opacity duration-300 ease-in-out ${
+              </div>
+              {showBrowse && 
+              <div className={`absolute z-20 left-0 top-10 w-[220px] h-[220px] border-t-2 border-white transition-opacity duration-300 ease-in-out ${
           showBrowse ? 'opacity-100' : 'opacity-0 hidden'} bg-black bg-opacity-80`}>
-                <p className="text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif" onClick={() => handleHomePage()}>Home</p>
-                <p className="text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif" onClick={() => handleMovies()}>Movies</p>
-                <p className="text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif" onClick={() => handleSeries()}>TV Series</p>
-                <p className="text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif" onClick={() => navigate('/browse/my-list') }>My List</p>
+                <p className={`text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif ${activeRoute === 'home' ? 'font-bold' : ''}`} onClick={() => handleHomePage()}>Home</p>
+                <p className={`text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif ${activeRoute === 'movies' ? 'font-bold' : ''}`}  onClick={() => handleMovies()}>Movies</p>
+                <p className={`text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif ${activeRoute === 'tv-series' ? 'font-bold' : ''}`}  onClick={() => handleSeries()}>TV Series</p>
+                <p className={`text-white px-2 mx-12 my-2 text-md cursor-pointer font-serif ${activeRoute === 'my-list' ? 'font-bold' : ''}`}  onClick={() => handleMyList()}>My List</p>
               </div>}
             </div>
-            <div className="hidden -ml-80 md:flex">
-              <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => handleHomePage()}>Home</p>
-              <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => handleMovies()}>Movies</p>
-              <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => handleSeries()}>TV Series</p>
-              <p className="text-white px-3 text-md cursor-pointer font-serif" onClick={() => navigate('/browse/my-list')}>My List</p>
+            <div className="hidden md:flex">
+              <p className={`text-white px-2 mx-2 my-2 text-md cursor-pointer font-serif ${activeRoute === 'home' ? 'font-bold' : ''}`}  onClick={() => handleHomePage()}>Home</p>
+              <p className={`text-white px-2 mx-2 my-2 text-md cursor-pointer font-serif ${activeRoute === 'movies' ? 'font-bold' : ''}`}  onClick={() => handleMovies()}>Movies</p>
+              <p className={`text-white px-2 mx-2 my-2 text-md cursor-pointer font-serif ${activeRoute === 'tv-series' ? 'font-bold' : ''}`}  onClick={() => handleSeries()}>TV Series</p>
+              <p className={`text-white px-2 mx-2 my-2 text-md cursor-pointer font-serif ${activeRoute === 'my-list' ? 'font-bold' : ''}`}  onClick={() => navigate('/browse/my-list')}>My List</p>
             </div> 
             </> }
             
-              {user && <div className="flex items-between ">
+              {(user && !navItems) && 
+                        <div className="w-1/4 flex items-between">
                           
-                          <button onClick={GPTSearchPage} className="bg-gradient-to-r mr-2 from-pink-700 to-pink-900 border-none rounded-md text-white py-1 px-1.5 text-sm font-semibold mt-1.5 md:p-2 md:text-xl md:mr-6">
+                          <button onClick={GPTSearchPage} className="bg-gradient-to-r mr-1 from-pink-700 to-pink-900 border-none rounded-md text-white p-1 text-sm font-semibold mt-1.5 md:p-2 md:text-xl md:mr-6">
                             {showGPT ? "HomePage" : "ChatGPT"}
                           </button>
                           {showGPT && <select onChange={handleLanguageChange} className="bg-gradient-to-r from-red-800 to-red-900 text-white text-sm border-none rounded-md py-1 px-1.5 mt-1.5 md:p-2 md:text-xl">
@@ -167,7 +184,7 @@ const Header = () => {
                     {signInBtn}
                   </button>
                 }
-        </div>
+              </div>
         </div>
         
       </div>

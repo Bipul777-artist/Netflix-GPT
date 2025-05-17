@@ -19,7 +19,7 @@ const VideoTitle = ({title, overview}) => {
         
             {visible ? (
                 <div className="{`transition-opacity duration-700 w-1/2 ${visible ? 'opacity-100' : 'opacity-0'}`}">
-                    <h1 className=" [text-shadow:_0_1px_2px_rgba(255,255,255,0.4)] pl-2 text-2xl md:text-5xl font-bold pt-20 mb-4 text-md text-white md:p-2 md:pt-60 ">{title}</h1>
+                    <h1 className=" [text-shadow:_0_1px_2px_rgba(255,255,255,0.4)] pl-2 text-xl md:text-5xl font-bold pt-20 mb-4 text-md text-white md:p-2 md:pt-60 ">{title}</h1>
                     <h1 className="text-xs p-3 transition-all duration-500 text-white hidden md:block">{overview}</h1>
                 </div>
 

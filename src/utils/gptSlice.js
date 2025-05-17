@@ -8,6 +8,7 @@ const gptSlice = createSlice({
         contentNames: null,
         contentDetails: null,
         contentType: 'Movies',
+        isLoading: false,
     },
     reducers: {
         toggleGPTView : (state) => {
@@ -23,10 +24,13 @@ const gptSlice = createSlice({
         },
         changeContentType : (state, action) => {
             state.contentType = action.payload;
+        },
+        setIsLoading : (state, action) => {
+            state.isLoading = action.payload;
         }
     }
 });
 
-export const {toggleGPTView, addContentDetails, changeContentType, clearContentDetails} = gptSlice.actions
+export const {toggleGPTView, addContentDetails, changeContentType, setIsLoading, clearContentDetails} = gptSlice.actions
 
 export default gptSlice.reducer;

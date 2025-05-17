@@ -71,20 +71,6 @@
     -> PlayContent refresh not working. -> Done
     -> Content Info Work, Architecture.
 
-# Current Issues
-    - Video PlayBack Container Issue 
-        - Currently incase keys are not available, fallback video container is showing. However, 
-        after keys appear videos should play instead of fallback video container. -> Done
-    - PlayContent Component
-        - CSS 
-        - Related Content Cards CSS
-    - GPT Functionality
-    - Styling (CSS) of GPT Page
-    - Movie Card Component
-        - Play Button Functionality
-        - Handling Buttons Hover
-    - My List Page CSS
-    - Lazy Loading.
-    - Optimising Store Use for Fetching keys of Hovered Content
+
 
     

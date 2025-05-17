@@ -25,7 +25,7 @@ const Body = () => {
                     <Header />
                     <HomePage />
                     <SecondPart />
-                    <Footer />
+                    {/* <Footer /> */}
                 </div>
             )
         },
@@ -66,15 +66,7 @@ const Body = () => {
                 </div>
             )
         },
-        {
-            path: "/GptSearchPage", 
-            element: (
-                <div className="">
-                    <Header />
-                    <GPTSearch />
-                </div>
-            )
-        },
+        
         {
             path: "/watch/:movieId", 
             element: (

@@ -33,6 +33,8 @@ const MovieCard = ({ EachMovie, key}) => {
   const [moreInfo, setMoreInfo] = useState(false);
   const playerRef = useRef();
 
+  // console.log(EachMovie);
+
   const { isContentInFavorites, addContentToFavorites, removeContentFromFavorites } = useFavorites();
   const isFavorite = isContentInFavorites(EachMovie.id);
 
@@ -45,8 +47,8 @@ const MovieCard = ({ EachMovie, key}) => {
   };
 
   const getVideoUrl = () => {
-    console.log("Store :" + contentKey);
-    console.log("State Variable :" +  videoId)
+    // console.log("Store :" + contentKey);
+    // console.log("State Variable :" +  videoId)
     return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0`;
   };
   
@@ -108,7 +110,7 @@ const MovieCard = ({ EachMovie, key}) => {
   const handlePlayContentForLargeScreen = (e, movieId) => {
     e.stopPropagation();
     navigate(`/watch/${movieId.id}`);
-    console.log(movieId);
+    // console.log(movieId);
     localStorage.setItem('currentContentDetails', JSON.stringify(movieId));
     dispatch(addContent(movieId));
     window.scrollTo(0, 0);
@@ -144,6 +146,7 @@ const MovieCard = ({ EachMovie, key}) => {
   return (
     <div className="relative group h-48 flex items-center justify-center"
     >
+      {EachMovie.backdrop_path &&
       <div className="w-72 h-40 relative">
         <div
           className={`relative rounded-lg overflow-hidden
@@ -158,14 +161,14 @@ const MovieCard = ({ EachMovie, key}) => {
           
         >
           
-          {(EachMovie.backdrop_path || EachMovie.poster_path) && <img
+           <img
              
             src={IMG_CDN + EachMovie.backdrop_path || IMG_CDN + EachMovie.poster_path} 
             alt={EachMovie.title }
             className={`min-w-full min-h-full object-cover transition-opacity duration-300
               ${previewStarted ? 'opacity-0' : 'opacity-100'}`}
               loading="lazy"
-          />}
+          />
 
           {previewStarted &&
             <div className="absolute inset-0 w-full h-full bg-black">
@@ -223,9 +226,9 @@ const MovieCard = ({ EachMovie, key}) => {
             <div className="absolute bottom-0 left-0 right-0 px-3 pb-3 bg-black text-white">
               <h3 className="font-bold text-md">{EachMovie.original_title || EachMovie.name}</h3>
               <div className="flex">
-                <button className="ml-2 ">
+                {/* <button className="ml-2 ">
                   <FontAwesomeIcon className="h-6 w-6 my-0.5" icon={faPlay} />
-                </button>
+                </button> */}
                 
                 <button onClick={handleToggleFavorite} className="ml-2 transition-all duration-600 ease-in-out">
                   {isFavorite ? 
@@ -319,7 +322,7 @@ const MovieCard = ({ EachMovie, key}) => {
 
 
         </div>
-      </div>
+      </div>}
      
     </div>
   )

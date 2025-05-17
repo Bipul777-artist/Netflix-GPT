@@ -7,6 +7,7 @@ const movieSlice = createSlice({
         nowPlayingMovies:  null,
         topRatedSeries : null,
         popularMovies :null,
+        popularShows: null,
         trendingVideos: null,
         movieTrailers: null,
         hoverContent: null,
@@ -14,6 +15,7 @@ const movieSlice = createSlice({
         contentKey: null, 
         YoutubeKey: null,
         content: [],
+        backUpImg: null,
     }, 
 
     reducers : {
@@ -32,6 +34,9 @@ const movieSlice = createSlice({
         addTrendingVideos: (state, action) => {
             state.trendingVideos = action.payload;
         },
+        addPopularShows: (state, action) => {
+            state.popularShows = action.payload;
+        },
         addHoveredContent : (state, action) => {
             state.hoverContent = action.payload;
         },
@@ -43,10 +48,13 @@ const movieSlice = createSlice({
         },
         addContent: (state, action) => {
             state.content = action.payload;
+        },
+        addBackUpImg : (state, action) => {
+            state.backUpImg = action.payload;
         }
     }
 })
 
-export const {addNowPlayingMovies, movieTrailers, addTopRatedSeries, addPopularMovies,addTrendingVideos, addContent, addMovieYoutubeKey, addContentKey , addHoveredContent, clearNowPlayingMovies} = movieSlice.actions;
+export const {addNowPlayingMovies, movieTrailers, addTopRatedSeries, addBackUpImg, addPopularShows, addPopularMovies,addTrendingVideos, addContent, addMovieYoutubeKey, addContentKey , addHoveredContent, clearNowPlayingMovies} = movieSlice.actions;
 
 export default movieSlice.reducer;

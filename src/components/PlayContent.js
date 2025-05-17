@@ -233,14 +233,14 @@ const PlayContent = () => {
                   )}
                 </div>
                 <div className="px-2 py-2">
-                  <h3 className="text-white text-sm text-center font-medium truncate">
+                  <h3 className="[text-shadow:_0_1px_2px_rgba(255,255,255,0.4)] text-white text-sm text-center md:text-md font-medium truncate">
                     {item.title || item.name}
                   </h3>
-                  <div className="flex items-center mt-1">
+                  {/* <div className="flex items-center mt-1">
                     <span className="text-white text-center text-xs md:text-md">
                       {Math.round(item.vote_average * 10)}% Match
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}

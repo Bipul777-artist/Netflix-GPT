@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addNowPlayingMovies, addPopularMovies, addTopRatedSeries, addTrendingVideos } from "../utils/movieSlice";
+import { addNowPlayingMovies, addPopularMovies, addPopularShows, addTopRatedSeries, addTrendingVideos } from "../utils/movieSlice";
 import { useEffect } from "react";
 
 const CLOUD_FUNCTION_URL = "https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/tmdbProxy";
@@ -60,6 +60,18 @@ const useNowPlayingmovies_v2 = () => {
                 
             } else {
                 //  console.error("Error fetching Trending:", trendingJson);
+            }
+
+            // Popular Web Series 
+
+            const popularShows = 'tv/popular'
+            const popularShowsUrl = `%{CLOUD_FUNCTION_URL}?path=${encodeURIComponent(popularShows)}`
+
+            const popularShowsDetails =  await fetch (popularShowsUrl);
+            const popularShowsDetailsJson = await popularShowsDetails.json();
+
+            if (popularShowsDetailsJson.ok) {
+                dispatch(addPopularShows(popularShowsDetailsJson.results));
             }
 
         }

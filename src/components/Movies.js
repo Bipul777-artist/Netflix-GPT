@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import VideoBackGround from "./VideoBackground";
 import VideoTitle from "./VideoTitle";
 import MovieList from "./MovieList"
+
 const Movies = () => {
 
     const movies = useSelector((store) => store.movies?.nowPlayingMovies);

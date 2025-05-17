@@ -27,7 +27,7 @@ const LogIn = () => {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            setError(errorCode + ' ' + errorMessage);
+            setError("Invalid Credentials! Please use correct credentials to login");
         });
     }
 
@@ -60,8 +60,8 @@ const LogIn = () => {
                 </button>
                 <p className="text-red-600 font-bold m-2 text-xl">{Error}</p>
                 <div className="flex items-center gap-2">
-                    <p className="text-md text-white mt-3">New to Netflix?</p> 
-                    <p onClick={SignUpPage} className="text-md text-white mt-3 hover:underline cursor-pointer">Sign Up Now</p>
+                    <p className="text-md text-white mt-3">New here?</p> 
+                    <p onClick={SignUpPage} className="text-md text-white mt-3 font-bold hover:underline cursor-pointer">Sign Up Now!</p>
                 </div>
             </form>
         </div>
