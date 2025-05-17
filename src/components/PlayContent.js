@@ -21,7 +21,7 @@ const PlayContent = () => {
     const contentDetails = useSelector((store) => store.movies.content);
     // const [contentData, setContentData] = useState(contentDetails);
     const videokey = useSelector((store) => store.movies.YoutubeKey);
-    console.log(videokey);
+    // console.log(videokey);
     const {videoId, fetchYoutubeKey} = useHoveredVideo();
     const [isMuted, setIsMuted] = useState(true);
     const playerRef = useRef(null);
@@ -148,7 +148,7 @@ const PlayContent = () => {
           const result = movie.value 
           
             const response = await result.json();
-            console.log("Movie" + response);
+            // console.log("Movie" + response);
           
 
             const filteredResults = response?.results.filter(item => 
@@ -156,14 +156,14 @@ const PlayContent = () => {
             ).slice(0, 12); 
             
             setRelatedContent(filteredResults);
-            console.log(relatedContent);
+            // console.log(relatedContent);
           
         }
         else if (webShow.status === "fulfilled" ) {
           const result = webShow.value 
           if (result.ok){
             const response = await result.json();
-            console.log("WebShow " + response);
+            // console.log("WebShow " + response);
             // const data = await response.json();
             // console.log(data);
 
@@ -172,12 +172,12 @@ const PlayContent = () => {
             ).slice(0, 8); 
             
             setRelatedContent(filteredResults);
-            console.log(relatedContent);
+            // console.log(relatedContent);
           }
         }
        
       } catch (error) {
-        console.error("Error fetching related content:", error);
+        // console.error("Error fetching related content:", error);
       } finally {
         setLoadingRelated(false);
       }
@@ -202,7 +202,7 @@ const PlayContent = () => {
         <div className="px-4 w-full md:min-w-4/5 mx-auto mb-12">
           <h2 className="text-xl md:text-2xl font-bold text-white my-4">More Like This</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {console.log(relatedContent)}
+            {/* {console.log(relatedContent)} */}
             {relatedContent.map(item => (
               
               <div 

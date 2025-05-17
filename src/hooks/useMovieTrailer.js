@@ -4,7 +4,7 @@ import { movieTrailers , addBackUpImg} from "../utils/movieSlice";
 import {API_OPTIONS} from "../utils/constant";
 
 const useMovieTrailer = (movieId) => {
-    console.log("Hook Received:", movieId)
+    // console.log("Hook Received:", movieId)
     const dispatch = useDispatch();
     const TrailerVideo = useSelector(store => store?.movies?.movieTrailers)
     const CLOUD_FUNCTION_URL = "https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/tmdbProxy";
@@ -67,8 +67,8 @@ const useMovieTrailer = (movieId) => {
   else if (webShow.status === "fulfilled" && webShow.value.ok) {
     try {
     const videoJson = await webShow.value.json();
-    console.log("Webseries fetched");
-    console.log(videoJson);
+    // console.log("Webseries fetched");
+    // console.log(videoJson);
     if (videoJson.results && videoJson.results.length !== 0) {
       
         const Trailers =  videoJson.results.filter(x => x.type === "Trailer");

@@ -42,7 +42,7 @@ const SecondPart = () => {
     const fetchTrendingVideos = async () => {
         const trendingPath = '/trending/movie/day';
             const trendingUrl = `${CLOUD_FUNCTION_URL}?path=${encodeURIComponent(trendingPath)}`;
-            console.log("Fetching from:", trendingUrl); // For debugging
+            // console.log("Fetching from:", trendingUrl); // For debugging
             const trendingResponse = await fetch(trendingUrl); // No API_OPTIONS
             const trendingJson = await trendingResponse.json();
             // console.log(trendingJson);
@@ -50,7 +50,7 @@ const SecondPart = () => {
             setVideoList(trendingJson.results)
                
         
-            console.log(videoList);
+            // console.log(videoList);
     }
 
     return (

@@ -7,13 +7,13 @@ import { IMG_CDN } from "../utils/constant";
 
 const VideoBackGround = ({ movieId }) => {
   useMovieTrailer(movieId);
-  console.log("Video Background:", movieId);
+  // console.log("Video Background:", movieId);
   const playerRef = useRef();
     const [isLoading, setIsLoading] = useState(true);
     const [isVideoReady, setIsVideoReady] = useState(false);
     const FetchTrailer = useSelector((store) => store?.movies?.movieTrailers)
     const PosterImg = useSelector((store) => store?.movies?.backUpImg);
-    console.log(PosterImg);
+    // console.log(PosterImg);
     // console.log(FetchTrailer);
     // const FetchSeries = useSelector((store) => store?.movies?.topRatedSeries)
     

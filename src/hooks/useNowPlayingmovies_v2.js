@@ -67,9 +67,9 @@ const useNowPlayingmovies_v2 = () => {
             const popularShows = 'tv/popular'
             const popularShowsUrl = `%{CLOUD_FUNCTION_URL}?path=${encodeURIComponent(popularShows)}`
 
-            const popularShowsDetails =  await fetch (popularShowsUrl);
+            const popularShowsDetails =  await fetch(popularShowsUrl);
             const popularShowsDetailsJson = await popularShowsDetails.json();
-
+            // console.log(popularMoviesJson);
             if (popularShowsDetailsJson.ok) {
                 dispatch(addPopularShows(popularShowsDetailsJson.results));
             }

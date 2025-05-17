@@ -69,7 +69,7 @@ const useHoveredVideo = () => {
                 // console.log()
 
                 const movieJson = await movie.value.json();
-                console.log(movieJson);
+                // console.log(movieJson);
                 if (movieJson.results && movieJson.results.length > 0) {
                     const clipObj = movieJson.results.find((x) => x.type === "Clip");
                     foundKey = clipObj?.key || movieJson.results[0]?.key;

@@ -25,7 +25,7 @@ const GPTSearchBar = () => {
     // const hfProxyUrl = 'https://comfy-bonbon-7c052c.netlify.app/netlify/functions/hfProxy'
 
     const test_url = process.env.NODE_ENV === 'production' 
-  ? '/.netlify/functions/geminiProxy'  // Production path (relative to your site root)
+  ? 'https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/geminiProxy'  // Production path (relative to your site root)
   : 'http://localhost:8888/.netlify/functions/geminiProxy';  // Development path
 
     // const hfProxyUrl = './netlify/functions/hfProxy'
@@ -68,7 +68,7 @@ const GPTSearchBar = () => {
         const webshows = await fetch(webSeriesUrl);
         
         if (!webshows.ok) {
-            console.error(`TMDB Error for query: Status ${webshows.status}`);
+            // console.error(`TMDB Error for query: Status ${webshows.status}`);
             return null; // Stop here and return null if fetch failed
         }
         const webShowsJson = await webshows.json();
@@ -107,7 +107,8 @@ const GPTSearchBar = () => {
             }
             
             const data = await MovieResults.json();
-            console.log(data);
+            // console.log(data);
+
 
     // 3. Check if the expected 'result' field exists
         // if (!data || typeof data.result !== 'string') {
@@ -119,7 +120,7 @@ const GPTSearchBar = () => {
         const candidate = data.candidates[0];
         
         // Debug the candidate structure
-        console.log("Candidate structure:", JSON.stringify(candidate));
+        // console.log("Candidate structure:", JSON.stringify(candidate));
         
         if (candidate.content && typeof candidate.content === 'string') {
             text = candidate.content;
@@ -128,7 +129,7 @@ const GPTSearchBar = () => {
         } else if (candidate.content && candidate.content.text) {
             text = candidate.content.text;
         } else {
-            console.error("Unable to find text content in response", candidate);
+            // console.error("Unable to find text content in response", candidate);
             throw new Error("Could not extract text from API response");
         }
         
@@ -173,14 +174,14 @@ const GPTSearchBar = () => {
                     },
                     body: JSON.stringify({ prompt: WebShowsQuery }), // Send prompt in body
                 })
-                console.log(WebShowsResults);
+                // console.log(WebShowsResults);
                
                 const data = await WebShowsResults.json();
                 let text = '';
                 const candidate = data.candidates[0];
                 
                 // Debug the candidate structure
-                console.log("Candidate structure:", JSON.stringify(candidate));
+                // console.log("Candidate structure:", JSON.stringify(candidate));
                 
                 if (candidate.content && typeof candidate.content === 'string') {
                     text = candidate.content;
