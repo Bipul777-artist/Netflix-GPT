@@ -1,10 +1,7 @@
 import MovieCard from "./MovieCard";
 import { useState, useRef, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronRight,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import {ChevronRight,
+  ChevronLeft} from 'lucide-react'
 
 
 const MovieList = ({title, movie}) => {
@@ -77,8 +74,8 @@ const MovieList = ({title, movie}) => {
                     onClick={() => handleScroll('left')}
                     className="p-2 z-50 bg-black/50 h-full md:max-h-2/5 rounded-md hover:bg-black/75 transition-colors pointer-events-auto opacity-0 group-hover:opacity-100 ml-2"
                 >
-                    <FontAwesomeIcon
-                        icon={faChevronLeft}
+                    <ChevronLeft
+                      
                         className="w-8 h-24 text-white font-semibold"
                     />
                 </button>
@@ -87,8 +84,8 @@ const MovieList = ({title, movie}) => {
                     onClick={() => handleScroll('right')}
                     className=" p-2 z-50 bg-black/50 rounded-md h-full md:max-h-2/5 hover:bg-black/75 transition-colors pointer-events-auto opacity-0 group-hover:opacity-100 mr-2"
                 >
-                    <FontAwesomeIcon
-                        icon={faChevronRight}
+                    <ChevronRight
+                        
                         className="w-8 h-24 text-white font-semibold"
                     />
                 </button>

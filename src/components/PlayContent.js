@@ -4,11 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useRef, useEffect} from "react";
 import { addContent } from "../utils/movieSlice";
 import {IMG_CDN, genreLookUp, CLOUD_FUNCTION_URL} from "../utils/constant";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faCircleXmark, faUsers, faStar, faFireFlameCurved,
-    faPlus, faCheck, faPlay,
-  faThumbsUp, faHeart, faThumbsDown,
-}  from "@fortawesome/free-solid-svg-icons";
+import {
+  XCircle,          // Alternative for faCircleXmark
+  Users,            // Alternative for faUsers
+  Star,             // Alternative for faStar
+  Flame,            // Alternative for faFireFlameCurved
+  Plus,             // Alternative for faPlus
+  Check,            // Alternative for faCheck
+  Play,             // Alternative for faPlay
+  ThumbsUp,         // Alternative for faThumbsUp
+  Heart,            // Alternative for faHeart
+  ThumbsDown,       // Alternative for faThumbsDown
+} from 'lucide-react';
 import useFavorites from "../hooks/useFavorites";
 import AlbumArtPreview from "./HoveredSkeleton";
 import MovieCard from "./MovieCard";
@@ -335,7 +342,7 @@ const PlayContent = () => {
                   
                   <button onClick={handleToggleFavorite} className="ml-2 transition-all duration-300 ease-in-out">
                     {animationState ? 
-                    <FontAwesomeIcon className={`
+                    <Check className={`
                       p-2
                       bg-transparent
                       border-2 border-white rounded-full
@@ -343,8 +350,8 @@ const PlayContent = () => {
                       transition-all
                       duration-300
                       ${isFavorite ? 'scale-125' : 'scale-100'}
-                      md:h-6 md:w-6 my-0.5`} icon={faCheck} /> : 
-                    <FontAwesomeIcon className={`
+                      md:h-6 md:w-6 my-0.5`}  /> : 
+                    <Plus className={`
                       p-2
                       bg-transparent
                       border-2 border-white
@@ -352,7 +359,7 @@ const PlayContent = () => {
                       transition-all
                       duration-300
                       ${isFavorite ? 'scale-125' : 'scale-100'}
-                      w-4 h-4 md:h-6 md:w-6 my-0.5`} icon={faPlus} />}
+                      w-4 h-4 md:h-6 md:w-6 my-0.5`} />}
                   </button>
                   
                   <div className="relative"
@@ -374,7 +381,7 @@ const PlayContent = () => {
                           ${clickedButton === 'love' ? 'scale-125' : 'scale-100'}
                         `}
                         >
-                        <FontAwesomeIcon className="w-5 h-5 md:h-6 md:w-6 my-0.5"  icon={faHeart} />
+                        <Heart className="w-5 h-5 md:h-6 md:w-6 my-0.5"  />
                       </button>
                       <button
                         className={`
@@ -388,7 +395,7 @@ const PlayContent = () => {
                         `}
                       
                         onClick={() => handleReaction('like')}>
-                        <FontAwesomeIcon className="w-5 h-5  md:h-6 md:w-6 my-0.5" icon={faThumbsUp} />
+                        <ThumbsUp className="w-5 h-5  md:h-6 md:w-6 my-0.5"  />
                       
                       </button>
                       <button 
@@ -403,14 +410,14 @@ const PlayContent = () => {
                         onClick={() => handleReaction('dislike')}>
                         
                         
-                        <FontAwesomeIcon className="w-5 h-5 md:h-6 md:w-6 my-0.5" icon={faThumbsDown} />
+                        <ThumbsDown className="w-5 h-5 md:h-6 md:w-6 my-0.5"  />
                       </button>
                     </div> : (
                       <button>
-                        {selectedOption === 'like' ? <FontAwesomeIcon className="text-blue-500 w-4 h-4 md:h-6 md:w-6 ml-2 border-2 border-white rounded-full p-2  my-2" icon={faThumbsUp} /> :
-                        selectedOption === 'dislike' ? <FontAwesomeIcon className="text-red-600 w-4 h-4 md:h-6 md:w-6 ml-2 border-2 border-white rounded-full p-2  my-2" icon={faThumbsDown}/> :
-                        selectedOption === 'love' ? <FontAwesomeIcon className="text-pink-600 border-2 border-white rounded-full p-2 w-4 h-4 md:h-6 md:w-6 ml-2 my-2" icon={faHeart}/> :
-                        <FontAwesomeIcon className="w-5 h-5 md:h-6 md:w-6 ml-2 my-2" icon={faThumbsUp} />
+                        {selectedOption === 'like' ? <ThumbsUp className="text-blue-500 w-4 h-4 md:h-6 md:w-6 ml-2 border-2 border-white rounded-full p-2  my-2"  /> :
+                        selectedOption === 'dislike' ? <ThumbsDown className="text-red-600 w-4 h-4 md:h-6 md:w-6 ml-2 border-2 border-white rounded-full p-2  my-2" /> :
+                        selectedOption === 'love' ? <Heart className="text-pink-600 border-2 border-white rounded-full p-2 w-4 h-4 md:h-6 md:w-6 ml-2 my-2" /> :
+                        <ThumbsUp className="w-5 h-5 md:h-6 md:w-6 ml-2 my-2"  />
                         }
                       </button>
                     )
@@ -424,18 +431,18 @@ const PlayContent = () => {
                       <div className="flex mt-2 md:mt-4">
                           <p className="text-gray-500 font-semibold">Popularity </p>
                           <p className="text-white font-bold pl-2">{(contentDetails.popularity)}</p>
-                          <FontAwesomeIcon className="pl-2 pt-1" icon={faFireFlameCurved} />
+                          <Flame className="pl-2 pt-1"  />
                       </div>
                       
                       <div className="flex mt-2 md:mt-4 ">
                           <p className="text-gray-500 font-semibold">Rating - </p> 
                           <p className="text-white font-bold pl-2">{contentDetails.vote_average}</p>
-                          <FontAwesomeIcon className="pl-2 pt-1" icon={faStar} />
+                          <Star className="pl-2 pt-1" />
                       </div>
                       <div className="flex mt-2 md:mt-4">
                           <p className="text-gray-500 font-semibold">Voted By - </p>
                           <p className="text-white font-bold pl-2">{contentDetails.vote_count}</p>
-                          <FontAwesomeIcon className="pl-2 pt-1" icon={faUsers} />
+                          <Users className="pl-2 pt-1"  />
                       </div>
                   
                       </div>

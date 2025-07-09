@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faPlus,  faXmark}  from "@fortawesome/free-solid-svg-icons";
+import {Plus,  XCircle} from 'lucide-react';
 
 const Accordian = ({question, answer, isOpen, onToggle}) => {
 
@@ -11,7 +10,11 @@ const Accordian = ({question, answer, isOpen, onToggle}) => {
             >
                 <h2 className="text-md md:text-xl">{question}</h2>
                 <button>
-                    <FontAwesomeIcon className="md:w-8 md:h-8" icon={isOpen ? faXmark : faPlus} />
+                    {isOpen ? 
+                        <XCircle className='md:w-8 md:h-8' /> : 
+                        <Plus className='md:w-8 md:h-8' />
+                    }
+                    {/* <FontAwesomeIcon className="md:w-8 md:h-8" icon={isOpen ? faXmark : faPlus} /> */}
                 </button>
             </div>
 

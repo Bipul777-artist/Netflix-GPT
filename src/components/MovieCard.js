@@ -1,13 +1,18 @@
 import { IMG_CDN, genreLookUp, genre_name } from "../utils/constant";
 import React, { useMemo, useCallback } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faChevronRight,
-  faChevronLeft,
-  faPlay,
-  faPlus,
-  faThumbsUp, faHeart, faThumbsDown, faCircleChevronDown, faCheck, faCaretDown
-} from "@fortawesome/free-solid-svg-icons";
+  ChevronRight,
+  ChevronLeft,
+  Play,
+  Plus,
+  ThumbsUp,
+  Heart,
+  ThumbsDown,
+  ChevronDownCircle, // Closest equivalent for faCircleChevronDown
+  Check,
+  CaretDown, // You might use ChevronDown or TriangleDown based on preference
+  TriangleDown // Alternative for faCaretDown
+} from 'lucide-react';
 import { useEffect, useState, useRef } from "react";
 import VideoBackGround from "./VideoBackground";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,24 +21,17 @@ import useHoveredVideo from "../hooks/useHoveredVideo";
 import { useNavigate } from "react-router-dom";
 import useFavorites from "../hooks/useFavorites";
 import AlbumArtPreview from "./HoveredSkeleton";
-// If the preview feature and Watch Feature works, remove videoId from useHovered Hook and here!
+
 
 const MovieCard = React.memo(({ EachMovie, key}) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const [imageLoaded, setImageLoaded] = useState(false);
   const MovieKey = useSelector((store) => store.movies.hoverContent)
   const contentKey = useSelector((store) => store.movies.YoutubeKey)
   const {videoId, fetchYoutubeKey} = useHoveredVideo();
-  // const [isHovering, setIsHovering] = useState(false);
   const [hoverTimer, setHoverTimer] = useState(null);
-  // const [previewStarted, setPreviewStarted] = useState(false);
-  // const [showLikeButton, setShowLikeButton] = useState(false);
-  // const [selectedOption, setSelectedOption] = useState(null);
-  // const [clickedButton, setClickedButton] = useState(null);
-  // const [isMuted, setIsMuted] = useState(true);
-  // const [moreInfo, setMoreInfo] = useState(false);
+  
   const [state, setState] = useState({
     imageLoaded : false,
     isHovering: false,
@@ -52,8 +50,6 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
 
   const { isContentInFavorites, addContentToFavorites, removeContentFromFavorites } = useFavorites();
   const isFavorite = useMemo(() => isContentInFavorites(EachMovie.id), [isContentInFavorites, EachMovie.id]);
-
-  // console.log(EachMovie);
 
    // Optimized state updater
   const updateState = useCallback((updates) => {
@@ -76,8 +72,7 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
   
 
   const getVideoUrl = useMemo(() => {
-    // console.log("Store :" + contentKey);
-    // console.log("State Variable :" +  videoId)
+   
     return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0`;
   }, [contentKey]);
 
@@ -145,7 +140,7 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
     }
   }, [isFavorite, removeContentFromFavorites, addContentToFavorites, EachMovie]);
 
-  const getGenreNames = (genreIds) => {
+  const getGenreNames = useCallback((genreIds) => {
     if (!genreIds || !Array.isArray(genreIds) || genreIds.length === 0) {
       return 
     }
@@ -154,7 +149,7 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
       .map(data => genreLookUp[data] || null)
       .filter(name => name !== null)
       .join(" . ")
-  }
+  }, [EachMovie.genre_ids])
 
   const handlePlayContent = useCallback((movieId) => {
     if (window.innerWidth < 768) {
@@ -300,19 +295,19 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
                 
                 <button onClick={handleToggleFavorite} className="ml-2 transition-all duration-600 ease-in-out">
                   {isFavorite ? 
-                  <FontAwesomeIcon className={`
+                  <Check className={`
                     p-2
                     rounded-full
                     transistion-all
                     duration-300
                     ${isFavorite ? 'scale-125' : 'scale-100'}
-                    h-6 w-6 my-0.5`} icon={faCheck} /> : 
-                  <FontAwesomeIcon className={`
+                    h-6 w-6 my-0.5`}  /> : 
+                  <Plus className={`
                     p-2
                     rounded-full
                     
                     ${isFavorite ? 'scale-125' : 'scale-100'}
-                    h-6 w-6 my-0.5`} icon={faPlus} />}
+                    h-6 w-6 my-0.5`} />}
                 </button>
                 
                 <div className="relative"
@@ -333,7 +328,7 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
                         ${state.clickedButton === 'love' ? 'scale-125' : 'scale-100'}
                       `}
                       >
-                      <FontAwesomeIcon className="h-6 w-6 my-0.5"  icon={faHeart} />
+                      <Heart className="h-6 w-6 my-0.5" />
                     </button>
                     <button
                       className={`
@@ -346,7 +341,7 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
                       `}
                     
                       onClick={() => handleReaction('like')}>
-                      <FontAwesomeIcon className="h-6 w-6 my-0.5" icon={faThumbsUp} />
+                      <ThumbsUp className="h-6 w-6 my-0.5" />
                     
                     </button>
                     <button 
@@ -361,14 +356,14 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
                       onClick={() => handleReaction('dislike')}>
                       
                       
-                      <FontAwesomeIcon className="h-6 w-6 my-0.5" icon={faThumbsDown} />
+                      <ThumbsDown className="h-6 w-6 my-0.5" />
                     </button>
                   </div> : (
                     <button>
-                      {state.selectedOption === 'like' ? <FontAwesomeIcon className="text-blue-500 h-6 w-6 ml-2 my-2" icon={faThumbsUp} /> :
-                      state.selectedOption === 'dislike' ? <FontAwesomeIcon className="text-red-600 h-6 w-6 ml-2 my-2" icon={faThumbsDown}/> :
-                      state.selectedOption === 'love' ? <FontAwesomeIcon className="text-pink-600 h-6 w-6 ml-2 my-2" icon={faHeart}/> :
-                      <FontAwesomeIcon className="h-6 w-6 ml-2 my-2" icon={faThumbsUp} />
+                      {state.selectedOption === 'like' ? <ThumbsUp className="text-blue-500 h-6 w-6 ml-2 my-2"  /> :
+                      state.selectedOption === 'dislike' ? <ThumbsDown className="text-red-600 h-6 w-6 ml-2 my-2" /> :
+                      state.selectedOption === 'love' ? <Heart className="text-pink-600 h-6 w-6 ml-2 my-2" /> :
+                      <ThumbsUp className="h-6 w-6 ml-2 my-2" />
                       }
                     </button>
                   )
@@ -380,7 +375,7 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
                   onMouseLeave={() => setTimeout(() => {updateState({moreInfo : false})}, 100)}
                   onClick={(e) => handlePlayContentForLargeScreen(e, EachMovie)}
                   className="ml-56 transition-all duration-600 ease-in-out">
-                  <FontAwesomeIcon className="h-8 w-8 my-0.5" icon={faCircleChevronDown} />  
+                  <ChevronDownCircle className="h-8 w-8 my-0.5"  />  
                   {state.moreInfo && <p className="absolute right-4 -top-4 py-1.5 px-2 border-1 rounded-md bg-gray-200 text-black animate-fadeIn opacity-95">More Info</p>}
                 </button>
               </div>

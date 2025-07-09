@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utils/firebase.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown
-} from "@fortawesome/free-solid-svg-icons";
+import {ChevronDownCircle} from 'lucide-react'
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice.js";
 import { useNavigate } from "react-router-dom";
@@ -131,7 +129,7 @@ const Header = () => {
                 <button 
                 
                 className="text-sm cursor-pointer text-white">Browse</button>
-                <FontAwesomeIcon className ="text-white pl-1" icon={faCaretDown} />
+                <ChevronDownCircle className ="text-white pl-1" />
               </div>
               {showBrowse && 
               <div className={`absolute z-20 left-0 top-10 w-[220px] h-[220px] border-t-2 border-white transition-opacity duration-300 ease-in-out ${

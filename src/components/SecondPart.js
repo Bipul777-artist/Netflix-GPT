@@ -1,11 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import {CLOUD_FUNCTION_URL, FAQ, IMG_CDN} from "../utils/constant"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronRight,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import {ChevronRight, ChevronLeft} from 'lucide-react'
 import Accordian from "./Accordian";
 
 const SecondPart = () => {
@@ -77,17 +73,17 @@ const SecondPart = () => {
             {/* Handle Left, Right Feature */}
             <div className="">
                     <button className="absolute top-32 left-10">
-                        <FontAwesomeIcon
+                        <ChevronLeft
                             onClick={() => handleScroll('left')}
-                            icon={faChevronLeft}
+                            
                             className="w-6 h-12 md:w-8 md:h-24 text-white"
                             />
                     </button>
 
                     <button className="absolute top-32 right-10">
-                        <FontAwesomeIcon
+                        <ChevronRight
                             onClick={() => handleScroll('right')}
-                            icon={faChevronRight}
+                            
                             className="w-6 h-12 md:w-8 md:h-24 text-white"
                         />
                     </button>                        
