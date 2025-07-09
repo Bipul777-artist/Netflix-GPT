@@ -48,7 +48,7 @@ const useMovieTrailer = (movieId) => {
         const ImageData = await Image.json();
         if (ImageData && ImageData.backdrop_path) {
           dispatch(addBackUpImg(ImageData.backdrop_path));
-          {console.log(ImageData)}
+          // {console.log(ImageData)}
         }
     }
   }

@@ -9,6 +9,7 @@ import {
 
 const MovieList = ({title, movie}) => {
 
+    const [loadMovies, SetLoadMovies] = useState(6)
     const [rowExpanded, setRowExpanded] = useState(false);
     const [scrollPosition, setScrollPosition] = useState(0);
     const [leftCursor, setLeftCursor] = useState(0);
@@ -45,7 +46,7 @@ const MovieList = ({title, movie}) => {
                     carousel.scrollLeft = end;
                 }
             };
-            
+            SetLoadMovies((prev) => prev + 6)
             requestAnimationFrame(animateScroll);
         };
         
@@ -59,7 +60,7 @@ const MovieList = ({title, movie}) => {
                 <h1 className="text-md md:text-3xl mb-2 px-2 pb-1 text-white underline">{title}</h1>
                 <div ref={carouselRef} className="pl-2 flex -space-x-[60px] md:space-x-6 overflow-x-auto md:overflow-x-hidden hover:py-8 md:pl-20">
                 
-                    {movie.map((item) => {
+                    {movie.slice(0, loadMovies).map((item) => {
                         // console.log(item);
                         return (
                         <MovieCard 

@@ -61,7 +61,9 @@
     "http-proxy-middleware": "^3.0.5",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.0.1",
-    "tailwindcss": "^3.4.15"
+    "source-map-explorer": "^2.5.3",
+    "tailwindcss": "^3.4.15",
+    "webpack-bundle-analyzer": "^4.10.2"
   },
   "proxy": "https://comfy-bonbon-7c052c.netlify.app/"
 }
