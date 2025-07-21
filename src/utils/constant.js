@@ -206,3 +206,48 @@ export const FAQ = [
 
 ]
 
+
+
+export const LoadingSpinner = () => (
+    <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+    </div>
+);
+
+export const IsMuted = () => {
+  return (
+                <div>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                  <line x1="23" y1="9" x2="17" y2="15"></line>
+                                  <line x1="17" y1="9" x2="23" y2="15"></line>
+                                  </svg>
+                              
+                              </div>
+  )
+}
+
+export const IsUnMuted = () => {
+
+    return (
+
+                <div>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                              </svg>
+                </div>
+    )
+}
+
+export function throttle(func, delay) {
+  let lastCall = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastCall >= delay){
+      lastCall = now;
+      func(...args)
+    }
+  }
+ }

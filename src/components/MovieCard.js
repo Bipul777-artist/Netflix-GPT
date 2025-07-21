@@ -1,5 +1,5 @@
-import { IMG_CDN, genreLookUp, genre_name } from "../utils/constant";
-import React, { useMemo, useCallback } from "react";
+import { IMG_CDN, genreLookUp, genre_name, IsMuted, IsUnMuted} from "../utils/constant";
+import React, {  Suspense, fallback, useMemo, useCallback } from "react";
 import {
   ChevronRight,
   ChevronLeft,
@@ -21,9 +21,11 @@ import useHoveredVideo from "../hooks/useHoveredVideo";
 import { useNavigate } from "react-router-dom";
 import useFavorites from "../hooks/useFavorites";
 import AlbumArtPreview from "./HoveredSkeleton";
+import LazyVideoPreview from "./LazyVideoPreview";
+import useIntersection from "../hooks/useInterSection";
 
 
-const MovieCard = React.memo(({ EachMovie, key}) => {
+const MovieCard = React.memo(({ EachMovie, index, onMouseEnter, previewContentId, hoverContentId}) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,11 +33,11 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
   const contentKey = useSelector((store) => store.movies.YoutubeKey)
   const {videoId, fetchYoutubeKey} = useHoveredVideo();
   const [hoverTimer, setHoverTimer] = useState(null);
+  const [cardRef, isVisible] = useIntersection(0.5);
+  const showVideoPreview = hoverContentId === EachMovie.id && previewContentId === EachMovie.id
   
   const [state, setState] = useState({
     imageLoaded : false,
-    isHovering: false,
-    previewStarted: false,
     showLikeButton: false,
     selectedOption: null,
     clickedButton: null,
@@ -43,11 +45,9 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
     moreInfo: false
   })
 
+  const isHovering = hoverContentId === EachMovie.id
+  const previewStarted = previewContentId === EachMovie.id
   const playerRef = useRef(null);
-  const hoverTimerRef = useRef(null);
-  const previewTimerRef = useRef(null);
-  const lastHoverTimeRef = useRef(0);
-
   const { isContentInFavorites, addContentToFavorites, removeContentFromFavorites } = useFavorites();
   const isFavorite = useMemo(() => isContentInFavorites(EachMovie.id), [isContentInFavorites, EachMovie.id]);
 
@@ -56,81 +56,17 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
     setState(prev => ({ ...prev, ...updates }));
   }, []);
 
-  // CleanUp Function
-  const cleanUp = useCallback(() => {
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current)
-      hoverTimerRef.current = null;
-    }
-
-    if(previewTimerRef.current) {
-      clearTimeout(previewTimerRef.current)
-      previewTimerRef.current = null
-    }
-  }, [])
-
-  
-
   const getVideoUrl = useMemo(() => {
-   
-    return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0`;
-  }, [contentKey]);
-
-  const handleMouseEnter = useCallback((movieId) => {
-
-    const currentTime = Date.now();
-    lastHoverTimeRef.current = currentTime;
-
-    cleanUp();
-
-    hoverTimerRef.current = setTimeout(() => {
-      if (lastHoverTimeRef.current === currentTime) {
-        dispatch(addHoveredContent(movieId))
-        updateState({isHovering : true})
-      }
-    }, 500)
-
-  }, [dispatch, cleanUp, updateState])
-
-
-  const handleMouseLeave = useCallback(() => {
     
-    cleanUp();
-    updateState({
-      isHovering : false,
-      previewStarted : false,
-      showLikeButton : false,
-      moreInfo: false
-    })
-
-    lastHoverTimeRef.current = 0
-  }, [cleanUp, updateState])
+    return `https://www.youtube.com/embed/${contentKey}?enablejsapi=1&autoplay=1&mute=1&controls=0&modestbranding=0&fs=0&playsinline=1&loop=1&rel=0&showinfo=0`;
+  },[contentKey])
   
   useEffect(() => {
-    if (MovieKey && state.isHovering) {
+    if (MovieKey && isHovering) {
       fetchYoutubeKey(MovieKey);
     }
-  }, [MovieKey, fetchYoutubeKey, state.isHovering])
+  }, [MovieKey, fetchYoutubeKey, isHovering])
 
-  useEffect(() => {
-    if (state.isHovering && !state.previewStarted) {
-      previewTimerRef.current = setTimeout(() => {
-        updateState({previewStarted : true})
-      }, 2000)
-
-    }
-
-    return () => {
-      if (previewTimerRef.current) {
-        clearTimeout(previewTimerRef.current)
-        previewTimerRef.current = null
-      }
-    }
-  }, [state.isHovering, state.previewStarted, updateState])
-
-  useEffect(() => {
-    return cleanUp
-  }, [cleanUp])
 
   const handleToggleFavorite = useCallback(() => {
     if (isFavorite) {
@@ -144,7 +80,6 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
     if (!genreIds || !Array.isArray(genreIds) || genreIds.length === 0) {
       return 
     }
-
     return genreIds
       .map(data => genreLookUp[data] || null)
       .filter(name => name !== null)
@@ -188,35 +123,27 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
     }, 300)
   }, [state.selectedOption, updateState])
 
-  const toggleMute = useCallback(() => {
-    if (playerRef.current) {
-        // Access the YouTube iframe API
-        if (state.isMuted) {
-          playerRef.current.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-        } else {
-          playerRef.current.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-        }
-        // setIsMuted(!isMuted);
-        updateState({isMuted : !state.isMuted})
-      }
-}, [state.isMuted, updateState]);
+  const toggleMute = () => {
+    playerRef.current?.toggleMute();   // delegate to iframe
+    setState(prev => ({ ...prev, isMuted: !prev.isMuted }));
+  };
 
   return (
     <div className="relative group h-48 flex items-center justify-center"
     >
       {EachMovie.backdrop_path &&
-      <div className="w-72 h-40 relative">
+      <div onMouseEnter={onMouseEnter} className="relative w-52 h-32 md:w-72 md:h-40 ">
         <div
-          className={`relative rounded-lg overflow-hidden
+          ref={cardRef}
+          className={`absolute overflow-y-hidden rounded-lg overflow-hidden
             transition-all duration-500 ease-in-out ${
-              state.isHovering 
-                ? 'w-96 h-64 -translate-x-4 -translate-y-8 z-40 -top-4 shadow-xl' 
-                : 'w-52 h-32 md:w-72 md:h-40 z-10'
+              isHovering 
+                ? 'w-96 h-64 -left-12 z-40 -top-8 shadow-xl' 
+                : 'w-52 h-32 md:w-72 md:h-40 left-0 top-0 z-10'
             }`}
           onClick={() => handlePlayContent(EachMovie)}
-          onMouseEnter={() =>handleMouseEnter(EachMovie.id)}
-          onMouseLeave={handleMouseLeave}
           
+  
         >
           {!state.imageLoaded && (
             <div className="min-w-full bg-red-600 border-1 rounded-md min-h-full object-cover ">
@@ -228,67 +155,50 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
             src={IMG_CDN + EachMovie.backdrop_path || IMG_CDN + EachMovie.poster_path} 
             alt={EachMovie.title }
             className={`min-w-full min-h-full object-cover transition-opacity duration-300
-              ${state.previewStarted ? 'opacity-0' : 'opacity-100'}`}
+              ${previewStarted ? 'opacity-0' : 'opacity-100'}`}
             onLoad={() => updateState({imageLoaded :  true})}
-            loading="lazy"
+            loading={index < 6 ? 'eager' : 'lazy'}
+            fetchPriority={index < 3 ? 'high' : 'auto'}
           />
           {/* Video Preview */}
-          {state.previewStarted &&
+          {isVisible && showVideoPreview &&
             <div className="absolute inset-0 w-full h-full bg-black">
               <div className="relative w-full h-full overflow-hidden">
-              {contentKey ? 
+              
                 <div>
-                <div className="w-full h-0 pb-[56.25%] relative">
-                    
-                    <iframe 
-                    ref={playerRef}
-                    src={getVideoUrl} 
-                    title="Movie Preview" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                    className="absolute top-1/2 left-0 w-full h-[176%] -translate-y-1/2"
-                    loading="lazy"
-                  ></iframe>
+                  <Suspense fallback={<AlbumArtPreview />}>
+                    <LazyVideoPreview 
+                      ref={playerRef}
+                      src={getVideoUrl}
+                      muted={state.isMuted} 
+                      
+                    />
+                  </Suspense>
+                  
+                  
+                  <button
+                      onClick={toggleMute}
+                      className="absolute z-30 bottom-8 right-10 transform bg-transparent md:text-gray-200 hover:text-white rounded-full p-4 transition-all md:bottom-1/3 md:-translate-y-2/3 md:right-1/4 md:translate-x-2/3"
+                      >
+                      
+                          {state.isMuted ? <IsMuted />: <IsUnMuted />
+                          
+                          }
+                      
+                  </button>
+                  
+                  
                 </div>
                 
-                {/* Sound Options */}
-                <button
-                    onClick={toggleMute}
-                    className="absolute z-30 bottom-8 right-10 transform bg-transparent md:text-gray-200 hover:text-white rounded-full p-4 transition-all md:bottom-1/3 md:-translate-y-2/3 md:right-1/4 md:translate-x-2/3"
-                    >
-                    
-                        {state.isMuted ? <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                <line x1="23" y1="9" x2="17" y2="15"></line>
-                                <line x1="17" y1="9" x2="23" y2="15"></line>
-                                </svg>
-                            
-                            </div> : 
-                        (<div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                            </svg>
-                        </div>)
-                        }
-                    
-                </button>
-                </div>
-                : (
-                  <AlbumArtPreview />
-                )
-                }
+                
               </div>
             </div>
           }
 
-          {state.isHovering &&
+          {isHovering &&
             <div className="absolute bottom-0 left-0 right-0 px-3 pb-3 bg-black text-white">
               <h3 className="font-bold text-md">{EachMovie.original_title || EachMovie.name}</h3>
-              <div className="flex">
+              <div className="flex ">
                 {/* <button className="ml-2 ">
                   <FontAwesomeIcon className="h-6 w-6 my-0.5" icon={faPlay} />
                 </button> */}
@@ -301,13 +211,13 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
                     transistion-all
                     duration-300
                     ${isFavorite ? 'scale-125' : 'scale-100'}
-                    h-6 w-6 my-0.5`}  /> : 
+                    h-10 w-10 my-0.5`}  /> : 
                   <Plus className={`
                     p-2
                     rounded-full
                     
                     ${isFavorite ? 'scale-125' : 'scale-100'}
-                    h-6 w-6 my-0.5`} />}
+                    h-10 w-10 my-0.5`} />}
                 </button>
                 
                 <div className="relative"
@@ -392,3 +302,4 @@ const MovieCard = React.memo(({ EachMovie, key}) => {
 });
 
 export default MovieCard;
+

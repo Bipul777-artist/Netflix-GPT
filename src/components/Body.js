@@ -11,7 +11,17 @@ import FavoriteList from "./FavoriteList.js";
 import Movies from "./Movies.js";
 import TVSeries from "./TVSeries.js";
 import SecondPart from "./SecondPart.js";
-import Footer from "./Footer.js"
+import Footer from "./Footer.js";
+import {lazy, Suspense, suspense} from 'react';
+import VideoSkeleton from './VideoSkeleton.js';
+import { LoadingSpinner } from "../utils/constant.js";
+
+const BrowsePage = lazy(() => import('./Browse.js'));
+const MoviesPage = lazy(() => import('./Movies.js'));
+const TvSeries = lazy(() => import('./TVSeries.js'));
+const Signup = lazy(() => import('./SignUp.js'))
+const Secondpart = lazy(() => import('./SecondPart.js'))
+const Login = lazy(() => import('./LogIn.js'))
 
 
 
@@ -24,7 +34,9 @@ const Body = () => {
                 <div className="">
                     <Header />
                     <HomePage />
-                    <SecondPart />
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <Secondpart />
+                    </Suspense>
                     {/* <Footer /> */}
                 </div>
             )
@@ -34,7 +46,9 @@ const Body = () => {
             element: (
                 <div className="">
                     <Header />
-                    <LogIn />
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <Login />
+                    </Suspense>
                 </div>
             )
         },
@@ -43,7 +57,9 @@ const Body = () => {
             element: (
                 <div className="">
                     <Header />
-                    <SignUp />
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <Signup />
+                    </Suspense>
                 </div>
             )
         },
@@ -61,8 +77,11 @@ const Body = () => {
             element: (
                 <div className="">
                     <Header />
-                    <Browse />
-                    <Footer />
+                <Suspense fallback={<VideoSkeleton />}>
+                    <BrowsePage />
+                    
+                </Suspense>
+                <Footer />
                 </div>
             )
         },
@@ -91,7 +110,10 @@ const Body = () => {
             element: (
                 <div className="">
                     <Header />
-                    <Movies />
+                    <Suspense fallback={<VideoSkeleton />}>
+                        <MoviesPage />
+                    </Suspense>
+                    
                     <Footer />
                 </div>
             )
@@ -101,7 +123,9 @@ const Body = () => {
             element: (
                 <div className="">
                     <Header />
-                    <TVSeries />
+                    <Suspense fallback={<VideoSkeleton />}>
+                        <tvSeries />
+                    </Suspense>
                     <Footer />
                 </div>
             )

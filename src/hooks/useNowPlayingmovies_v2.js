@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addNowPlayingMovies, addPopularMovies, addPopularShows, addTopRatedSeries, addTrendingVideos } from "../utils/movieSlice";
 import { useEffect } from "react";
-
-const CLOUD_FUNCTION_URL = "https://comfy-bonbon-7c052c.netlify.app/.netlify/functions/tmdbProxy";
+import { CLOUD_FUNCTION_URL } from "../utils/constant";
 
 const useNowPlayingmovies_v2 = () => {
     const dispatch = useDispatch();
