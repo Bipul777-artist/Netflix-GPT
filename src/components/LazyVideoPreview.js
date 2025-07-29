@@ -36,7 +36,7 @@ const LazyVideoPreview = forwardRef(({ src, muted: externalMuted }, ref) => {
     <iframe
       ref={frameRef}
       src={src}
-      className="absolute top-1/2 left-0 w-full h-[176%] -translate-y-1/2"
+      className="absolute left-0 w-full h-[176%] top-1/4 -translate-y-1/2"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
     />

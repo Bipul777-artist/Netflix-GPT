@@ -5,6 +5,7 @@ import {ChevronRight,
 import { useDispatch, useSelector } from "react-redux";
 import { addHoveredContent } from "../utils/movieSlice";
 import { throttle } from "../utils/constant";
+import { lazy, Suspense, fallback } from "react";
 
 
 const MovieList = ({title, movie}) => {
@@ -16,6 +17,7 @@ const MovieList = ({title, movie}) => {
     const [previewContentId, setPreviewContentId] = useState(null);
     const hoverTimerRef = useRef(null);
     const previewTimerRef = useRef(null);
+    const LazyMovieCard = lazy(() => import('./MovieCard.js'));
 
     const clearTimers = useCallback(() => {
         if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
@@ -43,6 +45,14 @@ const MovieList = ({title, movie}) => {
         setPreviewContentId(null);
     }, [clearTimers])
 
+    const MovieCardPlaceholder = () => (
+        <div className="relative w-52 h-32 md:w-72 md:h-40 bg-gray-800 animate-pulse rounded-lg">
+            {/* Apply the exact same aspect-ratio and dimensions as your MovieCard */}
+            <div className="relative w-full aspect-[1.8/1] overflow-hidden rounded-t-lg"></div>
+            {/* You might also want a placeholder for the bottom info bar if it contributes to height */}
+            <div className="absolute min-h-[110px] bottom-0 left-0 right-0 rounded-b-lg px-3 pt-1.5 pb-3 bg-gray-900"></div>
+        </div>
+    );
     
 
     // Handling SmoothleftCursor Scroll
@@ -86,26 +96,52 @@ const MovieList = ({title, movie}) => {
     if (!movie) return null;
     
      return (
-        <div className="relative -mb-8 md:mb-0 md:px-6 group" >
+        <div className="relative -mb-8 md:mb-0 md:px-6  group" >
                 <h1 className="text-md md:text-3xl mb-2 px-2 pb-1 text-white underline">{title}</h1>
-                <div onMouseLeave={handleMouseLeave} ref={carouselRef} className="pl-2 flex -space-x-[60px] md:space-x-6 overflow-x-auto md:overflow-x-hidden overflow-y-hidden hover:py-8 md:pl-20">
-                
-                    {movie.slice(0, loadMovies).map((item, index) => {
-                        // console.log(item);
-                        return (
-                        <MovieCard 
-                            key={item?.id}
-                            EachMovie={item}
-                            onMouseEnter = {() => handleMouseEnter(item.id)}
-                            previewContentId = {previewContentId}
-                            hoverContentId = {hoverContentId}
-                            index= {index}
-                        />)
-
-                    })}
+                <div className="overflow-x-hidden">
+                    <div 
+                        onMouseLeave={handleMouseLeave} 
+                        ref={carouselRef} 
+                        className="pl-2 w-[calc(100%+384px)] md:w-[calc(100%+768px)] flex -space-x-[60px] md:space-x-6 overflow-x-auto md:overflow-x-hidden overflow-y-hidden hover:py-8 md:pl-20"
+                        
+                    >
                     
+                        {movie.slice(0, loadMovies).map((item, index) => {
+                            // console.log(item);
+                            
+                                return (
+                                    <>
+                                        {
+                                            index < 6 ? (
+                                                <MovieCard  
+                                                    key={item?.id}
+                                                    EachMovie={item}
+                                                    onMouseEnter = {() => handleMouseEnter(item.id)}
+                                                    previewContentId = {previewContentId}
+                                                    hoverContentId = {hoverContentId}
+                                                    index = {index}
+                                                />
+                                        ) :
+                                        (
+                                            <Suspense fallback={<MovieCardPlaceholder />}>
+                                                <LazyMovieCard 
+                                                    key={item?.id}
+                                                    EachMovie={item}
+                                                    onMouseEnter = {() => handleMouseEnter(item.id)}
+                                                    previewContentId = {previewContentId}
+                                                    hoverContentId = {hoverContentId}
+                                                    index= {index}
+                                                />
+                                            </Suspense>
+                                        )
+                                        }
+                                    </>
+                                )
+                            
+                        })}
+                        
+                    </div>
                 </div>
-            
             <div className="absolute h-full md:h-2/5 top-1/3 left-0 right-0 bottom-0 flex items-center justify-between">
                 <button 
                     onClick={() => handleScroll('left')}

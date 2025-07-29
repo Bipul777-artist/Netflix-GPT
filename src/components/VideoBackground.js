@@ -8,7 +8,7 @@ import { IMG_CDN } from "../utils/constant";
 const VideoBackGround = ({ movieId }) => {
   useMovieTrailer(movieId);
   // console.log("Video Background:", movieId);
-  const playerRef = useRef();
+    const playerRef = useRef();
     const [isLoading, setIsLoading] = useState(true);
     const [isVideoReady, setIsVideoReady] = useState(false);
     const FetchTrailer = useSelector((store) => store?.movies?.movieTrailers)
@@ -55,7 +55,8 @@ const VideoBackGround = ({ movieId }) => {
   return (
     <div className="w-full border-b-2 border-black relative">
       {isLoading ? (
-        <VideoTrailerSkeleton />) : 
+        <VideoTrailerSkeleton />) :
+        
         (<>
           {FetchTrailer ? (
             <div className="relative w-full h-0 pb-[56.25%]">

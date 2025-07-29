@@ -15,6 +15,8 @@ import Footer from "./Footer.js";
 import {lazy, Suspense, suspense} from 'react';
 import VideoSkeleton from './VideoSkeleton.js';
 import { LoadingSpinner } from "../utils/constant.js";
+import AlbumArtPreview from "./HoveredSkeleton.js";
+import getMovieData from '../utils/FetchContent.js'
 
 const BrowsePage = lazy(() => import('./Browse.js'));
 const MoviesPage = lazy(() => import('./Movies.js'));
@@ -24,6 +26,16 @@ const Secondpart = lazy(() => import('./SecondPart.js'))
 const Login = lazy(() => import('./LogIn.js'))
 
 
+const BrowsePageLoader = async() => {
+    try {
+        const movieData = await getMovieData();
+        return {movieData};
+    }
+
+    catch{
+        console.log('Error In Loading Data');
+    }
+}
 
 const Body = () => {
 
@@ -77,13 +89,16 @@ const Body = () => {
             element: (
                 <div className="">
                     <Header />
-                <Suspense fallback={<VideoSkeleton />}>
-                    <BrowsePage />
                     
-                </Suspense>
+                      
+                    <Browse />
+
+                    
+                    
                 <Footer />
                 </div>
-            )
+            ),
+            loader: BrowsePageLoader
         },
         
         {

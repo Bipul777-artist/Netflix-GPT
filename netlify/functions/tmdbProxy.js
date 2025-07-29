@@ -84,6 +84,12 @@ exports.handler = async (event, context) => {
     // Add Content-Type to headers before sending back
     headers['Content-Type'] = tmdbResponse.headers.get('content-type') || 'application/json';
 
+    if (statusCode >= 200 && statusCode < 300) {
+        headers['Cache-Control'] = 'public, max-age=3600, s-maxage=3600'; // Cache for 1 hour (3600 seconds)
+                                                                       // Adjust max-age as needed (e.g., 86400 for 24 hours)
+                                                                       // s-maxage is for CDN cache (Netlify's edge cache)
+    }
+
     return {
       statusCode: statusCode,
       headers: headers, // Send back CORS headers

@@ -3,20 +3,14 @@ import VideoBackGround from "./VideoBackground";
 import VideoTitle from "./VideoTitle";
 import { useEffect, useState } from "react";
 
-const MainContainer = () => {
+const MainContainer = ({nowPlayingMovies}) => {
 
-    const [shadow, setShadow] = useState(true);
-    const movies = useSelector((store) => store.movies?.nowPlayingMovies);
-
-
-    if (!movies) return ;
-
-    const MainMovie = movies[0];
+    // const [shadow, setShadow] = useState(true);
+    // const movies = useSelector((store) => store.movies?.nowPlayingMovies);
+    // console.log(movies);
+    const MainMovie = nowPlayingMovies[0];
 
     const {overview, id , title} = MainMovie
-
-
-    
 
     // console.log(MainMovie);
    return (
