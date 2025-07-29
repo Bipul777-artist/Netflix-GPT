@@ -1,18 +1,12 @@
 import { IMG_CDN, genreLookUp, genre_name, IsMuted, IsUnMuted} from "../utils/constant";
 import React, {  Suspense, fallback, useMemo, useCallback } from "react";
-import {
-  ChevronRight,
-  ChevronLeft,
-  Play,
-  Plus,
-  ThumbsUp,
-  Heart,
-  ThumbsDown,
-  ChevronDownCircle, // Closest equivalent for faCircleChevronDown
-  Check,
-  CaretDown, // You might use ChevronDown or TriangleDown based on preference
-  TriangleDown // Alternative for faCaretDown
-} from 'lucide-react';
+import Play from 'lucide-react/dist/esm/icons/play.js';
+import Plus from 'lucide-react/dist/esm/icons/plus.js';
+import Heart from 'lucide-react/dist/esm/icons/heart.js';
+import ThumbsUp from 'lucide-react/dist/esm/icons/thumbs-up.js';
+import ThumbsDown from 'lucide-react/dist/esm/icons/thumbs-down.js';
+import ChevronDownCircle from 'lucide-react/dist/esm/icons/chevron-down-circle.js';
+import Check from 'lucide-react/dist/esm/icons/check.js';
 import { useEffect, useState, useRef } from "react";
 import VideoBackGround from "./VideoBackground";
 import { useDispatch, useSelector } from "react-redux";
@@ -128,44 +122,58 @@ const MovieCard = React.memo(({ EachMovie, index, onMouseEnter, previewContentId
     setState(prev => ({ ...prev, isMuted: !prev.isMuted }));
   };
 
+  // Get base dimensions (from non-hovered state)
+    const baseWidthMd = 288; // md:w-72 (72 * 4px/unit in Tailwind)
+    const baseHeightMd = 160; // md:h-40 (40 * 4px/unit in Tailwind)
+
+    // Get target dimensions (from your desired w-96 h-64)
+    const hoverWidth = 384; // w-96 (96 * 4px/unit)
+    const hoverHeight = 256; // h-64 (64 * 4px/unit)
+
+    const scaleX = hoverWidth / baseWidthMd; // 384 / 288 = 1.333...
+    const scaleY = hoverHeight / baseHeightMd; // 256 / 160 = 1.6
+
+    const finalTranslateX = isHovering ? '-12px' : '0px'; // Move 12px left
+    const finalTranslateY = isHovering ? '-8px' : '0px';  // Move 8px up
+
   return (
-    <div className="relative group h-48 flex items-center justify-center"
-    >
+    <div className="relative w-52 md:w-72 h-32 md:h-40 flex items-center justify-center">
+    
       {EachMovie.backdrop_path &&
       <div onMouseEnter={onMouseEnter} className="relative w-52 h-32 md:w-72 md:h-40 ">
+        
         <div
           ref={cardRef}
-          className={`absolute overflow-y-hidden rounded-lg overflow-hidden
-            transition-all duration-500 ease-in-out ${
+          className={`absolute aspect-[1.8/1] rounded-lg transition-all duration-500 ease-in-out z-10 w-52 h-32 md:w-72 md:h-40 transform-gpu origin-top-left
+            ${
               isHovering 
-                ? 'w-96 h-64 -left-12 z-40 -top-8 shadow-xl' 
-                : 'w-52 h-32 md:w-72 md:h-40 left-0 top-0 z-10'
-            }`}
+                ? `scale-x-[1.33] scale-y-[2.0] translate-x-[${finalTranslateX}] translate-y-[${finalTranslateY}] z-40 shadow-xl`                 : ''
+            }`
+          }    
           onClick={() => handlePlayContent(EachMovie)}
-          
-  
         >
           {!state.imageLoaded && (
-            <div className="min-w-full bg-red-600 border-1 rounded-md min-h-full object-cover ">
+            <div className="  min-w-full bg-red-600 border-1 rounded-md min-h-full object-cover ">
 
             </div>
           )}
-          
+          <div className="relative w-full aspect-[1.8/1] overflow-hidden rounded-t-lg">
            <img
             src={IMG_CDN + EachMovie.backdrop_path || IMG_CDN + EachMovie.poster_path} 
             alt={EachMovie.title }
-            className={`min-w-full min-h-full object-cover transition-opacity duration-300
+            className={`min-w-full min-h-full  border-1 border-black md:rounded-md object-cover transition-opacity duration-300
               ${previewStarted ? 'opacity-0' : 'opacity-100'}`}
             onLoad={() => updateState({imageLoaded :  true})}
             loading={index < 6 ? 'eager' : 'lazy'}
             fetchPriority={index < 3 ? 'high' : 'auto'}
-          />
+            />
+          </div>
           {/* Video Preview */}
           {isVisible && showVideoPreview &&
-            <div className="absolute inset-0 w-full h-full bg-black">
-              <div className="relative w-full h-full overflow-hidden">
+            <div className="absolute inset-0 w-full h-full rounded-lg overflow-hidden bg-black">
+              <div className="relative w-full h-full ">
               
-                <div>
+                <div className="w-full h-full">
                   <Suspense fallback={<AlbumArtPreview />}>
                     <LazyVideoPreview 
                       ref={playerRef}
@@ -196,28 +204,26 @@ const MovieCard = React.memo(({ EachMovie, index, onMouseEnter, previewContentId
           }
 
           {isHovering &&
-            <div className="absolute bottom-0 left-0 right-0 px-3 pb-3 bg-black text-white">
-              <h3 className="font-bold text-md">{EachMovie.original_title || EachMovie.name}</h3>
-              <div className="flex ">
-                {/* <button className="ml-2 ">
-                  <FontAwesomeIcon className="h-6 w-6 my-0.5" icon={faPlay} />
-                </button> */}
+            <div className="absolute min-h-[110px] bottom-0 left-0 right-0 rounded-b-lg px-3 pt-1.5 pb-3 bg-black text-white">
+              <h3 className="font-bold -my-1.5 text-xs">{EachMovie.original_title || EachMovie.name}</h3>
+              <div className="flex -my-2 items-center max-w-full">
+                
                 
                 <button onClick={handleToggleFavorite} className="ml-2 transition-all duration-600 ease-in-out">
                   {isFavorite ? 
                   <Check className={`
-                    p-2
+                    p-1
                     rounded-full
                     transistion-all
                     duration-300
                     ${isFavorite ? 'scale-125' : 'scale-100'}
-                    h-10 w-10 my-0.5`}  /> : 
+                    h-6 w-6 my-0.5`}  /> : 
                   <Plus className={`
-                    p-2
-                    rounded-full
                     
+                    rounded-full
+                    p-1
                     ${isFavorite ? 'scale-125' : 'scale-100'}
-                    h-10 w-10 my-0.5`} />}
+                    h-6 w-6 my-0.5`} />}
                 </button>
                 
                 <div className="relative"
@@ -227,37 +233,41 @@ const MovieCard = React.memo(({ EachMovie, index, onMouseEnter, previewContentId
                   
                   
                   {state.showLikeButton ? 
-                  <div className="flex justify-center items-center animate-fadeUp  gap-2">
+                  <div className="flex justify-center items-center animate-fadeUp gap-2">
                     <button 
                       onClick={() => handleReaction('love')} 
                       className={`
-                        p-2
+                        pt-1.5 pb-1
+                        h-6 w-6
                         rounded-full
                         transistion-all
                         duration-300
+                        
                         ${state.clickedButton === 'love' ? 'scale-125' : 'scale-100'}
                       `}
                       >
-                      <Heart className="h-6 w-6 my-0.5" />
+                      <Heart className="h-full w-full" />
                     </button>
                     <button
                       className={`
-                        p-2 
+                        pt-1.5 pb-1
+                        h-6 w-6
                         rounded-full 
                         transition-all 
                         duration-300
+                        
                         ${state.clickedButton === 'like' ? 'scale-125' : 'scale-100'}
                         
                       `}
                     
                       onClick={() => handleReaction('like')}>
-                      <ThumbsUp className="h-6 w-6 my-0.5" />
+                      <ThumbsUp className="h-full w-full" />
                     
                     </button>
                     <button 
                       className={`
-                        p-2 
-                       
+                        pt-1.5 pb-1
+                        h-6 w-6
                         rounded-full
                         transistion-all
                         duration-300
@@ -266,14 +276,14 @@ const MovieCard = React.memo(({ EachMovie, index, onMouseEnter, previewContentId
                       onClick={() => handleReaction('dislike')}>
                       
                       
-                      <ThumbsDown className="h-6 w-6 my-0.5" />
+                      <ThumbsDown className="h-full w-full" />
                     </button>
                   </div> : (
-                    <button>
-                      {state.selectedOption === 'like' ? <ThumbsUp className="text-blue-500 h-6 w-6 ml-2 my-2"  /> :
-                      state.selectedOption === 'dislike' ? <ThumbsDown className="text-red-600 h-6 w-6 ml-2 my-2" /> :
-                      state.selectedOption === 'love' ? <Heart className="text-pink-600 h-6 w-6 ml-2 my-2" /> :
-                      <ThumbsUp className="h-6 w-6 ml-2 my-2" />
+                    <button className="">
+                      {state.selectedOption === 'like' ? <ThumbsUp className="text-blue-500 h-6 w-6 ml-2 pt-2"  /> :
+                      state.selectedOption === 'dislike' ? <ThumbsDown className="text-red-600 h-6 w-6 ml-2 pt-2" /> :
+                      state.selectedOption === 'love' ? <Heart className="text-pink-600 h-6 w-6 ml-2 pt-2" /> :
+                      <ThumbsUp className="h-6 w-6 ml-2 pt-1.5 pb-1" />
                       }
                     </button>
                   )
@@ -284,17 +294,18 @@ const MovieCard = React.memo(({ EachMovie, index, onMouseEnter, previewContentId
                   onMouseEnter={() => updateState({ moreInfo : true})} 
                   onMouseLeave={() => setTimeout(() => {updateState({moreInfo : false})}, 100)}
                   onClick={(e) => handlePlayContentForLargeScreen(e, EachMovie)}
-                  className="ml-56 transition-all duration-600 ease-in-out">
-                  <ChevronDownCircle className="h-8 w-8 my-0.5"  />  
-                  {state.moreInfo && <p className="absolute right-4 -top-4 py-1.5 px-2 border-1 rounded-md bg-gray-200 text-black animate-fadeIn opacity-95">More Info</p>}
+                  className="ml-auto transition-all duration-600 ease-in-out">
+                  <ChevronDownCircle className="h-6 w-6  my-0.5"  />  
+                  {state.moreInfo && <p className="absolute text-xs right-4 -top-2 px-1 z-50 py-0.5 border-1 rounded-md bg-gray-200 text-black animate-fadeIn opacity-95">More Info</p>}
                 </button>
               </div>
-              <h3 className="text-sm text-white">{getGenreNames(EachMovie.genre_ids)}</h3>
+              <h3 className="text-[8px] text-white">{getGenreNames(EachMovie.genre_ids)}</h3>
             </div>
           }
 
 
         </div>
+        
       </div>}
      
     </div>

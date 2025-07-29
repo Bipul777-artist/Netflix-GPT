@@ -4,18 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useRef, useEffect} from "react";
 import { addContent } from "../utils/movieSlice";
 import {IMG_CDN, genreLookUp, CLOUD_FUNCTION_URL, IsMuted, IsUnMuted} from "../utils/constant";
-import {
-  XCircle,          // Alternative for faCircleXmark
-  Users,            
-  Star,             
-  Flame,            
-  Plus,           
-  Check,            
-  Play,            
-  ThumbsUp,         
-  Heart,            
-  ThumbsDown,       
-} from 'lucide-react';
+import Play from 'lucide-react/dist/esm/icons/play.js';
+import Check from 'lucide-react/dist/esm/icons/check.js';
+import ThumbsUp from 'lucide-react/dist/esm/icons/thumbs-up.js';
+import ThumbsDown from 'lucide-react/dist/esm/icons/thumbs-down.js';
+import Plus from 'lucide-react/dist/esm/icons/plus.js';
+import Heart from 'lucide-react/dist/esm/icons/heart.js';
+import Flame  from 'lucide-react/dist/esm/icons/flame.js';
+import Star   from 'lucide-react/dist/esm/icons/star.js';
+import Users  from 'lucide-react/dist/esm/icons/users.js';
 import useFavorites from "../hooks/useFavorites";
 import AlbumArtPreview from "./HoveredSkeleton";
 import MovieCard from "./MovieCard";
@@ -329,11 +326,11 @@ const PlayContent = () => {
                       p-2
                       bg-transparent
                       border-2 border-white rounded-full
-                    
+                      
                       transition-all
                       duration-300
                       ${isFavorite ? 'scale-125' : 'scale-100'}
-                      md:h-6 md:w-6 my-0.5`}  /> : 
+                      md:h-10 md:w-10 my-0.5`}  /> : 
                     <Plus className={`
                       p-2
                       bg-transparent
@@ -342,7 +339,7 @@ const PlayContent = () => {
                       transition-all
                       duration-300
                       ${isFavorite ? 'scale-125' : 'scale-100'}
-                      w-4 h-4 md:h-6 md:w-6 my-0.5`} />}
+                      w-4 h-4 md:h-10 md:w-10 my-0.5`} />}
                   </button>
                   
                   <div className="relative"
